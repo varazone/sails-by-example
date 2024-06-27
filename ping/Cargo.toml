@@ -1,0 +1,8 @@
+[package]
+name = "ping"
+version = "0.1.0"
+edition = "2021"
+
+[dependencies]
+sails-rtl = { git = "https://github.com/gear-tech/sails" }
+gstd = { git = "https://github.com/gear-tech/gear", features = ["debug"] }
