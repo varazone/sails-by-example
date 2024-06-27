@@ -1,0 +1,13 @@
+[package]
+name = "ping-wasm"
+version.workspace = true
+edition.workspace = true
+license.workspace = true
+
+[dependencies]
+ping = { path = "../app" }
+
+[build-dependencies]
+gwasm-builder.workspace = true
+sails-idl-gen.workspace = true
+ping = { path = "../app" }
