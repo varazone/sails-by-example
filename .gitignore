@@ -1,3 +1,5 @@
 *.lock
 target
 .binpath
+node_modules
+package-lock.json
