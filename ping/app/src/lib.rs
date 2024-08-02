@@ -1,14 +1,14 @@
 #![no_std]
 #![allow(clippy::new_without_default)]
 
-use sails_rtl::gstd::gprogram;
+use sails_rs::prelude::*;
 use services::ping;
 
 mod services;
 
 pub struct Program;
 
-#[gprogram]
+#[program]
 impl Program {
     pub fn new() -> Self {
         // <ping::Service>::seed(name, symbol, decimals);

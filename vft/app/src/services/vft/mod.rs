@@ -1,8 +1,5 @@
-use core::fmt::Debug;
-use gstd::{collections::HashMap, format, msg, ActorId, Decode, Encode, String, TypeInfo, Vec};
-use primitive_types::U256;
-use sails_rtl::gstd::gservice;
-use sails_rtl::Box;
+use gstd::{collections::HashMap, format, msg, Decode, Encode, String, TypeInfo, Vec};
+use sails_rs::prelude::*;
 
 pub use utils::*;
 
@@ -13,8 +10,8 @@ static mut STORAGE: Option<Storage> = None;
 
 #[derive(Debug, Default)]
 struct Storage {
-    balances: HashMap<ActorId, NonZeroU256>,
-    allowances: HashMap<(ActorId, ActorId), NonZeroU256>,
+    balances: HashMap<ActorId, U256>,
+    allowances: HashMap<(ActorId, ActorId), U256>,
     meta: Metadata,
     total_supply: U256,
 }
@@ -38,13 +35,13 @@ pub struct Metadata {
 #[derive(Clone, Debug, PartialEq, Eq, PartialOrd, Ord, Encode, Decode, TypeInfo)]
 pub enum Event {
     Approval {
-        owner: sails_rtl::ActorId,
-        spender: sails_rtl::ActorId,
+        owner: ActorId,
+        spender: ActorId,
         value: U256,
     },
     Transfer {
-        from: sails_rtl::ActorId,
-        to: sails_rtl::ActorId,
+        from: ActorId,
+        to: ActorId,
         value: U256,
     },
 }
@@ -68,13 +65,13 @@ impl Service {
     }
 }
 
-#[gservice(events = Event)]
+#[service(events = Event)]
 impl Service {
     pub fn new() -> Self {
         Self()
     }
 
-    pub fn approve(&mut self, spender: sails_rtl::ActorId, value: U256) -> bool {
+    pub fn approve(&mut self, spender: ActorId, value: U256) -> bool {
         let owner = msg::source();
         let storage = Storage::get_mut();
         let mutated = funcs::approve(&mut storage.allowances, owner, spender.into(), value);
@@ -90,7 +87,7 @@ impl Service {
         mutated
     }
 
-    pub fn transfer(&mut self, to: sails_rtl::ActorId, value: U256) -> bool {
+    pub fn transfer(&mut self, to: ActorId, value: U256) -> bool {
         let from = msg::source();
         let storage = Storage::get_mut();
         let mutated =
@@ -107,12 +104,7 @@ impl Service {
         mutated
     }
 
-    pub fn transfer_from(
-        &mut self,
-        from: sails_rtl::ActorId,
-        to: sails_rtl::ActorId,
-        value: U256,
-    ) -> bool {
+    pub fn transfer_from(&mut self, from: ActorId, to: ActorId, value: U256) -> bool {
         let spender = msg::source();
         let storage = Storage::get_mut();
         let mutated = panicking(move || {
@@ -133,12 +125,12 @@ impl Service {
         mutated
     }
 
-    pub fn allowance(&self, owner: sails_rtl::ActorId, spender: sails_rtl::ActorId) -> U256 {
+    pub fn allowance(&self, owner: ActorId, spender: ActorId) -> U256 {
         let storage = Storage::get();
         funcs::allowance(&storage.allowances, owner.into(), spender.into())
     }
 
-    pub fn balance_of(&self, account: sails_rtl::ActorId) -> U256 {
+    pub fn balance_of(&self, account: ActorId) -> U256 {
         let storage = Storage::get();
         funcs::balance_of(&storage.balances, account.into())
     }

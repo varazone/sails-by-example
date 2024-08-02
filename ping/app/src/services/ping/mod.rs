@@ -1,10 +1,9 @@
 use gstd::{debug, format, Decode, Encode, String, Vec};
-use sails_rtl::gstd::gservice;
-use sails_rtl::Box;
+use sails_rs::prelude::*;
 
 pub struct Service;
 
-#[gservice]
+#[service]
 impl Service {
     pub const fn new() -> Self {
         Self
