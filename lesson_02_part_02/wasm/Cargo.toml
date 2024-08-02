@@ -1,0 +1,13 @@
+[package]
+name = "lesson_02_part_02"
+version.workspace = true
+edition.workspace = true
+license.workspace = true
+
+[dependencies]
+lesson_02_part_02_app = { path = "../app" }
+
+[build-dependencies]
+gear-wasm-builder.workspace = true
+sails-idl-gen.workspace = true
+lesson_02_part_02_app = { path = "../app" }

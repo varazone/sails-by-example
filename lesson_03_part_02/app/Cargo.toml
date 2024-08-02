@@ -1,0 +1,12 @@
+[package]
+name = "lesson_03_part_02_app"
+version.workspace = true
+edition.workspace = true
+license.workspace = true
+
+[dependencies]
+gstd.workspace = true
+sails-rs.workspace = true
+vft-service = { git = "https://github.com/gear-foundation/standards" }
+scale-info = { version = "*", default-features = false }
+parity-scale-codec = { version = "*", default-features = false }

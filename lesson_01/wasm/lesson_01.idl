@@ -1,0 +1,8 @@
+constructor {
+  Default : ();
+};
+
+service HelloWorld {
+  Greeting : () -> str;
+};
+
