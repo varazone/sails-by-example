@@ -20,4 +20,4 @@ gear-core.workspace = true
 tokio = "1"
 
 [build-dependencies]
-gwasm-builder.workspace = true
+gear-wasm-builder.workspace = true

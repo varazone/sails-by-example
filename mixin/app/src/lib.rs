@@ -1,7 +1,7 @@
 #![no_std]
-use sails_rs::prelude::*;
 use counter::Counter as CounterService;
 use hello::HelloWorld as HelloService;
+use sails_rs::prelude::*;
 
 mod counter;
 mod hello;
