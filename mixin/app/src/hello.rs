@@ -1,7 +1,6 @@
-#![no_std]
 use sails_rs::prelude::*;
 
-#[derive(Default)]
+#[derive(Clone, Default)]
 pub struct HelloWorld;
 
 #[service]
@@ -12,15 +11,5 @@ impl HelloWorld {
 
     pub fn greet(&mut self, name: String) -> String {
         format!("Hello, {name}!")
-    }
-}
-
-#[derive(Default)]
-pub struct Program;
-
-#[program]
-impl Program {
-    pub fn hello_world(&self) -> HelloWorld {
-        HelloWorld::default()
     }
 }

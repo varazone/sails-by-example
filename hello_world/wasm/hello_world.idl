@@ -1,8 +1,9 @@
 constructor {
-  New : ();
+  Default : ();
 };
 
 service HelloWorld {
-  HelloWorld : () -> str;
+  Greet : (name: str) -> str;
+  SayHello : () -> str;
 };
 

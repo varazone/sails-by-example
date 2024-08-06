@@ -1,0 +1,11 @@
+constructor {
+  New : ();
+};
+
+service ExtendedService {
+  SayHello : () -> str;
+  Greet : (name: str) -> str;
+  Inc : () -> null;
+  query Get : () -> u32;
+};
+
