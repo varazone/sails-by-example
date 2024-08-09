@@ -12,3 +12,5 @@ const idl = await Deno.readTextFile(idlPath);
 const sails = await Sails.new();
 
 sails.parseIdl(idl);
+
+console.log(sails.services)
