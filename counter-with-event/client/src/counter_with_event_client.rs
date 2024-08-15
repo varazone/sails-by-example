@@ -52,7 +52,7 @@ impl<R> Counter<R> {
 }
 impl<R: Remoting + Clone> traits::Counter for Counter<R> {
     type Args = R::Args;
-    fn inc(&mut self) -> impl Call<Output = (), Args = R::Args> {
+    fn inc(&mut self) -> impl Call<Output = i32, Args = R::Args> {
         RemotingAction::<_, counter::io::Inc>::new(self.remoting.clone(), ())
     }
     fn get(&self) -> impl Query<Output = i32, Args = R::Args> {
@@ -74,7 +74,7 @@ pub mod counter {
         impl ActionIo for Inc {
             const ROUTE: &'static [u8] = &[28, 67, 111, 117, 110, 116, 101, 114, 12, 73, 110, 99];
             type Params = ();
-            type Reply = ();
+            type Reply = i32;
         }
         pub struct Get(());
         impl Get {
@@ -122,7 +122,7 @@ pub mod traits {
     #[allow(clippy::type_complexity)]
     pub trait Counter {
         type Args;
-        fn inc(&mut self) -> impl Call<Output = (), Args = Self::Args>;
+        fn inc(&mut self) -> impl Call<Output = i32, Args = Self::Args>;
         fn get(&self) -> impl Query<Output = i32, Args = Self::Args>;
     }
 }
@@ -134,5 +134,5 @@ extern crate std;
 pub mod mockall {
     use super::*;
     use sails_rs::mockall::*;
-    mock! { pub Counter<A> {} #[allow(refining_impl_trait)] #[allow(clippy::type_complexity)] impl<A> traits::Counter for Counter<A> { type Args = A; fn inc (&mut self, ) -> MockCall<A, ()>;fn get (& self, ) -> MockQuery<A, i32>; } }
+    mock! { pub Counter<A> {} #[allow(refining_impl_trait)] #[allow(clippy::type_complexity)] impl<A> traits::Counter for Counter<A> { type Args = A; fn inc (&mut self, ) -> MockCall<A, i32>;fn get (& self, ) -> MockQuery<A, i32>; } }
 }

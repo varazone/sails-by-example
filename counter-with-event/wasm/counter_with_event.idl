@@ -3,7 +3,7 @@ constructor {
 };
 
 service Counter {
-  Inc : () -> null;
+  Inc : () -> i32;
   query Get : () -> i32;
 
   events {

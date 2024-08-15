@@ -1,9 +1,10 @@
 constructor {
-  New : ();
+  New : (counter: actor_id);
 };
 
-service Counter {
+service CounterProxy {
   Inc : () -> i32;
+  query Counter : () -> actor_id;
   query Get : () -> i32;
 
   events {

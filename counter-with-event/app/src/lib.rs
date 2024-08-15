@@ -35,11 +35,13 @@ impl Counter {
         storage.counter
     }
 
-    pub fn inc(&mut self) {
+    pub fn inc(&mut self) -> i32 {
         let storage = Storage::get_mut();
         storage.counter += 1;
 
         let _ = self.notify_on(Event::Incremented(storage.counter));
+
+        storage.counter
     }
 }
 
