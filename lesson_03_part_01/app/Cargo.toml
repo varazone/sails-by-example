@@ -7,6 +7,6 @@ license.workspace = true
 [dependencies]
 gstd.workspace = true
 sails-rs.workspace = true
-vft-service = { git = "https://github.com/gear-foundation/standards" }
-scale-info = { version = "*", default-features = false }
-parity-scale-codec = { version = "*", default-features = false }
+vft-service.workspace = true
+scale-info.workspace = true
+parity-scale-codec.workspace = true

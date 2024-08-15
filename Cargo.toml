@@ -7,10 +7,6 @@ members = [
 exclude = [
     "gear-erc20/app",
     "gear-erc20/wasm",
-    "lesson_03_part_01/app",
-    "lesson_03_part_01/wasm",
-    "lesson_03_part_02/app",
-    "lesson_03_part_02/wasm",
 ]
 
 [workspace.package]
@@ -23,11 +19,11 @@ gstd = "1.5.0"
 gtest = "1.5.0"
 gclient = "1.5.0"
 gear-core = "1.5.0"
-gear-wasm-builder = { version = "1.5.0" }
-parity-scale-codec = { version = "3.6", default-features = false }
+gear-wasm-builder = "1.5.0"
 sails-idl-gen = "0.3.0"
 sails-client-gen = "0.3.0"
 sails-rs = "0.3.0"
+parity-scale-codec = { version = "3.6", default-features = false }
 scale-info = { version = "2.10", default-features = false }
 primitive-types = { version = "*", default-features = false }
 derive-more = { version = "*", default-features = false, features = ["display"] }
@@ -39,3 +35,4 @@ syn = "2.0"
 thiserror = "1.0"
 tokio = "1.36"
 trybuild = "1"
+vft-service = { git = "https://github.com/varazone/standards" }
