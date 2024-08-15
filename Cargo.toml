@@ -3,6 +3,7 @@ resolver = "2"
 members = [
     "*/app",
     "*/wasm",
+    "*/client",
 ]
 exclude = [
     "gear-erc20/app",
@@ -36,3 +37,4 @@ thiserror = "1.0"
 tokio = "1.36"
 trybuild = "1"
 vft-service = { git = "https://github.com/varazone/standards" }
+mockall = "0.12"

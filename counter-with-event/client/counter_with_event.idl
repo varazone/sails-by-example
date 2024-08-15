@@ -1,0 +1,13 @@
+constructor {
+  New : ();
+};
+
+service Counter {
+  Inc : () -> null;
+  query Get : () -> i32;
+
+  events {
+    Incremented: i32;
+  }
+};
+

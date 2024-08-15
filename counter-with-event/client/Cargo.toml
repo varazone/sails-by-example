@@ -1,0 +1,19 @@
+[package]
+name = "counter_with_event_client"
+version.workspace = true
+edition.workspace = true
+license.workspace = true
+
+[dependencies]
+mockall = { workspace = true, optional = true }
+counter_with_event_app = { path = "../app" }
+sails-rs.workspace = true
+
+[build-dependencies]
+gear-wasm-builder.workspace = true
+sails-idl-gen.workspace = true
+sails-client-gen.workspace = true
+counter_with_event_app = { path = "../app" }
+
+[features]
+with_mocks = ["sails-rs/mockall", "dep:mockall"]
