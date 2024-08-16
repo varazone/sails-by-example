@@ -1,3 +1,5 @@
+#!/usr/bin/env -S node
+
 import { Sails } from "sails-js";
 import fs from "fs/promises";
 import { GearApi, GearKeyring } from "@gear-js/api";
@@ -33,17 +35,21 @@ sails.setApi(api);
 
 // console.log(sails)
 let tx = sails.ctors.New.fromCode(wasm).withAccount(alice, { nonce: -1 });
+console.log("tx:", { programId: tx.programId });
 
 await tx.calculateGas();
-console.log(await tx.signAndSend());
-console.log(tx.programId);
+let resp = await tx.signAndSend();
+console.log("resp:", resp);
+
+await resp.isFinalized;
+console.log("resp:", resp);
 
 sails.services.Counter.events.Incremented.subscribe((data) => {
-  console.log(data);
+  console.log("event:", data);
 });
 
 while (1) {
-  console.log(new Date());
+  console.log(new Date(), "sending Inc");
   let tx = sails.services.Counter.functions.Inc();
   tx.withAccount(alice, { nonce: -1 });
   await tx.calculateGas();

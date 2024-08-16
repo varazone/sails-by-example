@@ -4,8 +4,6 @@ import { CounterProgram } from "./lib.ts";
 import { GearApi, GearKeyring } from "@gear-js/api";
 import { readFileSync } from "fs";
 
-console.log("abc");
-
 const PROVIDER = "wss://testnet.vara.network";
 
 async function initGearApi() {
@@ -23,15 +21,17 @@ async function main() {
     "../target/wasm32-unknown-unknown/release/counter_with_event.opt.wasm",
   );
 
+  /*
   console.log(wasm);
   console.log(counter);
   console.log(counter.newCtorFromCode);
+  */
 
   let alice = await GearKeyring.fromSuri("//Alice");
 
-  let x = counter.newCtorFromCode(wasm).withAccount(alice, { nonce: -1 });
+  let tx = counter.newCtorFromCode(wasm).withAccount(alice, { nonce: -1 });
 
-  console.log(x);
+  console.log("tx:", { programId: tx.programId });
 
   /*
   console.log(api.blockGasLimit);
@@ -40,24 +40,25 @@ async function main() {
   */
 
   // let gas = (BigInt(api.blockGasLimit.toString()));
-  console.log("calculate");
-  await x.calculateGas();
+  // console.log("calculate");
   // await x.withGas(gas)
   // console.log(gas);
 
-  let resp = await x.signAndSend();
+  await tx.calculateGas();
 
-  console.log({ done: resp });
+  let resp = await tx.signAndSend();
+  console.log("resp:", resp);
+
   await resp.isFinalized;
-  console.log({ done: resp });
+  console.log("resp:", resp);
   console.log(await resp.response());
 
   counter.counter.subscribeToIncrementedEvent((data) => {
-    console.log(data);
+    console.log("event:", data);
   });
 
   while (true) {
-    console.log(new Date());
+    console.log(new Date(), "sending Inc");
     let tx = counter.counter.inc();
     tx.withAccount(alice, { nonce: -1 });
     await tx.calculateGas();
