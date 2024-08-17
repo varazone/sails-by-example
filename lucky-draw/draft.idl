@@ -1,0 +1,24 @@
+constructor {
+  New : (admin: ActorId);
+};
+
+enum Progress {
+  Idle,
+  OnGoing{
+    threshold,
+    total_count,
+    current,
+  },
+  Completed,
+}
+
+service LuckyDraw {
+  StartGame (threshold :u128, total_count: u32) -> null;
+  Draw() -> null;
+  query GameProgress() -> Progress;
+  event {
+    GameStarted,
+    GameProgress{who, index, total},
+    GameCompleted{winner, prize},
+  }
+};
