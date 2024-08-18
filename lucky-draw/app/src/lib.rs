@@ -59,11 +59,12 @@ impl Storage {
     }
 }
 
-#[derive(Encode, Decode, TypeInfo)]
+#[derive(Encode, Decode, TypeInfo, Debug)]
 pub enum Event {
     Started{config: Config},
     Deposited{who: ActorId, index: u32, target: u32},
     Completed,
+    // Debug(ActorId, u128, u128),
 }
 
 #[derive(Default)]
@@ -94,7 +95,7 @@ impl LuckyDraw {
             max_share,
         };
         storage.config = Some(config);
-        storage.winners = Default::default();
+        // storage.winners = Default::default();
         storage.players = vec![];
         storage.status = Status::OnGoing;
         storage.pooled = 0;
@@ -115,12 +116,17 @@ impl LuckyDraw {
         // let amount = storage.players.len() * ;
         // set winner
         // storage.winner = Some((*winner, amount));
-        // storage.winners.entry(*winner).and_modify(|value| *value += storage.pooled).or_insert(storage.pooled);
-        if let Some(value) = storage.winners.get_mut(winner) {
-            *value += storage.pooled;
-        } else {
-            storage.winners.insert(*winner, storage.pooled);
-        }
+        storage.winners.entry(*winner).and_modify(|value| *value += storage.pooled).or_insert(storage.pooled);
+        // if let Some(value) = storage.winners.get(winner) {
+        //     // *value += storage.pooled;
+        //     // self.debug(format!("insert {}: {} + {}", winner, *value, storage.pooled));
+        //     let _ = self.notify_on(Event::Debug(*winner, *value, storage.pooled));
+        //     storage.winners.insert(*winner, *value + storage.pooled);
+        // } else {
+        //     let _ = self.notify_on(Event::Debug(*winner, 1, storage.pooled));
+        //     storage.winners.insert(*winner, storage.pooled);
+        //     // self.debug(format!("insert {}: {}", *winner, storage.pooled));
+        // }
         // reset config
         storage.config = None;
         storage.players = vec![];
