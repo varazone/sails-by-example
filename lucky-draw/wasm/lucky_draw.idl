@@ -25,6 +25,7 @@ service LuckyDraw {
   Claim : () -> message_id;
   Draw : () -> null;
   StartGame : (per_share: u128, max_share: u32) -> null;
+  Terminate : () -> null;
   query GameState : () -> GameState;
 
   events {

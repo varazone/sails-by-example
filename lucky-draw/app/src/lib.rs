@@ -91,6 +91,12 @@ impl LuckyDraw {
         }
     }
 
+    pub fn terminate(&mut self) {
+        let storage = Storage::get();
+        assert_eq!(msg::source(), storage.admin, "sender must be admin");
+        exec::exit(storage.admin);
+    }
+
     pub fn start_game(&mut self, per_share: u128, max_share: u32) {
         let storage = Storage::get_mut();
         assert_eq!(msg::source(), storage.admin, "sender must be admin");
