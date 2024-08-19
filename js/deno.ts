@@ -1,6 +1,6 @@
 #!/usr/bin/env -S deno run -A
 
-import { Sails } from 'npm:sails-js';
+import { Sails } from 'sails-js';
 
 if (Deno.args.length < 1) {
     console.error("Please provide a file path as an argument.");

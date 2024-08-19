@@ -24,9 +24,9 @@ export interface Config {
 
 export type Status = "idle" | "onGoing" | "completed";
 
-export class LuckyDraw {
+export class LuckyDrawProgram {
   public readonly registry: TypeRegistry;
-  public readonly luckyDraw: LuckyDrawService;
+  public readonly luckyDraw: LuckyDraw;
 
   constructor(public api: GearApi, public programId?: `0x${string}`) {
     const types: Record<string, any> = {
@@ -79,8 +79,8 @@ export class LuckyDraw {
   }
 }
 
-export class LuckyDrawService {
-  constructor(private _program: LuckyDraw) {}
+export class LuckyDraw {
+  constructor(private _program: LuckyDrawProgram) {}
 
   public claim(): TransactionBuilder<MessageId> {
     if (!this._program.programId) throw new Error("Program ID is not set");
@@ -119,6 +119,19 @@ export class LuckyDrawService {
       "send_message",
       ["LuckyDraw", "StartGame", per_share, max_share],
       "(String, String, u128, u32)",
+      "Null",
+      this._program.programId,
+    );
+  }
+
+  public terminate(): TransactionBuilder<null> {
+    if (!this._program.programId) throw new Error("Program ID is not set");
+    return new TransactionBuilder<null>(
+      this._program.api,
+      this._program.registry,
+      "send_message",
+      ["LuckyDraw", "Terminate"],
+      "(String, String)",
       "Null",
       this._program.programId,
     );

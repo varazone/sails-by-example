@@ -14,7 +14,7 @@ async function initGearApi() {
 async function initSigners() {
   const alice = await GearKeyring.fromSuri("//Alice");
   const bob = await GearKeyring.fromSuri("//Bob");
-  return {alice, bob};
+  return { alice, bob };
 }
 
 async function parseArgs() {
@@ -146,10 +146,10 @@ async function main() {
       let tx = sails.services.LuckyDraw.functions.Claim();
       tx.withAccount(alice, { nonce: -1 });
       await tx.calculateGas();
-      let {response}= await tx.signAndSend();
+      let { response, isFinalized } = await tx.signAndSend();
       console.log("response:", await response());
+      await isFinalized;
     }
-
   }
 }
 

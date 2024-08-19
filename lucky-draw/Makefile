@@ -1,5 +1,5 @@
 all:
-	sails-js generate -n LuckyDraw ./wasm/*.idl
+	sails-js generate -n LuckyDrawProgram ./wasm/*.idl
 	deno fmt lib.ts
 
 deploy:
