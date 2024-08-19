@@ -22,7 +22,7 @@ constructor {
 };
 
 service LuckyDraw {
-  Claim : () -> null;
+  Claim : () -> message_id;
   Draw : () -> null;
   StartGame : (per_share: u128, max_share: u32) -> null;
   query GameState : () -> GameState;

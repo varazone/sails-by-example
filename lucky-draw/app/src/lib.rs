@@ -1,9 +1,9 @@
 #![no_std]
-use sails_rs::prelude::*;
-use sails_rs::collections::HashMap;
 use gstd::{exec, msg};
+use sails_rs::collections::HashMap;
+use sails_rs::prelude::*;
 
-#[derive(Clone,PartialEq,Debug)]
+#[derive(Clone, PartialEq, Debug)]
 pub struct Storage {
     admin: ActorId,
     players: Vec<ActorId>,
@@ -13,7 +13,7 @@ pub struct Storage {
     pooled: u128,
 }
 
-#[derive(Clone,PartialEq,Debug,Encode,Decode,TypeInfo)]
+#[derive(Clone, PartialEq, Debug, Encode, Decode, TypeInfo)]
 pub struct GameState {
     admin: ActorId,
     players: Vec<ActorId>,
@@ -34,14 +34,14 @@ impl From<Storage> for GameState {
     }
 }
 
-#[derive(Copy,Clone,PartialEq,Debug,Encode,Decode,TypeInfo)]
+#[derive(Copy, Clone, PartialEq, Debug, Encode, Decode, TypeInfo)]
 pub struct Config {
     per_share: u128,
     max_share: u32,
     // commission_percent: u8;
 }
 
-#[derive(Copy,Clone,PartialEq,Debug,Encode,Decode,TypeInfo)]
+#[derive(Copy, Clone, PartialEq, Debug, Encode, Decode, TypeInfo)]
 pub enum Status {
     Idle,
     OnGoing,
@@ -61,8 +61,14 @@ impl Storage {
 
 #[derive(Encode, Decode, TypeInfo, Debug)]
 pub enum Event {
-    Started{config: Config},
-    Deposited{who: ActorId, index: u32, target: u32},
+    Started {
+        config: Config,
+    },
+    Deposited {
+        who: ActorId,
+        index: u32,
+        target: u32,
+    },
     Completed,
     // Debug(ActorId, u128, u128),
 }
@@ -73,20 +79,25 @@ pub struct LuckyDraw;
 #[service(events = Event)]
 impl LuckyDraw {
     pub fn init() {
-        unsafe { STORAGE = Some(Storage { 
-            admin: msg::source(),
-            config: None,
-            players: vec![],
-            winners: Default::default(),
-            status: Status::Idle,
-            pooled: 0,
-        }) }
+        unsafe {
+            STORAGE = Some(Storage {
+                admin: msg::source(),
+                config: None,
+                players: vec![],
+                winners: Default::default(),
+                status: Status::Idle,
+                pooled: 0,
+            })
+        }
     }
 
     pub fn start_game(&mut self, per_share: u128, max_share: u32) {
         let storage = Storage::get_mut();
         assert_eq!(msg::source(), storage.admin, "sender must be admin");
-        assert!(!matches!(storage.status, Status::OnGoing{..}), "cannot start while game is on-going");
+        assert!(
+            !matches!(storage.status, Status::OnGoing { .. }),
+            "cannot start while game is on-going"
+        );
         assert_ne!(per_share, 0, "per_share cannot be zero");
         assert_ne!(max_share, 0, "max_share cannot be zero");
 
@@ -100,23 +111,34 @@ impl LuckyDraw {
         storage.status = Status::OnGoing;
         storage.pooled = 0;
 
-        let _ = self.notify_on(Event::Started{config});
+        let _ = self.notify_on(Event::Started { config });
     }
 
     fn settle(&mut self) {
         let storage = Storage::get_mut();
         // assert vec len == max_share
-        assert!(matches!(storage.status, Status::OnGoing{..}), "game must be on-going");
+        assert!(
+            matches!(storage.status, Status::OnGoing { .. }),
+            "game must be on-going"
+        );
         let config = storage.config.unwrap();
-        assert_eq!(storage.players.len() as u32, config.max_share, "player count must reach max_share");
-        
+        assert_eq!(
+            storage.players.len() as u32,
+            config.max_share,
+            "player count must reach max_share"
+        );
+
         // distribute rewards
         // let winner = pick_winner(&storage.players);
         let winner = pick_random(&storage.players).unwrap();
         // let amount = storage.players.len() * ;
         // set winner
         // storage.winner = Some((*winner, amount));
-        storage.winners.entry(*winner).and_modify(|value| *value += storage.pooled).or_insert(storage.pooled);
+        storage
+            .winners
+            .entry(*winner)
+            .and_modify(|value| *value += storage.pooled)
+            .or_insert(storage.pooled);
         // if let Some(value) = storage.winners.get(winner) {
         //     // *value += storage.pooled;
         //     // self.debug(format!("insert {}: {} + {}", winner, *value, storage.pooled));
@@ -135,13 +157,17 @@ impl LuckyDraw {
 
         let _ = self.notify_on(Event::Completed);
     }
-    
+
     pub fn draw(&mut self) {
         let storage = Storage::get_mut();
         let config = storage.config.unwrap();
         let value = msg::value();
         let who = msg::source();
-        assert_eq!(value, config.per_share, "value must be {}, got {}", config.per_share, value);
+        assert_eq!(
+            value, config.per_share,
+            "value must be {}, got {}",
+            config.per_share, value
+        );
 
         match storage.status {
             Status::OnGoing => {
@@ -149,24 +175,34 @@ impl LuckyDraw {
                 storage.pooled += value;
                 let index = storage.players.len() as u32;
                 let target = config.max_share;
-                let _ = self.notify_on(Event::Deposited{who, index, target});
-                
+                let _ = self.notify_on(Event::Deposited { who, index, target });
+
                 if storage.players.len() as u32 >= config.max_share {
                     self.settle()
                 }
             }
             _ => panic!("Game status must be on-going"),
         }
-
     }
 
-    pub fn claim(&mut self) {
+    pub fn claim(&mut self) -> MessageId {
         let storage = Storage::get_mut();
         let sender = msg::source();
-        if let Some(value) = storage.winners.remove(&sender) {
-            msg::send_bytes(sender, [], value).expect("failed to claim");
-        } else {
-            panic!("nothing to claim");
+        match storage.winners.remove(&sender) {
+            Some(value) => {
+                let gas_limit: u64 = 60 * 60 * 24 / 3 * 100; // 60 * 60 * 24 / 3 sec per block * 100 gas per block = 2_880_000;
+                let msg_id = msg::send_bytes_with_gas(
+                    sender,
+                    b"CONGRATS! Please claim the reward in 24 hours!",
+                    gas_limit,
+                    value,
+                )
+                .expect("failed to claim");
+                msg_id
+            }
+            _ => {
+                panic!("nothing to claim");
+            }
         }
     }
 

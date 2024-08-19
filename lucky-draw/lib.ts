@@ -2,6 +2,7 @@ import {
   ActorId,
   getFnNamePrefix,
   getServiceNamePrefix,
+  MessageId,
   TransactionBuilder,
   ZERO_ADDRESS,
 } from "sails-js";
@@ -81,15 +82,15 @@ export class LuckyDraw {
 export class LuckyDrawService {
   constructor(private _program: LuckyDraw) {}
 
-  public claim(): TransactionBuilder<null> {
+  public claim(): TransactionBuilder<MessageId> {
     if (!this._program.programId) throw new Error("Program ID is not set");
-    return new TransactionBuilder<null>(
+    return new TransactionBuilder<MessageId>(
       this._program.api,
       this._program.registry,
       "send_message",
       ["LuckyDraw", "Claim"],
       "(String, String)",
-      "Null",
+      "[u8;32]",
       this._program.programId,
     );
   }

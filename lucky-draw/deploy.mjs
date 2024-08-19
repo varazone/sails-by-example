@@ -11,9 +11,10 @@ async function initGearApi() {
   });
 }
 
-async function initSigner() {
-  const alice = await GearKeyring.fromSuri("//Bob");
-  return alice;
+async function initSigners() {
+  const alice = await GearKeyring.fromSuri("//Alice");
+  const bob = await GearKeyring.fromSuri("//Bob");
+  return {alice, bob};
 }
 
 async function parseArgs() {
@@ -57,7 +58,7 @@ async function main() {
   const { idl, wasm } = await parseArgs();
   const sails = await initSails(idl);
   // console.log(sails.services);
-  const alice = await initSigner();
+  const { alice, bob } = await initSigners();
   const api = await initGearApi();
   api.setSigner(alice);
   sails.setApi(api);
@@ -104,6 +105,51 @@ async function main() {
       );
       console.log("GameState:", gameState);
     }
+
+    console.log(new Date(), "StartGame");
+    {
+      let tx = sails.services.LuckyDraw.functions.StartGame(1000000000000n, 2);
+      tx.withAccount(alice, { nonce: -1 });
+      await tx.calculateGas();
+      await tx.signAndSend();
+    }
+
+    console.log(new Date(), "Draw");
+    {
+      let tx = sails.services.LuckyDraw.functions.Draw();
+      tx.withAccount(alice, { nonce: -1 });
+      tx.withValue(1000000000000n);
+      await tx.calculateGas();
+      await tx.signAndSend();
+    }
+
+    console.log(new Date(), "Draw");
+    {
+      let tx = sails.services.LuckyDraw.functions.Draw();
+      tx.withAccount(bob, { nonce: -1 });
+      tx.withValue(1000000000000n);
+      await tx.calculateGas();
+      await tx.signAndSend();
+    }
+
+    console.log(new Date(), "GameState");
+    {
+      // console.log(alice, alice.address);
+      let gameState = await sails.services.LuckyDraw.queries.GameState(
+        alice.address,
+      );
+      console.log("GameState:", gameState);
+    }
+
+    console.log(new Date(), "Claim");
+    {
+      let tx = sails.services.LuckyDraw.functions.Claim();
+      tx.withAccount(alice, { nonce: -1 });
+      await tx.calculateGas();
+      let {response}= await tx.signAndSend();
+      console.log("response:", await response());
+    }
+
   }
 }
 
