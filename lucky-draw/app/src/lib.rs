@@ -38,7 +38,6 @@ impl From<Storage> for GameState {
 pub struct Config {
     per_share: u128,
     max_share: u32,
-    // commission_percent: u8;
 }
 
 #[derive(Copy, Clone, PartialEq, Debug, Encode, Decode, TypeInfo)]
@@ -70,7 +69,6 @@ pub enum Event {
         target: u32,
     },
     Completed,
-    // Debug(ActorId, u128, u128),
 }
 
 #[derive(Default)]
@@ -112,12 +110,12 @@ impl LuckyDraw {
             max_share,
         };
         storage.config = Some(config);
-        // storage.winners = Default::default();
         storage.players = vec![];
         storage.status = Status::OnGoing;
         storage.pooled = 0;
 
-        let _ = self.notify_on(Event::Started { config });
+        self.notify_on(Event::Started { config })
+            .expect("failed to emit event");
     }
 
     fn settle(&mut self) {
@@ -134,34 +132,21 @@ impl LuckyDraw {
             "player count must reach max_share"
         );
 
-        // distribute rewards
-        // let winner = pick_winner(&storage.players);
         let winner = pick_random(&storage.players).unwrap();
-        // let amount = storage.players.len() * ;
-        // set winner
-        // storage.winner = Some((*winner, amount));
+
         storage
             .winners
             .entry(*winner)
             .and_modify(|value| *value += storage.pooled)
             .or_insert(storage.pooled);
-        // if let Some(value) = storage.winners.get(winner) {
-        //     // *value += storage.pooled;
-        //     // self.debug(format!("insert {}: {} + {}", winner, *value, storage.pooled));
-        //     let _ = self.notify_on(Event::Debug(*winner, *value, storage.pooled));
-        //     storage.winners.insert(*winner, *value + storage.pooled);
-        // } else {
-        //     let _ = self.notify_on(Event::Debug(*winner, 1, storage.pooled));
-        //     storage.winners.insert(*winner, storage.pooled);
-        //     // self.debug(format!("insert {}: {}", *winner, storage.pooled));
-        // }
-        // reset config
+
         storage.config = None;
         storage.players = vec![];
         storage.status = Status::Completed;
         storage.pooled = 0;
 
-        let _ = self.notify_on(Event::Completed);
+        self.notify_on(Event::Completed)
+            .expect("failed to emit event");
     }
 
     pub fn draw(&mut self) {
@@ -181,7 +166,8 @@ impl LuckyDraw {
                 storage.pooled += value;
                 let index = storage.players.len() as u32;
                 let target = config.max_share;
-                let _ = self.notify_on(Event::Deposited { who, index, target });
+                self.notify_on(Event::Deposited { who, index, target })
+                    .expect("failed to emit event");
 
                 if storage.players.len() as u32 >= config.max_share {
                     self.settle()
@@ -196,7 +182,8 @@ impl LuckyDraw {
         let sender = msg::source();
         match storage.winners.remove(&sender) {
             Some(value) => {
-                let gas_limit: u64 = 60 * 60 * 24 / 3 * 100; // 60 * 60 * 24 / 3 sec per block * 100 gas per block = 2_880_000;
+                // 60 * 60 * 24 / 3 sec per block * 100 gas per block = 2_880_000;
+                let gas_limit: u64 = 60 * 60 * 24 / 3 * 100;
                 let msg_id = msg::send_bytes_with_gas(
                     sender,
                     b"CONGRATS! Please claim the reward in 24 hours!",
