@@ -47,8 +47,7 @@ async function parseArgs(args: string[]) {
 
 async function addNewProgram(program, key, value) {
   const tx = program.dns.addNewProgram(key, value);
-  // await tx.calculateGas();
-  await tx.withGas(100000000000n);
+  await tx.calculateGas();
   return tx;
 }
 
@@ -65,7 +64,6 @@ async function sendAndFinalize(api, tx, signer) {
     tx.signAndSend(signer, { nonce: -1 }, ({ status, dispatchError }) => {
       if (status.isFinalized) {
         if (dispatchError) {
-          // reject(new Error(dispatchError.toString()));
           if (dispatchError.isModule) {
             const decoded = api.registry.findMetaError(dispatchError.asModule);
             const { docs, name, section } = decoded;
