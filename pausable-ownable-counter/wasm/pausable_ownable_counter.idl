@@ -1,0 +1,15 @@
+constructor {
+  New : ();
+};
+
+service PausableOwnableCounter {
+  Pause : () -> null;
+  Unpause : () -> null;
+  RenounceOwnership : () -> null;
+  TransferOwnership : (new_owner: actor_id) -> null;
+  Inc : () -> null;
+  query Paused : () -> bool;
+  query Owner : () -> actor_id;
+  query Get : () -> u32;
+};
+
