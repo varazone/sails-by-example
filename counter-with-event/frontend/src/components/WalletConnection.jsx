@@ -18,28 +18,39 @@ const WalletConnection = () => {
     setSelectedAccount(null);
   };
 
-  if (!isWalletInstalled) {
-    return <div>{walletNotInstalledMessage}</div>;
-  }
-
   return (
     <div>
       <h2>Wallet Connection</h2>
       {!selectedAccount
         ? (
-          accounts.map((account) => (
-            <button
-              key={account.address}
-              onClick={() => handleAccountSelect(account)}
-            >
-              Connect {account.meta.name}
-            </button>
-          ))
+          <>
+            <div>
+              {accounts.map((account, index) => (
+                <button
+                  key={account.address + index}
+                  onClick={() => handleAccountSelect(account)}
+                >
+                  Connect {account.meta.name}{" "}
+                  ({account.meta.isTesting ? "dev" : account.meta.source})
+                </button>
+              ))}
+            </div>
+            <div>
+              {isWalletInstalled
+                ? null
+                : <div>{walletNotInstalledMessage}</div>}
+            </div>
+          </>
         )
         : (
           <div>
             <p>
               Connected: {selectedAccount.meta.name} ({selectedAccount.address})
+            </p>
+            <p>
+              Source: {selectedAccount.meta.isTesting
+                ? "dev"
+                : selectedAccount.meta.source}
             </p>
             <button onClick={handleDisconnect}>Disconnect</button>
           </div>

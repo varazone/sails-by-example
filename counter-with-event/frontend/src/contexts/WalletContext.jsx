@@ -1,10 +1,12 @@
 import React, { createContext, useContext, useEffect, useState } from "react";
 import { web3AccountsSubscribe, web3Enable } from "@polkadot/extension-dapp";
+import { createTestPairs } from "@polkadot/keyring";
 
 const WalletContext = createContext();
+const testKeypairs = Object.values(createTestPairs());
 
 export const WalletProvider = ({ children }) => {
-  const [accounts, setAccounts] = useState([]);
+  const [accounts, setAccounts] = useState(testKeypairs);
   const [selectedAccount, setSelectedAccount] = useState(null);
   const [isWalletInstalled, setIsWalletInstalled] = useState(true);
 
@@ -18,7 +20,7 @@ export const WalletProvider = ({ children }) => {
       }
 
       const unsubscribe = await web3AccountsSubscribe((injectedAccounts) => {
-        setAccounts(injectedAccounts);
+        setAccounts([...testKeypairs, ...injectedAccounts]);
 
         if (injectedAccounts.length === 0) {
           setIsWalletInstalled(false);
@@ -29,7 +31,7 @@ export const WalletProvider = ({ children }) => {
         // If the selected account is no longer available, clear the selection
         if (
           selectedAccount &&
-          !injectedAccounts.some((acc) =>
+          ![...testKeypairs, ...injectedAccounts].some((acc) =>
             acc.address === selectedAccount.address
           )
         ) {
