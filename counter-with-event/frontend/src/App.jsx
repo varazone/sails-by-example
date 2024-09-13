@@ -2,12 +2,12 @@ import React, { useEffect, useState } from "react";
 import { ApiProvider } from "./contexts/ApiContext";
 import { WalletProvider } from "./contexts/WalletContext";
 import { useApi } from "./contexts/ApiContext";
-import ContractInteraction from "./components/ContractInteraction";
-import EventListener from "./components/EventListener";
-// import ThemeSwitcher from "./components/ThemeSwitcher";
-// import StickyNavbar from "./components/StickyNavbar";
+import NetworkStatus from "./components/NetworkStatus";
+import Program from "./components/Program";
 import StickyNavbar from "./components/StickyNavbar";
 import Sidebar from "./components/Sidebar";
+import Loader from "./components/Loader";
+import Center from "./components/Center";
 import { CounterProgram } from "./lib/counterProgram";
 import { BrowserRouter as Router } from "react-router-dom";
 
@@ -36,64 +36,27 @@ const AppContent = () => {
     <div className="min-h-screen bg-base-200">
       <StickyNavbar toggleSidebar={toggleSidebar} />
       <Sidebar isOpen={isSidebarOpen} toggleSidebar={toggleSidebar} />
-      <div className="transition-all duration-200">
-        <div className="container mx-auto">
-          {
-            /*
-      <StickyNavbar />
-        <h1 className="text-4xl font-bold text-center mb-8">
-          Gear dApp Template
-        </h1>
 
-        <div className="navbar bg-base-100">
-          <div className="flex-1">
-            <a className="btn btn-ghost normal-case text-4xl">
-              Gear dApp Template
-            </a>
-          </div>
-          <div className="flex-none">
-            <ThemeSwitcher />
-          </div>
-        </div>
-
-        <div className="divider"></div>
-              <RpcUrlCustomizer />
-              <div className="divider"></div>
-              <BlockNumber />
-              <div className="divider"></div>
-              <WalletManager />
-                  <div className="divider"></div>
-        */
-          }
-
-          <div className="card bg-base-100 shadow-xl">
+      {api
+        ? (
+          <div className="bg-base-100 shadow-xl">
             <div className="card-body">
-              {program && (
-                <>
-                  <ContractInteraction program={program} />
-                  <div className="divider"></div>
-                  <EventListener program={program} />
-                </>
-              )}
+              <NetworkStatus />
             </div>
+            {program &&
+              (
+                <div className="card-body">
+                  <Program program={program} />
+                </div>
+              )}
           </div>
-        </div>
-      </div>
+        )
+        : (
+          <Center fullScreen>
+            <Loader size="lg" />
+          </Center>
+        )}
     </div>
-    /*
-    <div className="App">
-      <h1>Gear dApp Template</h1>
-      <RpcUrlCustomizer />
-      <BlockNumber />
-      <WalletManager />
-      {program && (
-        <>
-          <ContractInteraction program={program} />
-          <EventListener program={program} />
-        </>
-      )}
-    </div>
-    */
   );
 };
 

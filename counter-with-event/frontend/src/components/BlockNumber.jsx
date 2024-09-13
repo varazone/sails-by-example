@@ -1,67 +1,53 @@
 import React, { useEffect, useState } from "react";
 import { useApi } from "../contexts/ApiContext";
+import { Clock } from "lucide-react";
 
-const BlockNumber = () => {
+const BlockNumber = ({ finalized = false }) => {
   const { api } = useApi();
-  const [blockNumber, setBlockNumber] = useState(null);
+  const [blockNumber, setBlockNumber] = useState(0);
+  const [blockNumberTimer, setBlockNumberTimer] = useState(0);
 
   useEffect(() => {
-    if (!api) return;
-
     let unsubscribe;
-    api.rpc.chain.subscribeNewHeads((header) => {
-      setBlockNumber(header.number.toNumber());
-    }).then((unsub) => {
-      unsubscribe = unsub;
-    }).catch((error) => {
-      console.error("Failed to subscribe to new heads:", error);
-    });
 
-    return () => {
-      if (unsubscribe) unsubscribe();
-    };
-  }, [api]);
+    const bestNumber = finalized
+      ? api?.derive?.chain?.bestNumberFinalized
+      : api?.derive?.chain?.bestNumber;
+
+    if (bestNumber) {
+      bestNumber((number) => {
+        setBlockNumber(number.toNumber().toLocaleString("en-US"));
+        setBlockNumberTimer(0);
+      })
+        .then((unsub) => {
+          unsubscribe = unsub;
+        })
+        .catch(console.error);
+    }
+
+    return () => unsubscribe && unsubscribe();
+  }, [api, finalized]);
+
+  useEffect(() => {
+    const id = setInterval(() => setBlockNumberTimer((time) => time + 1), 1000);
+    return () => clearInterval(id);
+  }, []);
+
+  if (!api?.derive?.chain) {
+    return null;
+  }
 
   return (
-    /*
-    <div>
-      <h3>Current Block Number</h3>
-      {(api && blockNumber)
-        ? <p>{blockNumber.toLocaleString()}</p>
-        : <p>Loading...</p>}
-    </div>
-    */
-    <div className="card w-96 bg-base-100 shadow-xl">
+    <div className="card w-80 bg-base-100 shadow-xl">
       <div className="card-body">
-        <h2 className="card-title">Current Block Number</h2>
-        {(api && blockNumber)
-          ? (
-            <div className="stats shadow">
-              <div className="stat">
-                <div className="stat-title">Block</div>
-                <div className="stat-value">{blockNumber.toLocaleString()}</div>
-              </div>
-            </div>
-          )
-          : (
-            <div className="alert alert-info">
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                fill="none"
-                viewBox="0 0 24 24"
-                className="stroke-current shrink-0 w-6 h-6"
-              >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth="2"
-                  d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
-                >
-                </path>
-              </svg>
-              <span>Loading...</span>
-            </div>
-          )}
+        <h2 className="card-title text-lg">
+          {finalized ? "Finalized" : "Current"} Block
+        </h2>
+        <p className="text-3xl font-bold">{blockNumber}</p>
+        <div className="flex items-center justify-end mt-2">
+          <Clock className="w-4 h-4 mr-1" />
+          <span className="text-sm">{blockNumberTimer}s</span>
+        </div>
       </div>
     </div>
   );
