@@ -9,6 +9,7 @@ import EventListener from "./components/EventListener";
 import StickyNavbar from "./components/StickyNavbar";
 import Sidebar from "./components/Sidebar";
 import { CounterProgram } from "./lib/counterProgram";
+import { BrowserRouter as Router } from "react-router-dom";
 
 import "./App.css";
 
@@ -98,11 +99,13 @@ const AppContent = () => {
 
 const App = () => {
   return (
-    <ApiProvider>
-      <WalletProvider>
-        <AppContent />
-      </WalletProvider>
-    </ApiProvider>
+    <Router>
+      <ApiProvider>
+        <WalletProvider>
+          <AppContent />
+        </WalletProvider>
+      </ApiProvider>
+    </Router>
   );
 };
 
