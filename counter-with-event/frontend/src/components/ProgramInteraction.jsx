@@ -5,7 +5,7 @@ import { web3FromSource } from "@polkadot/extension-dapp";
 import { SingleAccountSigner } from "../utils/SingleAccountSigner";
 import { ExternalLink } from "lucide-react";
 
-const ContractInteraction = ({ program }) => {
+const ProgramInteraction = ({ program }) => {
   const [counterValue, setCounterValue] = useState(null);
   const { api } = useApi();
   const { selectedAccount } = useWallet();
@@ -28,7 +28,6 @@ const ContractInteraction = ({ program }) => {
 
   const handleIncrement = async () => {
     if (program && api && selectedAccount) {
-      // const injector = await web3FromSource(selectedAccount.meta.source);
       const signer = await getSigner(api, selectedAccount);
       const tx = program.counter.inc();
       tx.withAccount(selectedAccount.address, {
@@ -41,21 +40,9 @@ const ContractInteraction = ({ program }) => {
   };
 
   return (
-    /*
-    <div>
-      <h2>Contract Interaction</h2>
-      <button onClick={fetchCounterValue}>Get Counter Value</button>
-      <p>
-        Current Value: {counterValue !== null ? counterValue : "Not fetched"}
-      </p>
-      <button onClick={handleIncrement} disabled={!selectedAccount}>
-        Increment
-      </button>
-    </div>
-    */
     <div className="card w-96 bg-base-100 shadow-xl">
       <div className="card-body">
-        <h2 className="card-title">Contract Interaction</h2>
+        <h2 className="card-title">Program Interaction</h2>
         <div className="space-y-4">
           <div className="text-wrap">
             <h3 className="font-bold mb-2 inline-block">Program ID</h3>
@@ -104,4 +91,4 @@ const ContractInteraction = ({ program }) => {
   );
 };
 
-export default ContractInteraction;
+export default ProgramInteraction;

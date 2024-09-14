@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+import { Info } from "lucide-react";
 
 const EventListener = ({ program }) => {
   const [events, setEvents] = useState([]);
@@ -18,19 +19,9 @@ const EventListener = ({ program }) => {
   }, [program]);
 
   return (
-    /*
-    <div>
-      <h2>Events</h2>
-      <ul>
-        {events.map((event, index) => (
-          <li key={index}>Counter incremented to: {event}</li>
-        ))}
-      </ul>
-    </div>
-    */
     <div className="card w-96 bg-base-100 shadow-xl">
       <div className="card-body">
-        <h2 className="card-title">Events</h2>
+        <h2 className="card-title">Program Events</h2>
         {events.length > 0
           ? (
             <div className="overflow-x-auto">
@@ -54,20 +45,7 @@ const EventListener = ({ program }) => {
           )
           : (
             <div className="alert alert-info">
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                fill="none"
-                viewBox="0 0 24 24"
-                className="stroke-current shrink-0 w-6 h-6"
-              >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth="2"
-                  d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
-                >
-                </path>
-              </svg>
+              <Info className="stroke-current shrink-0 w-6 h-6" />
               <span>No events recorded yet.</span>
             </div>
           )}
