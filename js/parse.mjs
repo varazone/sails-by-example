@@ -1,4 +1,5 @@
 import { Sails } from 'sails-js';
+import { SailsIdlParser } from "sails-js-parser";
 import fs from 'fs/promises';
 
 if (process.argv.length <= 2) {
@@ -8,7 +9,8 @@ if (process.argv.length <= 2) {
 
 const idlPath = process.argv[2];
 const idl = await fs.readFile(idlPath, 'utf-8');
-const sails = await Sails.new();
+const parser = await SailsIdlParser.new()
+const sails = new Sails(parser);
 
 sails.parseIdl(idl);
 

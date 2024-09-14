@@ -1,6 +1,7 @@
 #!/usr/bin/env -S node
 
-import { Sails } from "sails-js";
+import { Sails, ZERO_ADDRESS } from "sails-js";
+import { SailsIdlParser } from "sails-js-parser";
 import fs from "fs/promises";
 import { GearApi, GearKeyring } from "@gear-js/api";
 
@@ -19,7 +20,8 @@ async function initGearApi() {
 
 const idlPath = process.argv[2];
 const idl = await fs.readFile(idlPath, "utf-8");
-const sails = await Sails.new();
+const parser = await SailsIdlParser.new();
+const sails = new Sails(parser);
 
 sails.parseIdl(idl);
 
@@ -44,8 +46,11 @@ console.log("resp:", resp);
 await resp.isFinalized;
 console.log("resp:", resp);
 
-sails.services.Counter.events.Incremented.subscribe((data) => {
+sails.services.Counter.events.Incremented.subscribe(async (data) => {
   console.log("event:", data);
+
+  let value = await sails.services.Counter.queries.Get(ZERO_ADDRESS);
+  console.log("value:", value);
 });
 
 while (1) {

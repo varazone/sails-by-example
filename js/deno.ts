@@ -1,6 +1,7 @@
 #!/usr/bin/env -S deno run -A
 
 import { Sails } from 'sails-js';
+import { SailsIdlParser } from "sails-js-parser";
 
 if (Deno.args.length < 1) {
     console.error("Please provide a file path as an argument.");
@@ -9,7 +10,8 @@ if (Deno.args.length < 1) {
 
 const idlPath = Deno.args[0];
 const idl = await Deno.readTextFile(idlPath);
-const sails = await Sails.new();
+const parser = await SailsIdlParser.new()
+const sails = new Sails(parser);
 
 sails.parseIdl(idl);
 

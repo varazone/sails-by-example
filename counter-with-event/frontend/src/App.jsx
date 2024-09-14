@@ -1,21 +1,23 @@
 import React, { useEffect, useState } from "react";
-import { ApiProvider } from "./contexts/ApiContext";
-import { WalletProvider } from "./contexts/WalletContext";
-import { useApi } from "./contexts/ApiContext";
+import { BrowserRouter as Router } from "react-router-dom";
+import { Sails } from "sails-js";
+import { SailsIdlParser } from "sails-js-parser";
+import { ApiProvider, useApi } from "./contexts/ApiContext";
+import { useWallet, WalletProvider } from "./contexts/WalletContext";
 import NetworkStatus from "./components/NetworkStatus";
-import Program from "./components/Program";
+import SailsProgram from "./components/SailsProgram";
 import StickyNavbar from "./components/StickyNavbar";
 import Sidebar from "./components/Sidebar";
 import Loader from "./components/Loader";
 import Center from "./components/Center";
-import { CounterProgram } from "./lib/counterProgram";
-import { BrowserRouter as Router } from "react-router-dom";
+import { IDL, PROGRAM_ID } from "./lib/counter";
 
 import "./App.css";
 
 const AppContent = () => {
   const { api } = useApi();
-  const [program, setProgram] = useState(null);
+  const { selectedAccount } = useWallet();
+  const [sails, setSails] = useState(null);
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
 
   const toggleSidebar = () => {
@@ -24,11 +26,14 @@ const AppContent = () => {
 
   useEffect(() => {
     if (api) {
-      const program = new CounterProgram(
-        api,
-        "0xdf51c3de695524bac0580d7cd5c90fcf248e04443a0a38f541e98b3f9167ca1e",
-      ); // Replace with your actual program ID
-      setProgram(program);
+      (async () => {
+        const parser = await SailsIdlParser.new();
+        const sails = new Sails(parser);
+        sails.parseIdl(IDL);
+        sails.setProgramId(PROGRAM_ID);
+        sails.setApi(api);
+        setSails(sails);
+      })();
     }
   }, [api]);
 
@@ -43,10 +48,10 @@ const AppContent = () => {
             <div className="card-body">
               <NetworkStatus />
             </div>
-            {program &&
+            {sails &&
               (
                 <div className="card-body">
-                  <Program program={program} />
+                  <SailsProgram sails={sails} />
                 </div>
               )}
           </div>

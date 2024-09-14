@@ -1,6 +1,7 @@
 #!/usr/bin/env -S node
 
 import { Sails } from "sails-js";
+import { SailsIdlParser } from "sails-js-parser";
 import fs from "fs/promises";
 import { GearApi, GearKeyring } from "@gear-js/api";
 
@@ -36,7 +37,8 @@ async function parseArgs() {
 }
 
 async function initSails(idl) {
-  const sails = await Sails.new();
+  const parser = await SailsIdlParser.new()
+  const sails = new Sails(parser);
   sails.parseIdl(idl);
   return sails;
 }
