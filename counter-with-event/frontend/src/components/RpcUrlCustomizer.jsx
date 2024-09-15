@@ -30,7 +30,7 @@ const RpcUrlCustomizer = () => {
       </button>
     </div>
     */
-    <div className="card w-96 bg-base-100 shadow-xl">
+    <div className="card w-96 bg-base-100 shadow-md">
       <div className="card-body">
         <h2 className="card-title">RPC URL Customizer</h2>
         <div className="form-control w-full max-w-xs">

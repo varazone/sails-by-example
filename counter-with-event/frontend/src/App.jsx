@@ -38,29 +38,33 @@ const AppContent = () => {
   }, [api]);
 
   return (
-    <div className="min-h-screen bg-base-200">
-      <StickyNavbar toggleSidebar={toggleSidebar} />
-      <Sidebar isOpen={isSidebarOpen} toggleSidebar={toggleSidebar} />
+    <div className="min-h-screen flex flex-col">
+      <nav className="p-4 h-16 sticky navbar top-0 z-50 glass">
+        <StickyNavbar toggleSidebar={toggleSidebar} />
+        <Sidebar isOpen={isSidebarOpen} toggleSidebar={toggleSidebar} />
+      </nav>
 
-      {api
-        ? (
-          <div className="bg-base-100 shadow-xl">
-            <div className="card-body">
-              <NetworkStatus />
+      <main className="flex-grow -mt-16 pt-16 shadow-none h-full">
+        {api
+          ? (
+            <div className="bg-base-100">
+              <div className="card-body">
+                <NetworkStatus />
+              </div>
+              {sails &&
+                (
+                  <div className="card-body">
+                    <SailsProgram sails={sails} />
+                  </div>
+                )}
             </div>
-            {sails &&
-              (
-                <div className="card-body">
-                  <SailsProgram sails={sails} />
-                </div>
-              )}
-          </div>
-        )
-        : (
-          <Center fullScreen>
-            <Loader size="lg" />
-          </Center>
-        )}
+          )
+          : (
+            <div className="flex items-center justify-center h-[50vh]">
+              <Loader size="lg" />
+            </div>
+          )}
+      </main>
     </div>
   );
 };

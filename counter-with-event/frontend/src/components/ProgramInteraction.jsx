@@ -40,7 +40,7 @@ const ProgramInteraction = ({ program }) => {
   };
 
   return (
-    <div className="card w-96 bg-base-100 shadow-xl">
+    <div className="card w-96 bg-base-100 shadow-md">
       <div className="card-body">
         <h2 className="card-title">Program Interaction</h2>
         <div className="space-y-4">

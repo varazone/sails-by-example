@@ -64,7 +64,7 @@ const themes = [
 
 const StickyNavbar = ({ toggleSidebar }) => {
   return (
-    <div className="navbar bg-base-100 sticky top-0 z-50 shadow-md">
+    <div className="navbar bg-base-500 sticky top-0 z-10">
       <div className="flex-none">
         <button
           className="btn btn-square btn-ghost md:hidden"

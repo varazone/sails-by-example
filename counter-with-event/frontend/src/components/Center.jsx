@@ -1,9 +1,8 @@
 import React from "react";
 
-const Center = ({ children, fullScreen = false }) => {
+const Center = ({ children, className = "" }) => {
   const containerClasses = `
-    flex items-center justify-center
-    ${fullScreen ? "min-h-screen" : "h-full w-full"}
+    w-full h-full flex items-center justify-center ${className}
   `;
 
   return (

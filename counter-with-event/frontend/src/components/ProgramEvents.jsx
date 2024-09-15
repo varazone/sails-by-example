@@ -19,7 +19,7 @@ const EventListener = ({ program }) => {
   }, [program]);
 
   return (
-    <div className="card w-96 bg-base-100 shadow-xl">
+    <div className="card w-96 bg-base-100 shadow-md">
       <div className="card-body">
         <h2 className="card-title">Program Events</h2>
         {events.length > 0
