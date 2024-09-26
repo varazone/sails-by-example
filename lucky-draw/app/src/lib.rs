@@ -177,21 +177,12 @@ impl LuckyDraw {
         }
     }
 
-    pub fn claim(&mut self) -> MessageId {
+    pub fn claim(&mut self) -> CommandReply<()> {
         let storage = Storage::get_mut();
         let sender = msg::source();
         match storage.winners.remove(&sender) {
             Some(value) => {
-                // 60 * 60 * 24 / 3 sec per block * 100 gas per block = 2_880_000;
-                let gas_limit: u64 = 60 * 60 * 24 / 3 * 100;
-                let msg_id = msg::send_bytes_with_gas(
-                    sender,
-                    b"CONGRATS! Please claim the reward in 24 hours!",
-                    gas_limit,
-                    value,
-                )
-                .expect("failed to claim");
-                msg_id
+                CommandReply::new(()).with_value(value)
             }
             _ => {
                 panic!("nothing to claim");
