@@ -1,6 +1,6 @@
 use super::utils::{Result, *};
 use gstd::{prelude::*, ActorId};
-use primitive_types::U256;
+use sails_rs::U256;
 
 pub fn allowance(allowances: &AllowancesMap, owner: ActorId, spender: ActorId) -> U256 {
     allowances

@@ -181,9 +181,7 @@ impl LuckyDraw {
         let storage = Storage::get_mut();
         let sender = msg::source();
         match storage.winners.remove(&sender) {
-            Some(value) => {
-                CommandReply::new(()).with_value(value)
-            }
+            Some(value) => CommandReply::new(()).with_value(value),
             _ => {
                 panic!("nothing to claim");
             }
