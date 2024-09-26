@@ -11,6 +11,7 @@ import Sidebar from "./components/Sidebar";
 import Loader from "./components/Loader";
 import Center from "./components/Center";
 import { IDL, PROGRAM_ID } from "./lib/counter";
+import PendingPayouts from "./components/PendingPayouts";
 
 import "./App.css";
 
@@ -64,6 +65,9 @@ const AppContent = () => {
               <Loader size="lg" />
             </div>
           )}
+        <div className="bg-base-100">
+          <PendingPayouts />
+        </div>
       </main>
     </div>
   );
