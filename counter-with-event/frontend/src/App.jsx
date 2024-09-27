@@ -1,9 +1,8 @@
 import React, { useEffect, useState } from "react";
-import { BrowserRouter as Router } from "react-router-dom";
 import { Sails } from "sails-js";
 import { SailsIdlParser } from "sails-js-parser";
-import { ApiProvider, useApi } from "./contexts/ApiContext";
-import { useWallet, WalletProvider } from "./contexts/WalletContext";
+import { useApi } from "./contexts/ApiContext";
+import { useWallet } from "./contexts/WalletContext";
 import NetworkStatus from "./components/NetworkStatus";
 import SailsProgram from "./components/SailsProgram";
 import StickyNavbar from "./components/StickyNavbar";
@@ -13,6 +12,7 @@ import Center from "./components/Center";
 import { IDL, PROGRAM_ID } from "./lib/counter";
 import PendingPayouts from "./components/PendingPayouts";
 import CounterCard from "./components/CounterCard";
+import withProviders from "./withProviders";
 
 import "./App.css";
 
@@ -77,16 +77,6 @@ const AppContent = () => {
   );
 };
 
-const App = () => {
-  return (
-    <Router>
-      <ApiProvider>
-        <WalletProvider>
-          <AppContent />
-        </WalletProvider>
-      </ApiProvider>
-    </Router>
-  );
-};
+const App = withProviders(AppContent);
 
 export default App;
