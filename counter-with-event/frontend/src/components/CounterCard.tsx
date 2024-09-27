@@ -1,11 +1,13 @@
-import React, { useState } from 'react';
+import React, { useState } from "react";
 
 interface CounterCardProps {
   initialCount?: number;
   title: string;
 }
 
-const CounterCard: React.FC<CounterCardProps> = ({ initialCount = 0, title }) => {
+const CounterCard: React.FC<CounterCardProps> = (
+  { initialCount = 0, title },
+) => {
   const [count, setCount] = useState<number>(initialCount);
 
   const incrementCount = () => {

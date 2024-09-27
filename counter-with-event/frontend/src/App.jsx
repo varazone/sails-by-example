@@ -70,7 +70,7 @@ const AppContent = () => {
           <PendingPayouts />
         </div>
         <div className="bg-base-100">
-	  <CounterCard title="My Counter" initialCount={5} />
+          <CounterCard title="My Counter" initialCount={5} />
         </div>
       </main>
     </div>

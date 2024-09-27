@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState } from "react";
 import { useApi } from "../contexts/ApiContext";
 
 const PendingPayouts = () => {
@@ -9,18 +9,25 @@ const PendingPayouts = () => {
   const [progress, setProgress] = useState(0);
 
   const payoutClaimedForAddressForEra = async (stashAddress, eraIndex) => {
-    const claimed = (await api.query.staking.claimedRewards(eraIndex, stashAddress)).length > 0;
+    const claimed =
+      (await api.query.staking.claimedRewards(eraIndex, stashAddress)).length >
+        0;
     if (claimed) {
       return true;
     }
-    const exposureForEra = await api.query.staking.erasStakersOverview(eraIndex, stashAddress);
+    const exposureForEra = await api.query.staking.erasStakersOverview(
+      eraIndex,
+      stashAddress,
+    );
     return exposureForEra.isNone;
   };
 
   const hasEraPoints = async (stash, eraToCheck) => {
     try {
       const rewardpoints = await api.query.staking.erasRewardPoints(eraToCheck);
-      return rewardpoints.individual.some((_, validator) => stash === validator.toString());
+      return rewardpoints.individual.some((_, validator) =>
+        stash === validator.toString()
+      );
     } catch {
       return false;
     }
@@ -28,7 +35,7 @@ const PendingPayouts = () => {
 
   const listPendingPayouts = async () => {
     if (!api) {
-      setError('API not connected');
+      setError("API not connected");
       return;
     }
 
@@ -61,7 +68,10 @@ const PendingPayouts = () => {
         const controller = controllerOpt.unwrap();
 
         for (let era = startEra; era <= currentEra; era++) {
-          const payoutClaimed = await payoutClaimedForAddressForEra(controller.toString(), era);
+          const payoutClaimed = await payoutClaimedForAddressForEra(
+            controller.toString(),
+            era,
+          );
           if (payoutClaimed) {
             continue;
           }
@@ -77,7 +87,7 @@ const PendingPayouts = () => {
 
       setPayouts(pendingPayouts);
     } catch (err) {
-      setError('Failed to fetch pending payouts');
+      setError("Failed to fetch pending payouts");
       console.error(err);
     } finally {
       setLoading(false);
@@ -89,20 +99,27 @@ const PendingPayouts = () => {
     <div className="card w-96 bg-base-100 shadow-xl">
       <div className="card-body">
         <h2 className="card-title">Polkadot Pending Payouts</h2>
-        <button 
-          className={`btn btn-primary ${loading ? 'loading' : ''}`}
+        <button
+          className={`btn btn-primary ${loading ? "loading" : ""}`}
           onClick={listPendingPayouts}
           disabled={loading || !api}
         >
-          {loading ? 'Fetching...' : 'List All Pending Payouts'}
+          {loading ? "Fetching..." : "List All Pending Payouts"}
         </button>
         {loading && (
           <div className="w-full mt-4">
-            <progress className="progress progress-primary w-full" value={progress} max="100"></progress>
+            <progress
+              className="progress progress-primary w-full"
+              value={progress}
+              max="100"
+            >
+            </progress>
             <p className="text-center mt-2">{progress}% Complete</p>
           </div>
         )}
-        {error && <div className="alert alert-error shadow-lg mt-4">{error}</div>}
+        {error && (
+          <div className="alert alert-error shadow-lg mt-4">{error}</div>
+        )}
         {payouts.length > 0 && (
           <div className="mt-4">
             <h3 className="text-lg font-semibold">Pending Payouts:</h3>
