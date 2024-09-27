@@ -1,8 +1,7 @@
 import React, { useState } from "react";
 import { useApi } from "../contexts/ApiContext";
 import { useWallet } from "../contexts/WalletContext";
-import { web3FromSource } from "@polkadot/extension-dapp";
-import { SingleAccountSigner } from "../utils/SingleAccountSigner";
+import { getSigner } from "@/utils";
 import { ExternalLink } from "lucide-react";
 import { ZERO_ADDRESS } from "sails-js";
 
@@ -19,14 +18,6 @@ const SailsInteraction = ({ sails }) => {
       setCounterValue(value);
       window.sails = sails;
     }
-  };
-
-  const getSigner = async (api, acc) => {
-    if (!selectedAccount.meta.source) {
-      return new SingleAccountSigner(api.registry, acc);
-    }
-    const injector = await web3FromSource(selectedAccount.meta.source);
-    return injector.signer;
   };
 
   const handleIncrement = async () => {

@@ -1,8 +1,8 @@
-import { useApi } from "@gear-js/react-hooks";
+import { useApi } from "@/contexts/ApiContext";
 
 const BalanceUnit = () => {
-  const { api, isApiReady } = useApi();
-  const [unit] = isApiReady ? api.registry.chainTokens : ["Unit"];
+  const { api } = useApi();
+  const [unit] = api ? api.registry.chainTokens : ["Unit"];
 
   return <span className={""}>{unit}</span>;
 };

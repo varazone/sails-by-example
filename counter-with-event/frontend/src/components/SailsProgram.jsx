@@ -3,14 +3,16 @@ import SailsInteraction from "./SailsInteraction";
 import SailsPreview from "./SailsPreview";
 import SailsEvents from "./SailsEvents";
 import SailsStateForm from "./SailsStateForm";
+import { SailsMessageForm } from "./SailsMessageForm";
 
 const SailsProgram = ({ sails }) => {
   return (
     <div className="flex flex-wrap gap-4 justify-start">
-      <SailsInteraction sails={sails} />
+      <SailsMessageForm sails={sails} programId={sails.programId} />
+      <SailsStateForm sails={sails} programId={sails.programId} />
       <SailsPreview sails={sails} />
       <SailsEvents sails={sails} />
-      <SailsStateForm sails={sails} programId={sails.programId} />
+      <SailsInteraction sails={sails} />
     </div>
   );
 };
