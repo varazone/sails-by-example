@@ -12,6 +12,7 @@ import Loader from "./components/Loader";
 import Center from "./components/Center";
 import { IDL, PROGRAM_ID } from "./lib/counter";
 import PendingPayouts from "./components/PendingPayouts";
+import CounterCard from "./components/CounterCard";
 
 import "./App.css";
 
@@ -67,6 +68,9 @@ const AppContent = () => {
           )}
         <div className="bg-base-100">
           <PendingPayouts />
+        </div>
+        <div className="bg-base-100">
+	  <CounterCard title="My Counter" initialCount={5} />
         </div>
       </main>
     </div>
