@@ -10,8 +10,8 @@ import Sidebar from "./components/Sidebar";
 import Loader from "./components/Loader";
 import Center from "./components/Center";
 import { IDL, PROGRAM_ID } from "./lib/counter";
-import PendingPayouts from "./components/PendingPayouts";
-import CounterCard from "./components/CounterCard";
+// import { IDL, PROGRAM_ID } from "./lib/lucky-draw";
+// import { IDL, PROGRAM_ID } from "./lib/dns";
 import withProviders from "./withProviders";
 
 import "./App.css";
@@ -35,6 +35,9 @@ const AppContent = () => {
         sails.setProgramId(PROGRAM_ID);
         sails.setApi(api);
         setSails(sails);
+
+        window.api = api;
+        window.sails = sails;
       })();
     }
   }, [api]);

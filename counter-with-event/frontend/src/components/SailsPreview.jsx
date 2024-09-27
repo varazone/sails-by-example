@@ -79,7 +79,7 @@ function SailsPreview({ sails }) {
     ));
 
   return (
-    <div className="card w-96 bg-base-100 shadow-md">
+    <div className="card w-auto bg-base-100 shadow-md">
       <div className="card-body">
         <h2 className="card-title">Program Interface</h2>
         <div className="p-0">
@@ -102,4 +102,4 @@ function SailsPreview({ sails }) {
   );
 }
 
-export default SailsPreview;
+export { SailsPreview };

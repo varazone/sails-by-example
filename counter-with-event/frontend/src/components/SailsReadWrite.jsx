@@ -6,13 +6,14 @@ import { ExternalLink } from "lucide-react";
 import { ZERO_ADDRESS } from "sails-js";
 import { SailsStateForm } from "./SailsStateForm";
 import { SailsMessageForm } from "./SailsMessageForm";
+import { SailsEventList } from "./SailsEventList";
 
 const SailsReadWrite = ({ sails }) => {
   const { api } = useApi();
   const { selectedAccount } = useWallet();
 
   return (
-    <div className="card w-96 bg-base-100 shadow-md">
+    <div className="card w-fit bg-base-100 shadow-md">
       <div className="card-body">
         <h2 className="card-title">Program Interaction</h2>
 
@@ -50,6 +51,14 @@ const SailsReadWrite = ({ sails }) => {
         <div className="space-y-4">
           <div className="text-wrap">
             <SailsStateForm sails={sails} programId={sails.programId} />
+          </div>
+        </div>
+
+        <div className="divider font-bold mb-2">Events</div>
+
+        <div className="space-y-4">
+          <div className="text-wrap">
+            <SailsEventList sails={sails} />
           </div>
         </div>
       </div>
