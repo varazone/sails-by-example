@@ -1,5 +1,6 @@
 import { useBalanceFormat } from "@gear-js/react-hooks";
-import { Button, Input } from "@gear-js/ui";
+import { useWallet } from "../contexts/WalletContext";
+import { Input } from "@gear-js/ui";
 import { HexString } from "@polkadot/util/types";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useState } from "react";
@@ -64,6 +65,7 @@ type FormattedValues = z.infer<ReturnType<typeof useSchema>>;
 
 const SailsMessageForm = ({ programId, sails }: Props) => {
   const { getFormattedGasValue } = useBalanceFormat();
+  const { selectedAccount } = useWallet();
   const service = useService(sails, "functions");
 
   const defaultValues = { ...DEFAULT_VALUES, payload: service.defaultValues };
@@ -117,8 +119,6 @@ const SailsMessageForm = ({ programId, sails }: Props) => {
     <FormProvider {...form}>
       <form onSubmit={handleSubmitForm}>
         <div>
-          <Input label={"Destination:"} gap="1/5" value={programId} readOnly />
-
           <PayloadForm
             gap="1/5"
             sails={sails}
@@ -127,17 +127,18 @@ const SailsMessageForm = ({ programId, sails }: Props) => {
             args={service.args}
           />
 
+          <br />
+
           <ValueField name="value" label="Value:" gap="1/5" />
         </div>
 
-        <Button
+        <button
           type="submit"
-          text="Send Message"
-          size="large"
-          color="secondary"
-          className={""}
-          disabled={isDisabled}
-        />
+          className="btn btn-primary"
+          disabled={!selectedAccount || isDisabled}
+        >
+          Send
+        </button>
       </form>
     </FormProvider>
   );

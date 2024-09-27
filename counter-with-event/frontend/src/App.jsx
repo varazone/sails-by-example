@@ -66,12 +66,6 @@ const AppContent = () => {
               <Loader size="lg" />
             </div>
           )}
-        <div className="bg-base-100">
-          <PendingPayouts />
-        </div>
-        <div className="bg-base-100">
-          <CounterCard title="My Counter" initialCount={5} />
-        </div>
       </main>
     </div>
   );

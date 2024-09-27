@@ -95,18 +95,6 @@ const SailsStateForm = (
   return (
     <FormProvider {...form}>
       <form onSubmit={handleSubmit} className="space-y-4">
-        <div className="form-control">
-          <label className="label">
-            <span className="label-text">Program ID:</span>
-          </label>
-          <input
-            type="text"
-            className="input input-bordered"
-            value={programId}
-            readOnly
-          />
-        </div>
-
         {sails && args && (
           <PayloadForm
             sails={sails}
@@ -115,23 +103,6 @@ const SailsStateForm = (
             args={args}
           />
         )}
-
-        <div className="form-control">
-          <label className="label">
-            <span className="label-text">Statedata:</span>
-          </label>
-          <textarea
-            className={`textarea textarea-bordered h-64 ${
-              state.isPending ? "loading" : ""
-            }`}
-            value={state.isPending
-              ? ""
-              : isStateExists
-              ? getPreformattedText(state.data)
-              : ""}
-            readOnly
-          />
-        </div>
 
         <div className="flex space-x-4">
           <button type="submit" className="btn btn-primary">
@@ -146,29 +117,27 @@ const SailsStateForm = (
               Download JSON
             </button>
           )}
+        </div>
 
-          <button onClick={() => window.history.back()} className="btn">
-            Back
-          </button>
+        <div className="form-control">
+          <label className="label">
+            <span className="label-text">Statedata:</span>
+          </label>
+          <textarea
+            className={`textarea textarea-bordered h-16 ${
+              state.isPending ? "loading" : ""
+            }`}
+            value={state.isPending
+              ? ""
+              : isStateExists
+              ? getPreformattedText(state.data)
+              : ""}
+            readOnly
+          />
         </div>
       </form>
     </FormProvider>
   );
 };
 
-/*
-const Sails = () => {
-  const programId = useProgramId();
-  const { data: program } = useProgram(programId);
-  const { sails } = useSails(program?.codeId);
-
-  return (
-    <div className="container mx-auto p-4">
-      <h2 className="text-2xl font-bold mb-4">Read Program State</h2>
-      {sails ? <StateForm programId={programId} sails={sails} /> : null}
-    </div>
-  );
-};
-*/
-
-export default SailsStateForm;
+export { SailsStateForm };
