@@ -1,23 +1,8 @@
 [package]
-name = "ping"
-version.workspace = true
-edition.workspace = true
-license.workspace = true
+name = "ping-app"
+version = "0.1.0"
+edition = "2021"
 
 [dependencies]
+sails-rs = "0.6.1"
 gstd.workspace = true
-primitive-types.workspace = true
-log.workspace = true
-sails-rs.workspace = true
-parity-scale-codec.workspace = true
-scale-info.workspace = true
-
-[dev-dependencies]
-env_logger.workspace = true
-gclient.workspace = true
-gtest.workspace = true
-gear-core.workspace = true
-tokio = "1"
-
-[build-dependencies]
-gear-wasm-builder.workspace = true

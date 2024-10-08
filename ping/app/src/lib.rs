@@ -1,21 +1,36 @@
 #![no_std]
 #![allow(clippy::new_without_default)]
 
+use gstd::{debug, format, Decode, Encode, String, Vec};
 use sails_rs::prelude::*;
-use services::ping;
 
-mod services;
+pub struct PingService;
 
-pub struct Program;
-
-#[program]
-impl Program {
+#[service]
+impl PingService {
     pub fn new() -> Self {
-        // <ping::Service>::seed(name, symbol, decimals);
         Self
     }
 
-    pub fn ping(&self) -> ping::Service {
-        ping::Service::new()
+    pub async fn ping(&mut self) -> bool {
+        debug!("Ping called");
+        true
+    }
+
+    pub fn get_something(&self) -> String {
+        "Hello from Ping!".into()
+    }
+}
+
+pub struct PingProgram;
+
+#[program]
+impl PingProgram {
+    pub fn new() -> Self {
+        Self
+    }
+
+    pub fn ping(&self) -> PingService {
+        PingService::new()
     }
 }

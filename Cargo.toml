@@ -5,6 +5,7 @@ members = [
     "*/wasm",
     "*/client",
     "lib",
+    "ping",
 ]
 exclude = [
     "gear-erc20/app",
