@@ -1,5 +1,7 @@
 #![no_std]
 use counter_with_event_client::counter;
+use counter_with_event_client::traits::Counter;
+use sails_rs::gstd::calls::GStdRemoting;
 use sails_rs::prelude::*;
 
 pub struct Storage {
@@ -49,6 +51,13 @@ impl CounterProxy {
         reply
     }
 
+    pub async fn get_remoting(&self) -> i32 {
+        use sails_rs::calls::Query;
+        let storage = Storage::get();
+        let remoting = counter_with_event_client::Counter::new(GStdRemoting);
+        remoting.get().recv(storage.counter).await.unwrap()
+    }
+
     pub async fn inc(&mut self) -> i32 {
         let storage = Storage::get();
         let counter_id = storage.counter;
@@ -59,6 +68,15 @@ impl CounterProxy {
             .unwrap();
         let reply =
             <counter::io::Inc as sails_rs::calls::ActionIo>::decode_reply(&reply_bytes).unwrap();
+        let _ = self.notify_on(Event::Incremented(reply));
+        reply
+    }
+
+    pub async fn inc_remoting(&mut self) -> i32 {
+        use sails_rs::calls::Call;
+        let storage = Storage::get();
+        let mut remoting = counter_with_event_client::Counter::new(GStdRemoting);
+        let reply = remoting.inc().send_recv(storage.counter).await.unwrap();
         let _ = self.notify_on(Event::Incremented(reply));
         reply
     }

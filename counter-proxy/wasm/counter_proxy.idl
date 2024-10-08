@@ -4,8 +4,10 @@ constructor {
 
 service CounterProxy {
   Inc : () -> i32;
+  IncRemoting : () -> i32;
   query Counter : () -> actor_id;
   query Get : () -> i32;
+  query GetRemoting : () -> i32;
 
   events {
     Incremented: i32;
