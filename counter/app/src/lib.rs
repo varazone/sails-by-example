@@ -37,10 +37,10 @@ impl Counter {
 }
 
 #[derive(Default)]
-pub struct Program;
+pub struct CounterProgram;
 
 #[program]
-impl Program {
+impl CounterProgram {
     pub fn new() -> Self {
         Counter::init();
         Self
