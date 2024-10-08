@@ -8,6 +8,7 @@ members = [
     "ping",
     "hello-world",
     "counter",
+    "counter-event",
 ]
 exclude = [
     "gear-erc20/app",
