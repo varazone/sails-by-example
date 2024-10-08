@@ -6,6 +6,7 @@ members = [
     "*/client",
     "lib",
     "ping",
+    "hello-world",
 ]
 exclude = [
     "gear-erc20/app",

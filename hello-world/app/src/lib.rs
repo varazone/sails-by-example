@@ -10,16 +10,16 @@ impl HelloWorld {
         "Hello!"
     }
 
-    pub fn greet(&mut self, name: String) -> String {
+    pub fn greet(&self, name: String) -> String {
         format!("Hello, {name}!")
     }
 }
 
 #[derive(Default)]
-pub struct Program;
+pub struct HelloWorldProgram;
 
 #[program]
-impl Program {
+impl HelloWorldProgram {
     pub fn hello_world(&self) -> HelloWorld {
         HelloWorld::default()
     }

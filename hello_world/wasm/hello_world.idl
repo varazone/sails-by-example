@@ -1,9 +1,0 @@
-constructor {
-  Default : ();
-};
-
-service HelloWorld {
-  Greet : (name: str) -> str;
-  SayHello : () -> str;
-};
-
