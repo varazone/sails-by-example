@@ -42,7 +42,7 @@ impl CounterProxy {
         let storage = Storage::get();
         let counter_id = storage.counter;
         let call_payload = counter::io::Get::encode_call();
-        let reply_bytes = gstd::msg::send_bytes_for_reply(counter_id, call_payload, 0, 0)
+        let reply_bytes = sails_rs::gstd::msg::send_bytes_for_reply(counter_id, call_payload, 0, 0)
             .unwrap()
             .await
             .unwrap();
@@ -54,15 +54,16 @@ impl CounterProxy {
     pub async fn get_remoting(&self) -> i32 {
         use sails_rs::calls::Query;
         let storage = Storage::get();
+        let counter_id = storage.counter;
         let remoting = counter_with_event_client::Counter::new(GStdRemoting);
-        remoting.get().recv(storage.counter).await.unwrap()
+        remoting.get().recv(counter_id).await.unwrap()
     }
 
     pub async fn inc(&mut self) -> i32 {
         let storage = Storage::get();
         let counter_id = storage.counter;
         let call_payload = counter::io::Inc::encode_call();
-        let reply_bytes = gstd::msg::send_bytes_for_reply(counter_id, call_payload, 0, 0)
+        let reply_bytes = sails_rs::gstd::msg::send_bytes_for_reply(counter_id, call_payload, 0, 0)
             .unwrap()
             .await
             .unwrap();
@@ -75,18 +76,19 @@ impl CounterProxy {
     pub async fn inc_remoting(&mut self) -> i32 {
         use sails_rs::calls::Call;
         let storage = Storage::get();
+        let counter_id = storage.counter;
         let mut remoting = counter_with_event_client::Counter::new(GStdRemoting);
-        let reply = remoting.inc().send_recv(storage.counter).await.unwrap();
+        let reply = remoting.inc().send_recv(counter_id).await.unwrap();
         let _ = self.notify_on(Event::Incremented(reply));
         reply
     }
 }
 
 #[derive(Default)]
-pub struct Program;
+pub struct CounterWithEventCallerProgram;
 
 #[program]
-impl Program {
+impl CounterWithEventCallerProgram {
     pub fn new(counter: ActorId) -> Self {
         CounterProxy::init(counter);
         Self

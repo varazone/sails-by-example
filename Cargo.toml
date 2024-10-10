@@ -1,14 +1,15 @@
 [workspace]
 resolver = "2"
 members = [
-    "*/app",
-    "*/wasm",
-    "*/client",
+    #"*/app",
+    #"*/wasm",
+    #"*/client",
     "lib",
     "ping",
     "hello-world",
     "counter",
-    "counter-event",
+    "counter-with-event",
+    "counter-with-event-caller",
 ]
 exclude = [
     "gear-erc20/app",

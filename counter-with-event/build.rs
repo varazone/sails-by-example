@@ -19,6 +19,5 @@ fn main() {
 
     let mut idl_path = PathBuf::from(bin_path);
     idl_path.set_extension("idl");
-    sails_idl_gen::generate_idl_to_file::<counter_event_app::CounterEventProgram>(idl_path)
-        .unwrap();
+    sails_idl_gen::generate_idl_to_file::<counter_with_event_app::CounterWithEventProgram>(idl_path).unwrap();
 }

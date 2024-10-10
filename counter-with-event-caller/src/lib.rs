@@ -1,7 +1,7 @@
 #![no_std]
 
 #[cfg(target_arch = "wasm32")]
-pub use counter_event_app::wasm::*;
+pub use counter_with_event_caller_app::wasm::*;
 
 #[cfg(feature = "wasm-binary")]
 #[cfg(not(target_arch = "wasm32"))]

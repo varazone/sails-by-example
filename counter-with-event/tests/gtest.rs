@@ -3,7 +3,7 @@ use sails_rs::{
     gtest::{calls::*, System},
 };
 
-use counter_event_client::traits::*;
+use counter_with_event_client::traits::*;
 
 const ACTOR_ID: u64 = 42;
 
@@ -17,9 +17,9 @@ async fn inc_works() {
     remoting.system().init_logger();
 
     // Submit program code into the system
-    let program_code_id = remoting.system().submit_code(counter_event::WASM_BINARY);
+    let program_code_id = remoting.system().submit_code(counter_with_event::WASM_BINARY);
 
-    let program_factory = counter_event_client::CounterEventFactory::new(remoting.clone());
+    let program_factory = counter_with_event_client::CounterWithEventFactory::new(remoting.clone());
 
     let program_id = program_factory
         .new() // Call program's constructor (see app/src/lib.rs:29)
@@ -27,7 +27,7 @@ async fn inc_works() {
         .await
         .unwrap();
 
-    let mut service_client = counter_event_client::Counter::new(remoting.clone());
+    let mut service_client = counter_with_event_client::Counter::new(remoting.clone());
 
     let result = service_client
         .inc() // Call service's method (see app/src/lib.rs:14)
@@ -48,9 +48,9 @@ async fn get_works() {
     remoting.system().init_logger();
 
     // Submit program code into the system
-    let program_code_id = remoting.system().submit_code(counter_event::WASM_BINARY);
+    let program_code_id = remoting.system().submit_code(counter_with_event::WASM_BINARY);
 
-    let program_factory = counter_event_client::CounterEventFactory::new(remoting.clone());
+    let program_factory = counter_with_event_client::CounterWithEventFactory::new(remoting.clone());
 
     let program_id = program_factory
         .new() // Call program's constructor (see app/src/lib.rs:29)
@@ -58,7 +58,7 @@ async fn get_works() {
         .await
         .unwrap();
 
-    let service_client = counter_event_client::Counter::new(remoting.clone());
+    let service_client = counter_with_event_client::Counter::new(remoting.clone());
 
     let result = service_client
         .get() // Call service's query (see app/src/lib.rs:19)

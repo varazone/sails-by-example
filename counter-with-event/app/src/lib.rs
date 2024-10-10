@@ -22,10 +22,10 @@ pub enum Event {
 }
 
 #[derive(Default)]
-pub struct Counter;
+pub struct CounterWithEvent;
 
 #[service(events = Event)]
-impl Counter {
+impl CounterWithEvent {
     pub fn init() {
         unsafe { STORAGE = Some(Storage { counter: 0 }) }
     }
@@ -46,16 +46,16 @@ impl Counter {
 }
 
 #[derive(Default)]
-pub struct Program;
+pub struct CounterWithEventProgram;
 
 #[program]
-impl Program {
+impl CounterWithEventProgram {
     pub fn new() -> Self {
-        Counter::init();
+        CounterWithEvent::init();
         Self
     }
 
-    pub fn counter(&self) -> Counter {
-        Counter::default()
+    pub fn counter(&self) -> CounterWithEvent {
+        CounterWithEvent::default()
     }
 }

@@ -1,5 +1,5 @@
 [package]
-name = "counter-with-event-app"
+name = "counter-with-event-caller-app"
 version = "0.1.0"
 edition = "2021"
 
@@ -7,3 +7,4 @@ edition = "2021"
 sails-rs = "0.6.1"
 scale-info = { version = "*", default-features = false }
 parity-scale-codec = { version = "*", default-features = false }
+counter-with-event-client = { path = "../../counter-with-event/client" }

@@ -1,5 +1,5 @@
 [package]
-name = "counter-event-client"
+name = "counter-with-event-caller-client"
 version = "0.1.0"
 edition = "2021"
 
@@ -8,7 +8,7 @@ mockall = { version = "0.12", optional = true }
 sails-rs = "0.6.1"
 
 [build-dependencies]
-counter-event-app = { path = "../app" }
+counter-with-event-caller-app = { path = "../app" }
 sails-client-gen = "0.6.1"
 sails-idl-gen = "0.6.1"
 

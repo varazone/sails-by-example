@@ -55,15 +55,15 @@ export class CounterProgram {
 export class Counter {
   constructor(private _program: CounterProgram) {}
 
-  public inc(): TransactionBuilder<null> {
+  public inc(): TransactionBuilder<number> {
     if (!this._program.programId) throw new Error("Program ID is not set");
-    return new TransactionBuilder<null>(
+    return new TransactionBuilder<number>(
       this._program.api,
       this._program.registry,
       "send_message",
       ["Counter", "Inc"],
       "(String, String)",
-      "Null",
+      "i32",
       this._program.programId,
     );
   }
