@@ -20,7 +20,7 @@ async function main() {
   let counter = new CounterProgram(api);
 
   let wasm = readFileSync(
-    "../target/wasm32-unknown-unknown/release/counter.opt.wasm",
+    "../target/wasm32-gear/release/counter.opt.wasm",
   );
 
   console.log(wasm);

@@ -9,10 +9,16 @@ static mut STORAGE: Option<Storage> = None;
 
 impl Storage {
     pub fn get() -> &'static Self {
-        unsafe { STORAGE.as_ref().expect("Storage is not initialized") }
+        #[allow(static_mut_refs)]
+        unsafe {
+            STORAGE.as_ref().expect("Storage is not initialized")
+        }
     }
     pub fn get_mut() -> &'static mut Self {
-        unsafe { STORAGE.as_mut().expect("Storage is not initialized") }
+        #[allow(static_mut_refs)]
+        unsafe {
+            STORAGE.as_mut().expect("Storage is not initialized")
+        }
     }
 }
 
@@ -39,7 +45,7 @@ impl CounterWithEvent {
         let storage = Storage::get_mut();
         storage.counter += 1;
 
-        let _ = self.notify_on(Event::Incremented(storage.counter));
+        let _ = self.emit_event(Event::Incremented(storage.counter));
 
         storage.counter
     }

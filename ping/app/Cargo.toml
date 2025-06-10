@@ -1,8 +1,8 @@
 [package]
 name = "ping-app"
 version = "0.1.0"
-edition = "2021"
+edition = "2024"
 
 [dependencies]
-sails-rs = "0.6.1"
+sails-rs = "0.8.1"
 gstd.workspace = true

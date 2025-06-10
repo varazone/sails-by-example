@@ -12,10 +12,16 @@ static mut STORAGE: Option<Storage> = None;
 
 impl Storage {
     pub fn get() -> &'static Self {
-        unsafe { STORAGE.as_ref().expect("Storage is not initialized") }
+        #[allow(static_mut_refs)]
+        unsafe {
+            STORAGE.as_ref().expect("Storage is not initialized")
+        }
     }
     pub fn get_mut() -> &'static mut Self {
-        unsafe { STORAGE.as_mut().expect("Storage is not initialized") }
+        #[allow(static_mut_refs)]
+        unsafe {
+            STORAGE.as_mut().expect("Storage is not initialized")
+        }
     }
 }
 
@@ -69,7 +75,7 @@ impl CounterProxy {
             .unwrap();
         let reply =
             <counter::io::Inc as sails_rs::calls::ActionIo>::decode_reply(&reply_bytes).unwrap();
-        let _ = self.notify_on(Event::Incremented(reply));
+        let _ = self.emit_event(Event::Incremented(reply));
         reply
     }
 
@@ -79,7 +85,7 @@ impl CounterProxy {
         let counter_id = storage.counter;
         let mut remoting = counter_with_event_client::Counter::new(GStdRemoting);
         let reply = remoting.inc().send_recv(counter_id).await.unwrap();
-        let _ = self.notify_on(Event::Incremented(reply));
+        let _ = self.emit_event(Event::Incremented(reply));
         reply
     }
 }

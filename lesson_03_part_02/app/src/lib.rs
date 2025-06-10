@@ -54,7 +54,7 @@ impl ExtendedService {
         balances.insert(to, non_zero_new_balance.into());
 
         *total_supply = new_total_supply;
-        let _ = self.notify_on(Event::Minted { to, value });
+        let _ = self.emit_event(Event::Minted { to, value });
     }
 
     pub fn burn(&mut self, from: ActorId, value: U256) {
@@ -84,7 +84,7 @@ impl ExtendedService {
 
         *total_supply = new_total_supply;
 
-        let _ = self.notify_on(Event::Burned { from, value });
+        let _ = self.emit_event(Event::Burned { from, value });
     }
 }
 

@@ -1,7 +1,7 @@
 #![no_std]
 #![allow(clippy::new_without_default)]
 
-use gstd::{debug, format, Decode, Encode, String, Vec};
+use gstd::{String, debug};
 use sails_rs::prelude::*;
 
 pub struct PingService;

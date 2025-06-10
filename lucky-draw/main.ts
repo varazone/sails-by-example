@@ -22,7 +22,7 @@ async function initSigners() {
 
 async function loadWasm() {
   const wasmPath =
-    "../target/wasm32-unknown-unknown/release/lucky_draw.opt.wasm";
+    "../target/wasm32-gear/release/lucky_draw.opt.wasm";
   const wasm = await Deno.readFile(wasmPath);
 
   return {

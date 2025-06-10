@@ -18,9 +18,11 @@ struct Storage {
 
 impl Storage {
     pub fn get_mut() -> &'static mut Self {
+	#[allow(static_mut_refs)]
         unsafe { STORAGE.as_mut().expect("Storage is not initialized") }
     }
     pub fn get() -> &'static Self {
+	#[allow(static_mut_refs)]
         unsafe { STORAGE.as_ref().expect("Storage is not initialized") }
     }
 }
@@ -77,7 +79,7 @@ impl Service {
         let mutated = funcs::approve(&mut storage.allowances, owner, spender.into(), value);
 
         if mutated {
-            let _ = self.notify_on(Event::Approval {
+            let _ = self.emit_event(Event::Approval {
                 owner: owner.into(),
                 spender,
                 value,
@@ -94,7 +96,7 @@ impl Service {
             panicking(move || funcs::transfer(&mut storage.balances, from, to.into(), value));
 
         if mutated {
-            let _ = self.notify_on(Event::Transfer {
+            let _ = self.emit_event(Event::Transfer {
                 from: from.into(),
                 to,
                 value,
@@ -119,7 +121,7 @@ impl Service {
         });
 
         if mutated {
-            let _ = self.notify_on(Event::Transfer { from, to, value });
+            let _ = self.emit_event(Event::Transfer { from, to, value });
         }
 
         mutated

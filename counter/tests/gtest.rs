@@ -1,4 +1,7 @@
-use sails_rs::{calls::*, gtest::{calls::*, System}};
+use sails_rs::{
+    calls::*,
+    gtest::{System, calls::*},
+};
 
 use counter_client::traits::*;
 

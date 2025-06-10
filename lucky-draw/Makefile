@@ -3,4 +3,4 @@ all:
 	deno fmt lib.ts
 
 deploy:
-	node ./deploy.mjs ./wasm/lucky_draw.idl ../target/wasm32-unknown-unknown/release/lucky_draw.opt.wasm
+	node ./deploy.mjs ./wasm/lucky_draw.idl ../target/wasm32-gear/release/lucky_draw.opt.wasm

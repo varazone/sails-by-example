@@ -11,9 +11,11 @@ static mut STORAGE: Option<Storage> = None;
 
 impl Storage {
     pub fn get() -> &'static Self {
+	#[allow(static_mut_refs)]
         unsafe { STORAGE.as_ref().expect("Storage is not initialized") }
     }
     pub fn get_mut() -> &'static mut Self {
+	#[allow(static_mut_refs)]
         unsafe { STORAGE.as_mut().expect("Storage is not initialized") }
     }
 }
@@ -69,7 +71,7 @@ impl Token {
         let to_balance = storage.balances.entry(to).or_insert(U256::zero());
         *to_balance += amount;
 
-        let _ = self.notify_on(TokenEvent::Transfer { from, to, amount });
+        let _ = self.emit_event(TokenEvent::Transfer { from, to, amount });
     }
 }
 

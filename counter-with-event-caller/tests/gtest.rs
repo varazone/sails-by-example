@@ -3,7 +3,7 @@
 /// https://github.com/gear-tech/sails/blob/master/examples/demo/app/tests/fixture/mod.rs
 use sails_rs::{
     calls::*,
-    gtest::{calls::*, System},
+    gtest::{System, calls::*},
 };
 
 use counter_with_event_caller_client::traits::*;

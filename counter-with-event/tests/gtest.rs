@@ -1,6 +1,6 @@
 use sails_rs::{
     calls::*,
-    gtest::{calls::*, System},
+    gtest::{System, calls::*},
 };
 
 use counter_with_event_client::traits::*;
@@ -17,7 +17,9 @@ async fn inc_works() {
     remoting.system().init_logger();
 
     // Submit program code into the system
-    let program_code_id = remoting.system().submit_code(counter_with_event::WASM_BINARY);
+    let program_code_id = remoting
+        .system()
+        .submit_code(counter_with_event::WASM_BINARY);
 
     let program_factory = counter_with_event_client::CounterWithEventFactory::new(remoting.clone());
 
@@ -48,7 +50,9 @@ async fn get_works() {
     remoting.system().init_logger();
 
     // Submit program code into the system
-    let program_code_id = remoting.system().submit_code(counter_with_event::WASM_BINARY);
+    let program_code_id = remoting
+        .system()
+        .submit_code(counter_with_event::WASM_BINARY);
 
     let program_factory = counter_with_event_client::CounterWithEventFactory::new(remoting.clone());
 

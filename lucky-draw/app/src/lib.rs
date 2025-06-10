@@ -51,9 +51,11 @@ static mut STORAGE: Option<Storage> = None;
 
 impl Storage {
     pub fn get() -> &'static Self {
+	#[allow(static_mut_refs)]
         unsafe { STORAGE.as_ref().expect("Storage is not initialized") }
     }
     pub fn get_mut() -> &'static mut Self {
+	#[allow(static_mut_refs)]
         unsafe { STORAGE.as_mut().expect("Storage is not initialized") }
     }
 }
@@ -114,7 +116,7 @@ impl LuckyDraw {
         storage.status = Status::OnGoing;
         storage.pooled = 0;
 
-        self.notify_on(Event::Started { config })
+        self.emit_event(Event::Started { config })
             .expect("failed to emit event");
     }
 
@@ -145,7 +147,7 @@ impl LuckyDraw {
         storage.status = Status::Completed;
         storage.pooled = 0;
 
-        self.notify_on(Event::Completed)
+        self.emit_event(Event::Completed)
             .expect("failed to emit event");
     }
 
@@ -166,7 +168,7 @@ impl LuckyDraw {
                 storage.pooled += value;
                 let index = storage.players.len() as u32;
                 let target = config.max_share;
-                self.notify_on(Event::Deposited { who, index, target })
+                self.emit_event(Event::Deposited { who, index, target })
                     .expect("failed to emit event");
 
                 if storage.players.len() as u32 >= config.max_share {

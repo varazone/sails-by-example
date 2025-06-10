@@ -4,20 +4,20 @@
 [package]
 name = "ping"
 version = "0.1.0"
-edition = "2021"
+edition = "2024"
 
 [dependencies]
 ping-app = { path = "app" }
 
 [build-dependencies]
 ping-app = { path = "app" }
-sails-rs = { version = "0.6.1", features = ["wasm-builder"] }
-sails-idl-gen = "0.6.1"
+sails-rs = { version = "0.8.1", features = ["wasm-builder"] }
+sails-idl-gen = "0.8.1"
 
 [dev-dependencies]
 ping = { path = ".", features = ["wasm-binary"] }
 ping-client = { path = "client" }
-sails-rs = { version = "0.6.1", features = ["gtest"] }
+sails-rs = { version = "0.8.1", features = ["gtest"] }
 tokio = { version = "1.40", features = ["rt", "macros"] }
 
 [features]

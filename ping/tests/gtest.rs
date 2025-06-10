@@ -1,6 +1,6 @@
 use sails_rs::{
     calls::*,
-    gtest::{calls::*, System},
+    gtest::{System, calls::*},
 };
 
 use ping_client::traits::*;
