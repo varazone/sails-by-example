@@ -33,13 +33,14 @@ export class CounterProgram {
 
   newCtorFromCode(
     code: Uint8Array | Buffer | HexString,
+    initial_value: number,
   ): TransactionBuilder<null> {
     const builder = new TransactionBuilder<null>(
       this.api,
       this.registry,
       "upload_program",
-      "New",
-      "String",
+      ["New", initial_value],
+      "(String, i32)",
       "String",
       code,
       async (programId) => {
@@ -49,13 +50,13 @@ export class CounterProgram {
     return builder;
   }
 
-  newCtorFromCodeId(codeId: `0x${string}`) {
+  newCtorFromCodeId(codeId: `0x${string}`, initial_value: number) {
     const builder = new TransactionBuilder<null>(
       this.api,
       this.registry,
       "create_program",
-      "New",
-      "String",
+      ["New", initial_value],
+      "(String, i32)",
       "String",
       codeId,
       async (programId) => {
