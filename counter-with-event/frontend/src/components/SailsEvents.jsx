@@ -6,7 +6,7 @@ const SailsEvents = ({ sails }) => {
 
   useEffect(() => {
     if (sails) {
-      const unsubscribePromise = sails.services.Counter.events.Incremented
+      const unsubscribePromise = sails.services.Counter.events.IncrementedTo
         .subscribe(
           (data) => {
             setEvents((prev) => [...prev, data]);

@@ -15,4 +15,5 @@ const sails = new Sails(parser);
 
 sails.parseIdl(idl);
 
-console.log(sails.services)
+console.log("ctors:", sails.ctors)
+console.log("services:", sails.services)

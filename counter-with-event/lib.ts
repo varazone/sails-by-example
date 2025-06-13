@@ -31,6 +31,9 @@ export class CounterProgram {
     return this._program.id;
   }
 
+  /**
+   * set initial value
+   */
   newCtorFromCode(
     code: Uint8Array | Buffer | HexString,
     initial_value: number,
@@ -50,6 +53,9 @@ export class CounterProgram {
     return builder;
   }
 
+  /**
+   * set initial value
+   */
   newCtorFromCodeId(codeId: `0x${string}`, initial_value: number) {
     const builder = new TransactionBuilder<null>(
       this.api,
@@ -70,6 +76,9 @@ export class CounterProgram {
 export class Counter {
   constructor(private _program: CounterProgram) {}
 
+  /**
+   * increment counter by 1
+   */
   public inc(): TransactionBuilder<number> {
     if (!this._program.programId) throw new Error("Program ID is not set");
     return new TransactionBuilder<number>(
@@ -83,6 +92,9 @@ export class Counter {
     );
   }
 
+  /**
+   * get counter value
+   */
   public async get(
     originAddress?: string,
     value?: number | string | bigint,
@@ -113,7 +125,10 @@ export class Counter {
     return result[2].toNumber() as unknown as number;
   }
 
-  public subscribeToIncrementedEvent(
+  /**
+   * counter incremented to value
+   */
+  public subscribeToIncrementedToEvent(
     callback: (data: number) => void | Promise<void>,
   ): Promise<() => void> {
     return this._program.api.gearEvents.subscribeToGearEvent(
@@ -129,7 +144,7 @@ export class Counter {
         const payload = message.payload.toHex();
         if (
           getServiceNamePrefix(payload) === "Counter" &&
-          getFnNamePrefix(payload) === "Incremented"
+          getFnNamePrefix(payload) === "IncrementedTo"
         ) {
           callback(
             this._program.registry.createType(

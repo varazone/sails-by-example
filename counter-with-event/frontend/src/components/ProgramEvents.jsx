@@ -6,7 +6,7 @@ const EventListener = ({ program }) => {
 
   useEffect(() => {
     if (program) {
-      const unsubscribePromise = program.counter.subscribeToIncrementedEvent(
+      const unsubscribePromise = program.counter.subscribeToIncrementedToEvent(
         (data) => {
           setEvents((prev) => [...prev, data]);
         },

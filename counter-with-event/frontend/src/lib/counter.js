@@ -3,15 +3,19 @@ export const PROGRAM_ID =
 
 export const IDL = `
 constructor {
-  New : ();
+  /// set initial value
+  New : (initial_value: i32);
 };
 
 service Counter {
+  /// increment counter by 1
   Inc : () -> i32;
+  /// get counter value
   query Get : () -> i32;
 
   events {
-    Incremented: i32;
+    /// counter incremented to value
+    IncrementedTo: i32;
   }
 };
 `;

@@ -54,7 +54,7 @@ console.log("resp(isFinalized):", resp);
 let resps = await postIDL({name: 'test', api, codeId, programId, idl});
 console.log("resps:", resps);
 
-sails.services.Counter.events.Incremented.subscribe(async (data) => {
+sails.services.Counter.events.IncrementedTo.subscribe(async (data) => {
   console.log("event:", data);
 
   let value = await sails.services.Counter.queries.Get(ZERO_ADDRESS);
