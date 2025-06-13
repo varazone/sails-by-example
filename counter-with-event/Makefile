@@ -4,6 +4,4 @@ all:
 	# esbuild lib.ts --outfile=lib.js
 
 deploy:
-	npx -y esbuild postIDL.ts --outfile=postIDL.mjs
-	deno fmt postIDL.mjs
-	node ./deploy.mjs ../target/wasm32-gear/release/counter_with_event.{idl,opt.wasm}
+	./deploy.ts ../target/wasm32-gear/release/counter_with_event.{idl,opt.wasm}

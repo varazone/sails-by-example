@@ -1,10 +1,10 @@
-#!/usr/bin/env -S node
+#!/usr/bin/env -S npx tsx
 
 import { Sails, ZERO_ADDRESS } from "sails-js";
 import { SailsIdlParser } from "sails-js-parser";
 import fs from "fs/promises";
 import { GearApi, GearKeyring, generateCodeHash } from "@gear-js/api";
-import { postIDL } from "./postIDL.mjs";
+import { postIDL } from "./postIDL.ts";
 
 if (process.argv.length <= 3) {
   console.error("Please provide <idl> <wasm> as an argument.");
