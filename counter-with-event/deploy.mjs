@@ -3,7 +3,8 @@
 import { Sails, ZERO_ADDRESS } from "sails-js";
 import { SailsIdlParser } from "sails-js-parser";
 import fs from "fs/promises";
-import { GearApi, GearKeyring } from "@gear-js/api";
+import { GearApi, GearKeyring, generateCodeHash } from "@gear-js/api";
+import { postIDL } from "./postIDL.mjs";
 
 if (process.argv.length <= 3) {
   console.error("Please provide <idl> <wasm> as an argument.");
@@ -35,16 +36,23 @@ const alice = await GearKeyring.fromSuri("//Alice");
 api.setSigner(alice);
 sails.setApi(api);
 
+let codeId = generateCodeHash(wasm);
+console.log("wasm:", { codeId });
+
 // console.log(sails)
 let tx = sails.ctors.New.fromCode(wasm).withAccount(alice, { nonce: -1 });
-console.log("tx:", { programId: tx.programId });
+let programId = tx.programId;
+console.log("tx:", { programId });
 
 await tx.calculateGas();
 let resp = await tx.signAndSend();
 console.log("resp:", resp);
 
 await resp.isFinalized;
-console.log("resp:", resp);
+console.log("resp(isFinalized):", resp);
+
+let resps = await postIDL({name: 'test', api, codeId, programId, idl});
+console.log("resps:", resps);
 
 sails.services.Counter.events.Incremented.subscribe(async (data) => {
   console.log("event:", data);
