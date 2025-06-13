@@ -1,0 +1,24 @@
+# [workspace]
+# members = ["client"]
+
+[package]
+name = "ss58"
+version = "0.1.0"
+edition = "2024"
+
+[dependencies]
+ss58-app = { path = "app" }
+
+[build-dependencies]
+ss58-app = { path = "app" }
+sails-rs = { version = "0.8.1", features = ["wasm-builder"] }
+sails-idl-gen = "0.8.1"
+
+[dev-dependencies]
+ss58 = { path = ".", features = ["wasm-binary"] }
+ss58-client = { path = "client" }
+sails-rs = { version = "0.8.1", features = ["gtest"] }
+tokio = { version = "1.41", features = ["rt", "macros"] }
+
+[features]
+wasm-binary = []

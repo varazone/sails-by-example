@@ -34,7 +34,11 @@ pub struct CounterWithEvent;
 #[service(events = Event)]
 impl CounterWithEvent {
     pub fn init(initial_value: i32) {
-        unsafe { STORAGE = Some(Storage { counter: initial_value }) }
+        unsafe {
+            STORAGE = Some(Storage {
+                counter: initial_value,
+            })
+        }
     }
 
     /// get counter value
