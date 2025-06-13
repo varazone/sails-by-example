@@ -10,6 +10,7 @@ members = [
     "counter",
     "counter-with-event",
     "counter-with-event-caller",
+    "lucky-draw",
     "ss58",
 ]
 exclude = [

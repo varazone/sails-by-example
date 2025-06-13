@@ -1,6 +1,6 @@
 #![no_std]
-use gstd::{exec, msg};
 use sails_rs::collections::HashMap;
+use sails_rs::gstd::{exec, msg};
 use sails_rs::prelude::*;
 
 #[derive(Clone, PartialEq, Debug)]
@@ -51,12 +51,16 @@ static mut STORAGE: Option<Storage> = None;
 
 impl Storage {
     pub fn get() -> &'static Self {
-	#[allow(static_mut_refs)]
-        unsafe { STORAGE.as_ref().expect("Storage is not initialized") }
+        #[allow(static_mut_refs)]
+        unsafe {
+            STORAGE.as_ref().expect("Storage is not initialized")
+        }
     }
     pub fn get_mut() -> &'static mut Self {
-	#[allow(static_mut_refs)]
-        unsafe { STORAGE.as_mut().expect("Storage is not initialized") }
+        #[allow(static_mut_refs)]
+        unsafe {
+            STORAGE.as_mut().expect("Storage is not initialized")
+        }
     }
 }
 
@@ -213,10 +217,10 @@ pub fn pick_random<T>(vec: &Vec<T>) -> Option<&T> {
 }
 
 #[derive(Default)]
-pub struct Program;
+pub struct LuckyDrawProgram;
 
 #[program]
-impl Program {
+impl LuckyDrawProgram {
     pub fn new() -> Self {
         LuckyDraw::init();
         Self
