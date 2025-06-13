@@ -1,42 +1,33 @@
-import { GearApi } from "@gear-js/api";
-
-export async function postIDL({ api, codeId, programId, idl, name }) {
-  let params = await makePostMetadataPayload({
+export async function postIDL(params) {
+  let params2 = await makePostMetadataPayload(params);
+  let resp = await postSailsIDL(params2);
+  return resp;
+}
+export async function makePostMetadataPayload(params) {
+  let {
     api,
     codeId,
     programId,
     name,
     idl,
-  });
-  let resp = await postSailsIDL(params);
-  return resp;
-}
-
-export async function makePostMetadataPayload(
-  { api, codeId, programId, name, idl },
-) {
+  } = params;
   for (let i = 0; i < 10; i++) {
-    await new Promise((resolve) => setTimeout(resolve, 3000));
-    // assert program exists
+    await new Promise((resolve) => setTimeout(resolve, 3e3));
     if (await api.code.exists(codeId)) {
       break;
     }
   }
-
   let genesis = api.genesisHash.toHex();
-  let params = {
+  let params2 = {
     genesis,
     codeId,
     programId,
     name,
     idl,
   };
-  return params;
+  return params2;
 }
-
-export async function postSailsIDL(
-  params,
-) {
+export async function postSailsIDL(params) {
   let {
     name,
     genesis,
@@ -44,7 +35,6 @@ export async function postSailsIDL(
     programId,
     idl,
   } = params;
-
   let requests = [
     [
       "https://explorer.gear-tech.io/api",
@@ -81,7 +71,6 @@ export async function postSailsIDL(
       },
     ],
   ];
-
   let promises = requests.map(([endpoint, payload]) => {
     return fetch(endpoint, {
       "headers": {
@@ -92,6 +81,5 @@ export async function postSailsIDL(
       "method": "POST",
     }).then((response) => response.json());
   });
-
   return await Promise.all(promises);
 }

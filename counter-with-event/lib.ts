@@ -1,8 +1,9 @@
-import { decodeAddress, GearApi } from "@gear-js/api";
+import { decodeAddress, GearApi, HexString, Program } from "@gear-js/api";
 import { TypeRegistry } from "@polkadot/types";
 import {
   getFnNamePrefix,
   getServiceNamePrefix,
+  throwOnErrorReply,
   TransactionBuilder,
   ZERO_ADDRESS,
 } from "sails-js";
@@ -10,18 +11,29 @@ import {
 export class CounterProgram {
   public readonly registry: TypeRegistry;
   public readonly counter: Counter;
+  private _program: Program;
 
-  constructor(public api: GearApi, public programId?: `0x${string}`) {
+  constructor(public api: GearApi, programId?: `0x${string}`) {
     const types: Record<string, any> = {};
 
     this.registry = new TypeRegistry();
     this.registry.setKnownTypes({ types });
     this.registry.register(types);
+    if (programId) {
+      this._program = new Program(programId, api);
+    }
 
     this.counter = new Counter(this);
   }
 
-  newCtorFromCode(code: Uint8Array | Buffer): TransactionBuilder<null> {
+  public get programId(): `0x${string}` {
+    if (!this._program) throw new Error(`Program ID is not set`);
+    return this._program.id;
+  }
+
+  newCtorFromCode(
+    code: Uint8Array | Buffer | HexString,
+  ): TransactionBuilder<null> {
     const builder = new TransactionBuilder<null>(
       this.api,
       this.registry,
@@ -30,9 +42,10 @@ export class CounterProgram {
       "String",
       "String",
       code,
+      async (programId) => {
+        this._program = await Program.new(programId, this.api);
+      },
     );
-
-    this.programId = builder.programId;
     return builder;
   }
 
@@ -45,9 +58,10 @@ export class CounterProgram {
       "String",
       "String",
       codeId,
+      async (programId) => {
+        this._program = await Program.new(programId, this.api);
+      },
     );
-
-    this.programId = builder.programId;
     return builder;
   }
 }
@@ -83,13 +97,14 @@ export class Counter {
       payload,
       value: value || 0,
       gasLimit: this._program.api.blockGasLimit.toBigInt(),
-      at: atBlock || null,
+      at: atBlock,
     });
-    if (!reply.code.isSuccess) {
-      throw new Error(
-        this._program.registry.createType("String", reply.payload).toString(),
-      );
-    }
+    throwOnErrorReply(
+      reply.code,
+      reply.payload.toU8a(),
+      this._program.api.specVersion,
+      this._program.registry,
+    );
     const result = this._program.registry.createType(
       "(String, String, i32)",
       reply.payload,
