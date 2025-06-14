@@ -54,16 +54,29 @@ console.log("resp(isFinalized):", resp);
 let resps = await postIDL({ name: "test", api, codeId, programId, idl });
 console.log("resps:", resps);
 
-let my_ss58_address = await sails.services.Ss58.queries.MySs58Address(alice.address);
-console.log({my_ss58_address})
-let ss58_to_actor_id = await sails.services.Ss58.queries.Ss58ToActorId(alice.address, null, null, "kGg6cdo1RpgbEu4xWDrC2n5MDh8BfmYxEyzSpBYhXuuQ3V9a1");
-console.log({ss58_to_actor_id})
+let my_ss58_address = await sails.services.Ss58.queries.MySs58Address(
+  alice.address,
+);
+console.log({ my_ss58_address });
+let ss58_to_actor_id = await sails.services.Ss58.queries.Ss58ToActorId(
+  alice.address,
+  null,
+  null,
+  "kGg6cdo1RpgbEu4xWDrC2n5MDh8BfmYxEyzSpBYhXuuQ3V9a1",
+);
+console.log({ ss58_to_actor_id });
 // OK
 // let actor_id_to_ss58 = await sails.services.Ss58.queries.ActorIdToSs58(alice.address, null, null, programId, {"Custom": 137});
 
 // OK
-let actor_id_to_ss58 = await sails.services.Ss58.queries.ActorIdToSs58(alice.address, null, null, programId, {Vara: null});
+let actor_id_to_ss58 = await sails.services.Ss58.queries.ActorIdToSs58(
+  alice.address,
+  null,
+  null,
+  programId,
+  { Vara: null },
+);
 
 // let actor_id_to_ss58 = await sails.services.Ss58.queries.ActorIdToSs58(alice.address, null, null, programId, "Vara");
 
-console.log({actor_id_to_ss58})
+console.log({ actor_id_to_ss58 });

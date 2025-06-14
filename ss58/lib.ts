@@ -13,6 +13,7 @@ export class Ss58Program {
         "_enum": {
           "Polkadot": "Null",
           "Kusama": "Null",
+          "Substrate": "Null",
           "Vara": "Null",
           "Custom": "u16",
         },

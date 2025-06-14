@@ -2,8 +2,6 @@
 
 use sails_rs::gstd::exec::program_id;
 use sails_rs::prelude::*;
-
-mod ss58;
 use ss58::{Ss58AddressFormat, decode, encode};
 
 struct Ss58Service(());
