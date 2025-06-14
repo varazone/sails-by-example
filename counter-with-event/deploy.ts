@@ -2,57 +2,94 @@
 
 import { Sails, ZERO_ADDRESS } from "sails-js";
 import { SailsIdlParser } from "sails-js-parser";
-import fs from "fs/promises";
 import { GearApi, GearKeyring, generateCodeHash } from "@gear-js/api";
 import { postIDL } from "./postIDL.ts";
-
-if (process.argv.length <= 3) {
-  console.error("Please provide <idl> <wasm> as an argument.");
-  process.exit(1);
-}
-
-const PROVIDER = "wss://testnet.vara.network";
+import {
+  getCodeId,
+  getIDL,
+  getWASM,
+  readConfig,
+  writeConfig,
+} from "./config.ts";
 
 async function initGearApi() {
   return await GearApi.create({
-    providerAddress: PROVIDER,
+    providerAddress: deploy.rpc,
   });
 }
 
-const idlPath = process.argv[2];
-const idl = await fs.readFile(idlPath, "utf-8");
+const DEFAULT_PROFILE = process.env.PROFILE || "release"; // "debug"
+const DEFAULT_NETWORK = process.env.NETWORK || "testnet"; // "mainnet"
+
+function parseArgs() {
+  let profile = DEFAULT_PROFILE;
+  let network = DEFAULT_NETWORK;
+  switch (process.argv.length) {
+    case 0:
+    case 1:
+      console.error("Please provide <profile> <network> as an argument.");
+      process.exit(1);
+    case 2:
+      break;
+    case 3:
+      profile = process.argv[2];
+      break;
+    case 4:
+    default:
+      profile = process.argv[2];
+      network = process.argv[3];
+  }
+  return { profile, network };
+}
+
+const { profile, network } = parseArgs();
+
+const config = readConfig();
+const deploy = config.deploy[network];
+console.log("deploy:", deploy);
+
+const idl = getIDL(config, profile);
+const wasm = getWASM(config, profile);
+const codeId = getCodeId(config, profile);
+
+const reuse = deploy.code_id == codeId && !!deploy.program_id;
+console.log("reuse:", reuse);
+
 const parser = await SailsIdlParser.new();
 const sails = new Sails(parser);
 
 sails.parseIdl(idl);
 
-console.log(sails.services);
-
-const wasmPath = process.argv[3];
-const wasm = await fs.readFile(wasmPath);
+console.log("services:", sails.services);
 
 const api = await initGearApi();
 const alice = await GearKeyring.fromSuri("//Alice");
+console.log("account:", alice.address);
+
 api.setSigner(alice);
 sails.setApi(api);
 
-let codeId = generateCodeHash(wasm);
-console.log("wasm:", { codeId });
+if (reuse) {
+  sails.setProgramId(deploy.program_id);
+} else {
+  let tx = sails.ctors.New.fromCode(wasm).withAccount(alice, { nonce: -1 });
+  let programId = tx.programId;
+  console.log("tx:", { programId });
 
-// console.log(sails)
-let tx = sails.ctors.New.fromCode(wasm).withAccount(alice, { nonce: -1 });
-let programId = tx.programId;
-console.log("tx:", { programId });
+  await tx.calculateGas();
+  let resp = await tx.signAndSend();
+  console.log("resp:", resp);
 
-await tx.calculateGas();
-let resp = await tx.signAndSend();
-console.log("resp:", resp);
+  await resp.isFinalized;
+  console.log("resp(isFinalized):", resp);
 
-await resp.isFinalized;
-console.log("resp(isFinalized):", resp);
+  let resps = await postIDL({ name: config.name, api, codeId, programId, idl });
+  console.log("resps:", resps);
 
-let resps = await postIDL({name: 'test', api, codeId, programId, idl});
-console.log("resps:", resps);
+  config.deploy[network].code_id = codeId;
+  config.deploy[network].program_id = programId;
+  writeConfig(config);
+}
 
 sails.services.Counter.events.IncrementedTo.subscribe(async (data) => {
   console.log("event:", data);

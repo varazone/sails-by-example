@@ -4,4 +4,7 @@ all:
 	# esbuild lib.ts --outfile=lib.js
 
 deploy:
-	./deploy.ts ../target/wasm32-gear/release/counter_with_event.{idl,opt.wasm}
+	./deploy.ts release testnet
+
+build:
+	cargo build --release

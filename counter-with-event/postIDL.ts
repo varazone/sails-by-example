@@ -2,11 +2,11 @@ import { GearApi } from "@gear-js/api";
 
 export async function postIDL(
   params: {
-    api: GearApi,
-    codeId: string,
-    programId: string,
-    idl: string,
-    name: string,
+    api: GearApi;
+    codeId: string;
+    programId: string;
+    idl: string;
+    name: string;
   },
 ) {
   let params2 = await makePostMetadataPayload(params);
@@ -16,11 +16,11 @@ export async function postIDL(
 
 export async function makePostMetadataPayload(
   params: {
-    api: GearApi,
-    codeId: string,
-    programId: string,
-    name: string,
-    idl: string,
+    api: GearApi;
+    codeId: string;
+    programId: string;
+    name: string;
+    idl: string;
   },
 ) {
   let {

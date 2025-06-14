@@ -5,7 +5,8 @@
     "@gear-js/api": "^0.42.0",
     "@polkadot/api": "^16.1.2",
     "sails-js": "^0.4.2",
-    "sails-js-parser": "^0.4.2"
+    "sails-js-parser": "^0.4.2",
+    "yaml": "^2.8.0"
   },
   "devDependencies": {
     "@polkadot/api-augment": "^16.1.2",
