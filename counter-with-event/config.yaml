@@ -13,5 +13,23 @@ deploy:
     rpc: wss://rpc.vara.network
   testnet:
     code_id: "0x5890d1dfac9b46a3aa498474f57760cc419664569c1967e3e82b4507a8ce50a1"
-    program_id: "0x9db4ac8daca9e593f71efbb079c6e7bace07620b0c89d9873508ad2c62ea3f36"
+    program_id: "0x87f593f55e468d20e0a5a23c3b93cf4ba52e82337bafab1d46f17c21a12636d7"
     rpc: wss://testnet-archive.vara.network
+    idl: |+
+      constructor {
+        /// set initial value
+        New : (initial_value: i32);
+      };
+
+      service Counter {
+        /// increment counter by 1
+        Inc : () -> i32;
+        /// get counter value
+        query Get : () -> i32;
+
+        events {
+          /// counter incremented to value
+          IncrementedTo: i32;
+        }
+      };
+

@@ -3,8 +3,12 @@ all:
 	deno fmt lib.ts
 	# esbuild lib.ts --outfile=lib.js
 
-deploy:
-	./deploy.ts release testnet
-
 build:
 	cargo build --release
+
+deploy:
+	./deploy.ts testnet --release
+
+interact:
+	./interact.ts testnet
+

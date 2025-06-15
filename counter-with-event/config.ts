@@ -1,3 +1,6 @@
+import yargs from "yargs";
+import { hideBin } from "yargs/helpers";
+
 import * as fs from "fs";
 import * as path from "path";
 import * as YAML from "yaml";
@@ -10,6 +13,58 @@ export function getConfigPath(): string {
   const __filename = fileURLToPath(import.meta.url);
   const __dirname = dirname(__filename);
   return resolve(__dirname, "config.yaml");
+}
+
+const DEFAULT_PROFILE = process.env.PROFILE || "release"; // "debug"
+const DEFAULT_NETWORK = process.env.NETWORK || "testnet"; // "mainnet"
+
+export function parseCliArgs(): {
+  network: "mainnet" | "testnet";
+  profile: "release" | "debug";
+} {
+  const argv = yargs(hideBin(process.argv))
+    .usage("$0 <network> [options]")
+    .command("<network>", "Target network")
+    .positional("network", {
+      describe: "Target network name",
+      type: "string",
+      choices: ["mainnet", "testnet"],
+      default: "testnet",
+    })
+    .option("release", {
+      alias: "r",
+      type: "boolean",
+      description: "Use release profile (default is debug)",
+      default: false,
+    })
+    .help()
+    .parseSync();
+
+  const network = (argv.network ?? "testnet") as "mainnet" | "testnet";
+  const profile = argv.release ? "release" : "debug";
+
+  return { network, profile };
+}
+
+export function parseArgs() {
+  let profile = DEFAULT_PROFILE;
+  let network = DEFAULT_NETWORK;
+  switch (process.argv.length) {
+    case 0:
+    case 1:
+      console.error("Please provide <profile> <network> as an argument.");
+      process.exit(1);
+    case 2:
+      break;
+    case 3:
+      profile = process.argv[2];
+      break;
+    case 4:
+    default:
+      profile = process.argv[2];
+      network = process.argv[3];
+  }
+  return { profile, network };
 }
 
 const CONFIG_PATH = getConfigPath();
@@ -31,11 +86,13 @@ export interface Config {
       rpc: string;
       code_id: string;
       program_id: string;
+      idl: string;
     };
     testnet: {
       rpc: string;
       code_id: string;
       program_id: string;
+      idl: string;
     };
   };
 }
@@ -84,11 +141,13 @@ const defaultConfig: Config = {
       code_id: "",
       program_id: "",
       rpc: "wss://rpc.vara.network",
+      idl: "",
     },
     testnet: {
       code_id: "",
       program_id: "",
       rpc: "wss://testnet.vara.network",
+      idl: "",
     },
   },
 };

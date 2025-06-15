@@ -8,6 +8,7 @@ import {
   getCodeId,
   getIDL,
   getWASM,
+  parseCliArgs,
   readConfig,
   writeConfig,
 } from "./config.ts";
@@ -18,31 +19,8 @@ async function initGearApi() {
   });
 }
 
-const DEFAULT_PROFILE = process.env.PROFILE || "release"; // "debug"
-const DEFAULT_NETWORK = process.env.NETWORK || "testnet"; // "mainnet"
-
-function parseArgs() {
-  let profile = DEFAULT_PROFILE;
-  let network = DEFAULT_NETWORK;
-  switch (process.argv.length) {
-    case 0:
-    case 1:
-      console.error("Please provide <profile> <network> as an argument.");
-      process.exit(1);
-    case 2:
-      break;
-    case 3:
-      profile = process.argv[2];
-      break;
-    case 4:
-    default:
-      profile = process.argv[2];
-      network = process.argv[3];
-  }
-  return { profile, network };
-}
-
-const { profile, network } = parseArgs();
+const { network, profile } = parseCliArgs();
+console.log({ network, profile });
 
 const config = readConfig();
 const deploy = config.deploy[network];
@@ -54,6 +32,10 @@ const codeId = getCodeId(config, profile);
 
 const reuse = deploy.code_id == codeId && !!deploy.program_id;
 console.log("reuse:", reuse);
+
+if (reuse) {
+  process.exit(0);
+}
 
 const parser = await SailsIdlParser.new();
 const sails = new Sails(parser);
@@ -88,20 +70,6 @@ if (reuse) {
 
   config.deploy[network].code_id = codeId;
   config.deploy[network].program_id = programId;
+  config.deploy[network].idl = idl;
   writeConfig(config);
-}
-
-sails.services.Counter.events.IncrementedTo.subscribe(async (data) => {
-  console.log("event:", data);
-
-  let value = await sails.services.Counter.queries.Get(ZERO_ADDRESS);
-  console.log("value:", value);
-});
-
-while (1) {
-  console.log(new Date(), "sending Inc");
-  let tx = sails.services.Counter.functions.Inc();
-  tx.withAccount(alice, { nonce: -1 });
-  await tx.calculateGas();
-  await tx.signAndSend();
 }
