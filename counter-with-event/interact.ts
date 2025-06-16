@@ -4,32 +4,22 @@ import { Sails, ZERO_ADDRESS } from "sails-js";
 import { SailsIdlParser } from "sails-js-parser";
 import { GearApi, GearKeyring, generateCodeHash } from "@gear-js/api";
 import { postIDL } from "./postIDL.ts";
-import {
-  getCodeId,
-  getIDL,
-  getWASM,
-  parseCliArgs,
-  readConfig,
-  writeConfig,
-} from "./config.ts";
+import { readConfig, writeConfig } from "./config.ts";
 
 async function initGearApi() {
   return await GearApi.create({
-    providerAddress: deploy.rpc,
+    providerAddress: rpc,
   });
 }
 
-const { network } = parseCliArgs();
-console.log({ network });
-
 const config = readConfig();
-const deploy = config.deploy[network];
-console.log("deploy:", deploy);
+const rpc = config.deploy.rpc;
+const idl = config.deploy.idl;
 
 const parser = await SailsIdlParser.new();
 const sails = new Sails(parser);
 
-sails.parseIdl(deploy.idl);
+sails.parseIdl(idl);
 
 console.log("services:", sails.services);
 
@@ -40,7 +30,7 @@ console.log("account:", alice.address);
 api.setSigner(alice);
 sails.setApi(api);
 
-sails.setProgramId(deploy.program_id);
+sails.setProgramId(config.deploy.program_id);
 
 sails.services.Counter.events.IncrementedTo.subscribe(async (data) => {
   console.log("event:", data);

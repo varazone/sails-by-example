@@ -4,11 +4,14 @@ all:
 	# esbuild lib.ts --outfile=lib.js
 
 build:
+	# build with release profile
 	cargo build --release
 
 deploy:
-	./deploy.ts testnet --release
+	# deploy release build to testnet and write result to config.yaml
+	./deploy.ts --release --rpc wss://testnet.vara.network
 
 interact:
-	./interact.ts testnet
+	# interact with existing deployment in config.yaml
+	./interact.ts
 

@@ -16,20 +16,18 @@ export function getConfigPath(): string {
 }
 
 const DEFAULT_PROFILE = process.env.PROFILE || "release"; // "debug"
-const DEFAULT_NETWORK = process.env.NETWORK || "testnet"; // "mainnet"
 
 export function parseCliArgs(): {
-  network: "mainnet" | "testnet";
   profile: "release" | "debug";
+  rpc: string;
 } {
   const argv = yargs(hideBin(process.argv))
-    .usage("$0 <network> [options]")
-    .command("<network>", "Target network")
-    .positional("network", {
-      describe: "Target network name",
+    .usage("$0 [options]")
+    .option("rpc", {
       type: "string",
-      choices: ["mainnet", "testnet"],
-      default: "testnet",
+      description:
+        "Use alternative rpc (default is wss://testnet.vara.network)",
+      default: "wss://testnet.vara.network",
     })
     .option("release", {
       alias: "r",
@@ -40,31 +38,10 @@ export function parseCliArgs(): {
     .help()
     .parseSync();
 
-  const network = (argv.network ?? "testnet") as "mainnet" | "testnet";
   const profile = argv.release ? "release" : "debug";
+  const rpc = argv.rpc ?? "wss://testnet.vara.network";
 
-  return { network, profile };
-}
-
-export function parseArgs() {
-  let profile = DEFAULT_PROFILE;
-  let network = DEFAULT_NETWORK;
-  switch (process.argv.length) {
-    case 0:
-    case 1:
-      console.error("Please provide <profile> <network> as an argument.");
-      process.exit(1);
-    case 2:
-      break;
-    case 3:
-      profile = process.argv[2];
-      break;
-    case 4:
-    default:
-      profile = process.argv[2];
-      network = process.argv[3];
-  }
-  return { profile, network };
+  return { profile, rpc };
 }
 
 const CONFIG_PATH = getConfigPath();
@@ -74,26 +51,14 @@ export interface Config {
   basedir: string;
   basename: string;
   build: {
-    release: {
-      code_id: string;
-    };
-    debug: {
-      code_id: string;
-    };
+    debug: { code_id: string };
+    release: { code_id: string };
   };
   deploy: {
-    mainnet: {
-      rpc: string;
-      code_id: string;
-      program_id: string;
-      idl: string;
-    };
-    testnet: {
-      rpc: string;
-      code_id: string;
-      program_id: string;
-      idl: string;
-    };
+    rpc: string;
+    idl: string;
+    code_id: string;
+    program_id: string;
   };
 }
 
@@ -133,22 +98,18 @@ const defaultConfig: Config = {
   basedir: "./target/wasm32-gear",
   basename: "app",
   build: {
-    release: { code_id: "" },
-    debug: { code_id: "" },
+    debug: {
+      code_id: "",
+    },
+    release: {
+      code_id: "",
+    },
   },
   deploy: {
-    mainnet: {
-      code_id: "",
-      program_id: "",
-      rpc: "wss://rpc.vara.network",
-      idl: "",
-    },
-    testnet: {
-      code_id: "",
-      program_id: "",
-      rpc: "wss://testnet.vara.network",
-      idl: "",
-    },
+    rpc: "wss://testnet.vara.network",
+    idl: "",
+    code_id: "",
+    program_id: "",
   },
 };
 

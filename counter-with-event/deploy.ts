@@ -15,25 +15,30 @@ import {
 
 async function initGearApi() {
   return await GearApi.create({
-    providerAddress: deploy.rpc,
+    providerAddress: rpc,
   });
 }
 
-const { network, profile } = parseCliArgs();
-console.log({ network, profile });
+const { profile, rpc } = parseCliArgs();
+console.log({ profile, rpc });
 
 const config = readConfig();
-const deploy = config.deploy[network];
+const deploy = config.deploy;
+console.log("profile:", profile);
 console.log("deploy:", deploy);
 
 const idl = getIDL(config, profile);
 const wasm = getWASM(config, profile);
 const codeId = getCodeId(config, profile);
 
-const reuse = deploy.code_id == codeId && !!deploy.program_id;
+const reuse = deploy.idl == idl && deploy.code_id == codeId &&
+  deploy.rpc == rpc && !!deploy.program_id;
 console.log("reuse:", reuse);
 
 if (reuse) {
+  console.log(
+    "No changes detected, reusing existing deployment from config file.",
+  );
   process.exit(0);
 }
 
@@ -51,9 +56,7 @@ console.log("account:", alice.address);
 api.setSigner(alice);
 sails.setApi(api);
 
-if (reuse) {
-  sails.setProgramId(deploy.program_id);
-} else {
+if (!reuse) {
   let tx = sails.ctors.New.fromCode(wasm).withAccount(alice, { nonce: -1 });
   let programId = tx.programId;
   console.log("tx:", { programId });
@@ -68,8 +71,11 @@ if (reuse) {
   let resps = await postIDL({ name: config.name, api, codeId, programId, idl });
   console.log("resps:", resps);
 
-  config.deploy[network].code_id = codeId;
-  config.deploy[network].program_id = programId;
-  config.deploy[network].idl = idl;
+  config.deploy.idl = idl;
+  config.deploy.code_id = codeId;
+  config.deploy.program_id = programId;
+  config.deploy.rpc = rpc;
   writeConfig(config);
 }
+
+process.exit(0);

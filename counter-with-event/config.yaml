@@ -7,29 +7,24 @@ build:
   debug:
     code_id: "0xbbfbf45097627685bed067c31667bd3757a47eaf034f539d88ed2186844dab51"
 deploy:
-  mainnet:
-    code_id: ""
-    program_id: ""
-    rpc: wss://rpc.vara.network
-  testnet:
-    code_id: "0x5890d1dfac9b46a3aa498474f57760cc419664569c1967e3e82b4507a8ce50a1"
-    program_id: "0x87f593f55e468d20e0a5a23c3b93cf4ba52e82337bafab1d46f17c21a12636d7"
-    rpc: wss://testnet-archive.vara.network
-    idl: |+
-      constructor {
-        /// set initial value
-        New : (initial_value: i32);
-      };
+  idl: |+
+    constructor {
+      /// set initial value
+      New : (initial_value: i32);
+    };
 
-      service Counter {
-        /// increment counter by 1
-        Inc : () -> i32;
-        /// get counter value
-        query Get : () -> i32;
+    service Counter {
+      /// increment counter by 1
+      Inc : () -> i32;
+      /// get counter value
+      query Get : () -> i32;
 
-        events {
-          /// counter incremented to value
-          IncrementedTo: i32;
-        }
-      };
+      events {
+        /// counter incremented to value
+        IncrementedTo: i32;
+      }
+    };
 
+  code_id: "0x5890d1dfac9b46a3aa498474f57760cc419664569c1967e3e82b4507a8ce50a1"
+  program_id: "0xff76500f71a3dc801bd6480480b9075acea42dba9d407d8b04cb8cd59516578a"
+  rpc: wss://testnet.vara.network
