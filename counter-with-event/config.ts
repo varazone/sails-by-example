@@ -57,6 +57,7 @@ export interface Config {
   deploy: {
     rpc: string;
     idl: string;
+    args: any[];
     code_id: string;
     program_id: string;
   };
@@ -108,6 +109,7 @@ const defaultConfig: Config = {
   deploy: {
     rpc: "wss://testnet.vara.network",
     idl: "",
+    args: [],
     code_id: "",
     program_id: "",
   },

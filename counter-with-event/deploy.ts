@@ -31,17 +31,6 @@ const idl = getIDL(config, profile);
 const wasm = getWASM(config, profile);
 const codeId = getCodeId(config, profile);
 
-const reuse = deploy.idl == idl && deploy.code_id == codeId &&
-  deploy.rpc == rpc && !!deploy.program_id;
-console.log("reuse:", reuse);
-
-if (reuse) {
-  console.log(
-    "No changes detected, reusing existing deployment from config file.",
-  );
-  process.exit(0);
-}
-
 const parser = await SailsIdlParser.new();
 const sails = new Sails(parser);
 
@@ -56,26 +45,27 @@ console.log("account:", alice.address);
 api.setSigner(alice);
 sails.setApi(api);
 
-if (!reuse) {
-  let tx = sails.ctors.New.fromCode(wasm).withAccount(alice, { nonce: -1 });
-  let programId = tx.programId;
-  console.log("tx:", { programId });
+let tx = sails.ctors.New.fromCode(wasm, ...(deploy.args ?? [])).withAccount(
+  alice,
+  { nonce: -1 },
+);
+let programId = tx.programId;
+console.log("tx:", { programId });
 
-  await tx.calculateGas();
-  let resp = await tx.signAndSend();
-  console.log("resp:", resp);
+await tx.calculateGas();
+let resp = await tx.signAndSend();
+console.log("resp:", resp);
 
-  await resp.isFinalized;
-  console.log("resp(isFinalized):", resp);
+await resp.isFinalized;
+console.log("resp(isFinalized):", resp);
 
-  let resps = await postIDL({ name: config.name, api, codeId, programId, idl });
-  console.log("resps:", resps);
+let resps = await postIDL({ name: config.name, api, codeId, programId, idl });
+console.log("resps:", resps);
 
-  config.deploy.idl = idl;
-  config.deploy.code_id = codeId;
-  config.deploy.program_id = programId;
-  config.deploy.rpc = rpc;
-  writeConfig(config);
-}
+config.deploy.idl = idl;
+config.deploy.code_id = codeId;
+config.deploy.program_id = programId;
+config.deploy.rpc = rpc;
+writeConfig(config);
 
 process.exit(0);

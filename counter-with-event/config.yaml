@@ -25,6 +25,8 @@ deploy:
       }
     };
 
+  args:
+    - 42
   code_id: "0x5890d1dfac9b46a3aa498474f57760cc419664569c1967e3e82b4507a8ce50a1"
-  program_id: "0xff76500f71a3dc801bd6480480b9075acea42dba9d407d8b04cb8cd59516578a"
+  program_id: "0xfc9c62661d6af691f53872f9b485f457315844eeb93ff0f6a54bfcc3694edd46"
   rpc: wss://testnet.vara.network
