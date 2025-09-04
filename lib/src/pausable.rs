@@ -25,12 +25,14 @@ impl Storage {
 #[derive(Clone, Default)]
 pub struct Pausable;
 
-#[service]
 impl Pausable {
     pub fn init() {
         unsafe { STORAGE = Some(Default::default()) }
     }
+}
 
+#[service]
+impl Pausable {
     #[export]
     pub fn paused(&self) -> bool {
         let storage = Storage::get();
@@ -39,14 +41,12 @@ impl Pausable {
 
     #[export]
     pub fn pause(&mut self) {
-        let storage = Storage::get_mut();
-        storage.paused = true;
+        self._pause()
     }
 
     #[export]
     pub fn unpause(&mut self) {
-        let storage = Storage::get_mut();
-        storage.paused = false;
+        self._unpause()
     }
 }
 
@@ -59,5 +59,15 @@ impl Pausable {
     pub fn _when_not_paused(&self) {
         let storage = Storage::get();
         assert_eq!(storage.paused, false);
+    }
+
+    pub fn _pause(&mut self) {
+        let storage = Storage::get_mut();
+        storage.paused = true;
+    }
+
+    pub fn _unpause(&mut self) {
+        let storage = Storage::get_mut();
+        storage.paused = false;
     }
 }

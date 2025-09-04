@@ -26,14 +26,16 @@ impl Storage {
 #[derive(Clone, Default)]
 pub struct Ownable;
 
-#[service]
 impl Ownable {
     pub fn init() {
         unsafe { STORAGE = Some(Default::default()) }
         let mut ownable = Ownable::default();
         ownable._transfer_ownership(msg::source());
     }
+}
 
+#[service]
+impl Ownable {
     #[export]
     pub fn owner(&self) -> ActorId {
         let storage = Storage::get();

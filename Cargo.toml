@@ -13,6 +13,7 @@ members = [
     "lucky-draw",
     "ss58",
     "mixin",
+    "pausable-ownable-counter",
 ]
 exclude = [
     "gear-erc20/app",

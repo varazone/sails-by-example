@@ -5,9 +5,9 @@ edition.workspace = true
 license.workspace = true
 
 [dependencies]
-pausable_ownable_counter_app = { path = "../app" }
+pausable_ownable_counter_app = { path = "./app" }
 
 [build-dependencies]
 gear-wasm-builder.workspace = true
 sails-idl-gen.workspace = true
-pausable_ownable_counter_app = { path = "../app" }
+pausable_ownable_counter_app = { path = "./app" }
