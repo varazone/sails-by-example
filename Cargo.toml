@@ -12,6 +12,7 @@ members = [
     "counter-with-event-caller",
     "lucky-draw",
     "ss58",
+    "mixin",
 ]
 exclude = [
     "gear-erc20/app",

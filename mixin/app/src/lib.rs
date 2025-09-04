@@ -12,25 +12,23 @@ pub struct ExtendedService {
     counter: CounterService,
 }
 
-#[service(extends = [HelloService, CounterService])]
 impl ExtendedService {
     pub fn init() {
         CounterService::init();
     }
+}
+
+impl From<ExtendedService> for (HelloService, CounterService) {
+    fn from(exts: ExtendedService) -> Self {
+        (exts.hello, exts.counter)
+    }
+}
+
+#[service(extends = [HelloService, CounterService])]
+impl ExtendedService {
+    #[export]
     pub fn say_hello(&mut self) -> &'static str {
         "你好!"
-    }
-}
-
-impl AsRef<HelloService> for ExtendedService {
-    fn as_ref(&self) -> &HelloService {
-        &self.hello
-    }
-}
-
-impl AsRef<CounterService> for ExtendedService {
-    fn as_ref(&self) -> &CounterService {
-        &self.counter
     }
 }
 

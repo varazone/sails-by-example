@@ -21,17 +21,21 @@ impl Storage {
 #[derive(Clone, Default)]
 pub struct Counter;
 
-#[service]
 impl Counter {
     pub fn init() {
         unsafe { STORAGE = Some(Storage::default()) }
     }
+}
 
+#[service]
+impl Counter {
+    #[export]
     pub fn get(&self) -> u32 {
         let storage = Storage::get();
         storage.counter
     }
 
+    #[export]
     pub fn inc(&mut self) {
         let storage = Storage::get_mut();
         storage.counter += 1;

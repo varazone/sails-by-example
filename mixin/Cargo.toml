@@ -5,9 +5,9 @@ edition.workspace = true
 license.workspace = true
 
 [dependencies]
-mixin_app = { path = "../app" }
+mixin_app = { path = "./app" }
 
 [build-dependencies]
 gear-wasm-builder.workspace = true
 sails-idl-gen.workspace = true
-mixin_app = { path = "../app" }
+mixin_app = { path = "./app" }
