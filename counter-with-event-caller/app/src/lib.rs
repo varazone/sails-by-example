@@ -26,6 +26,7 @@ impl Storage {
 }
 
 #[derive(Encode, Decode, TypeInfo)]
+#[event]
 pub enum Event {
     Incremented(i32),
 }
@@ -33,17 +34,21 @@ pub enum Event {
 #[derive(Default)]
 pub struct CounterProxy;
 
-#[service(events = Event)]
 impl CounterProxy {
     pub fn init(counter: ActorId) {
         unsafe { STORAGE = Some(Storage { counter }) }
     }
+}
 
+#[service(events = Event)]
+impl CounterProxy {
+    #[export]
     pub async fn counter(&self) -> ActorId {
         let storage = Storage::get();
         storage.counter
     }
 
+    #[export]
     pub async fn get(&self) -> i32 {
         let storage = Storage::get();
         let counter_id = storage.counter;
@@ -57,6 +62,7 @@ impl CounterProxy {
         reply
     }
 
+    #[export]
     pub async fn get_remoting(&self) -> i32 {
         use sails_rs::calls::Query;
         let storage = Storage::get();
@@ -65,6 +71,7 @@ impl CounterProxy {
         remoting.get().recv(counter_id).await.unwrap()
     }
 
+    #[export]
     pub async fn inc(&mut self) -> i32 {
         let storage = Storage::get();
         let counter_id = storage.counter;
@@ -79,6 +86,7 @@ impl CounterProxy {
         reply
     }
 
+    #[export]
     pub async fn inc_remoting(&mut self) -> i32 {
         use sails_rs::calls::Call;
         let storage = Storage::get();

@@ -25,17 +25,21 @@ impl Storage {
 #[derive(Default)]
 pub struct Counter;
 
-#[service]
 impl Counter {
     pub fn init() {
         unsafe { STORAGE = Some(Storage { counter: 0 }) }
     }
+}
 
+#[service]
+impl Counter {
+    #[export]
     pub fn get(&self) -> i32 {
         let storage = Storage::get();
         storage.counter
     }
 
+    #[export]
     pub fn inc(&mut self) {
         let storage = Storage::get_mut();
         storage.counter += 1;

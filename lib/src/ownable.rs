@@ -34,11 +34,13 @@ impl Ownable {
         ownable._transfer_ownership(msg::source());
     }
 
+    #[export]
     pub fn owner(&self) -> ActorId {
         let storage = Storage::get();
         storage.owner
     }
 
+    #[export]
     pub fn transfer_ownership(&mut self, new_owner: ActorId) {
         self._only_owner();
         if new_owner == ActorId::zero() {
@@ -47,6 +49,7 @@ impl Ownable {
         self._transfer_ownership(new_owner);
     }
 
+    #[export]
     pub fn renounce_ownership(&mut self) {
         self._only_owner();
         self._transfer_ownership(ActorId::zero());

@@ -6,17 +6,21 @@ use sails_rs::prelude::*;
 
 pub struct PingService;
 
-#[service]
 impl PingService {
     pub fn new() -> Self {
         Self
     }
+}
 
+#[service]
+impl PingService {
+    #[export]
     pub async fn ping(&mut self) -> bool {
         debug!("Ping called");
         true
     }
 
+    #[export]
     pub fn get_something(&self) -> String {
         "Hello from Ping!".into()
     }

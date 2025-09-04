@@ -65,6 +65,7 @@ impl Storage {
 }
 
 #[derive(Encode, Decode, TypeInfo, Debug)]
+#[event]
 pub enum Event {
     Started {
         config: Config,
@@ -80,7 +81,6 @@ pub enum Event {
 #[derive(Default)]
 pub struct LuckyDraw;
 
-#[service(events = Event)]
 impl LuckyDraw {
     pub fn init() {
         unsafe {
@@ -93,35 +93,6 @@ impl LuckyDraw {
                 pooled: 0,
             })
         }
-    }
-
-    pub fn terminate(&mut self) {
-        let storage = Storage::get();
-        assert_eq!(msg::source(), storage.admin, "sender must be admin");
-        exec::exit(storage.admin);
-    }
-
-    pub fn start_game(&mut self, per_share: u128, max_share: u32) {
-        let storage = Storage::get_mut();
-        assert_eq!(msg::source(), storage.admin, "sender must be admin");
-        assert!(
-            !matches!(storage.status, Status::OnGoing { .. }),
-            "cannot start while game is on-going"
-        );
-        assert_ne!(per_share, 0, "per_share cannot be zero");
-        assert_ne!(max_share, 0, "max_share cannot be zero");
-
-        let config = Config {
-            per_share,
-            max_share,
-        };
-        storage.config = Some(config);
-        storage.players = vec![];
-        storage.status = Status::OnGoing;
-        storage.pooled = 0;
-
-        self.emit_event(Event::Started { config })
-            .expect("failed to emit event");
     }
 
     fn settle(&mut self) {
@@ -150,11 +121,43 @@ impl LuckyDraw {
         storage.players = vec![];
         storage.status = Status::Completed;
         storage.pooled = 0;
+    }
+}
 
-        self.emit_event(Event::Completed)
+#[service(events = Event)]
+impl LuckyDraw {
+    #[export]
+    pub fn terminate(&mut self) {
+        let storage = Storage::get();
+        assert_eq!(msg::source(), storage.admin, "sender must be admin");
+        exec::exit(storage.admin);
+    }
+
+    #[export]
+    pub fn start_game(&mut self, per_share: u128, max_share: u32) {
+        let storage = Storage::get_mut();
+        assert_eq!(msg::source(), storage.admin, "sender must be admin");
+        assert!(
+            !matches!(storage.status, Status::OnGoing { .. }),
+            "cannot start while game is on-going"
+        );
+        assert_ne!(per_share, 0, "per_share cannot be zero");
+        assert_ne!(max_share, 0, "max_share cannot be zero");
+
+        let config = Config {
+            per_share,
+            max_share,
+        };
+        storage.config = Some(config);
+        storage.players = vec![];
+        storage.status = Status::OnGoing;
+        storage.pooled = 0;
+
+        self.emit_event(Event::Started { config })
             .expect("failed to emit event");
     }
 
+    #[export]
     pub fn draw(&mut self) {
         let storage = Storage::get_mut();
         let config = storage.config.unwrap();
@@ -176,13 +179,16 @@ impl LuckyDraw {
                     .expect("failed to emit event");
 
                 if storage.players.len() as u32 >= config.max_share {
-                    self.settle()
+                    self.settle();
+                    self.emit_event(Event::Completed)
+                        .expect("failed to emit event");
                 }
             }
             _ => panic!("Game status must be on-going"),
         }
     }
 
+    #[export]
     pub fn claim(&mut self) -> CommandReply<()> {
         let storage = Storage::get_mut();
         let sender = msg::source();
@@ -194,6 +200,7 @@ impl LuckyDraw {
         }
     }
 
+    #[export]
     pub fn game_state(&self) -> GameState {
         let storage = Storage::get();
         storage.clone().into()

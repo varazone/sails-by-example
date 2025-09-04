@@ -6,23 +6,28 @@ use ss58::{Ss58AddressFormat, decode, encode};
 
 struct Ss58Service(());
 
-#[sails_rs::service]
 impl Ss58Service {
     pub fn new() -> Self {
         Self(())
     }
+}
 
+#[sails_rs::service]
+impl Ss58Service {
     /// convert ss58 address to ActorId
+    #[export]
     pub fn ss58_to_actor_id(&self, ss58_address: String) -> ActorId {
         decode(&ss58_address).into()
     }
 
     /// convert ActorId to ss58 address
+    #[export]
     pub fn actor_id_to_ss58(&self, actor_id: ActorId, format: Ss58AddressFormat) -> String {
         encode(&actor_id.into_bytes(), format)
     }
 
     /// get own ss58 address
+    #[export]
     pub fn my_ss58_address(&self) -> String {
         self.actor_id_to_ss58(program_id(), Ss58AddressFormat::Vara)
     }

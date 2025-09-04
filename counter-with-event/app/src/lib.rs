@@ -23,6 +23,7 @@ impl Storage {
 }
 
 #[derive(Encode, Decode, TypeInfo)]
+#[event]
 pub enum Event {
     /// counter incremented to value
     IncrementedTo(i32),
@@ -31,7 +32,6 @@ pub enum Event {
 #[derive(Default)]
 pub struct CounterWithEvent;
 
-#[service(events = Event)]
 impl CounterWithEvent {
     pub fn init(initial_value: i32) {
         unsafe {
@@ -40,14 +40,19 @@ impl CounterWithEvent {
             })
         }
     }
+}
 
+#[service(events = Event)]
+impl CounterWithEvent {
     /// get counter value
+    #[export]
     pub fn get(&self) -> i32 {
         let storage = Storage::get();
         storage.counter
     }
 
     /// increment counter by 1
+    #[export]
     pub fn inc(&mut self) -> i32 {
         let storage = Storage::get_mut();
         storage.counter += 1;

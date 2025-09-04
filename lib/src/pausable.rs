@@ -31,16 +31,19 @@ impl Pausable {
         unsafe { STORAGE = Some(Default::default()) }
     }
 
+    #[export]
     pub fn paused(&self) -> bool {
         let storage = Storage::get();
         storage.paused
     }
 
+    #[export]
     pub fn pause(&mut self) {
         let storage = Storage::get_mut();
         storage.paused = true;
     }
 
+    #[export]
     pub fn unpause(&mut self) {
         let storage = Storage::get_mut();
         storage.paused = false;
