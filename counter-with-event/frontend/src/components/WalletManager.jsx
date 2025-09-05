@@ -81,7 +81,7 @@ const WalletManager = () => {
           )
           : (
             <div className="space-y-2">
-              <div className="stats shadow">
+              <div className="stats shadow-sm">
                 <div className="stat">
                   <div className="stat-title">Connected Account</div>
                   <div className="stat-value text-primary">
@@ -90,7 +90,7 @@ const WalletManager = () => {
                   <div className="stat-desc">{selectedAccount.address}</div>
                 </div>
               </div>
-              <div className="stats shadow">
+              <div className="stats shadow-sm">
                 <div className="stat">
                   <div className="stat-title">Source</div>
                   <div className="stat-value">
@@ -100,7 +100,7 @@ const WalletManager = () => {
                   </div>
                 </div>
               </div>
-              <div className="stats shadow">
+              <div className="stats shadow-sm">
                 <div className="stat">
                   <div className="stat-title">Balance</div>
                   <div className="stat-value">

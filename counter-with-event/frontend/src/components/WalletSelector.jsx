@@ -57,7 +57,7 @@ const WalletSelector = () => {
       </label>
       <div
         tabIndex={0}
-        className="dropdown-content z-[1] menu p-2 shadow bg-base-100 rounded-box w-[28rem]"
+        className="dropdown-content z-1 menu p-2 shadow-sm bg-base-100 rounded-box w-md"
       >
         {selectedAccount && (
           <>
@@ -128,7 +128,7 @@ const WalletSelector = () => {
             <div className="flex justify-between items-center w-full">
               <a
                 onClick={() => handleAccountSelect(account)}
-                className="flex-grow flex items-center justify-between"
+                className="grow flex items-center justify-between"
               >
                 <span>{account.meta.name}</span>
                 <span

@@ -54,7 +54,7 @@ const ThemeSwitcher = (
       </div>
       <div
         tabIndex={0}
-        className={`dropdown-content bg-base-200 text-base-content rounded-box top-px h-[28.6rem] max-h-[calc(100vh-10rem)] w-56 overflow-y-auto border border-white/5 shadow-2xl outline outline-1 outline-black/5 ${contentClasses}`}
+        className={`dropdown-content bg-base-200 text-base-content rounded-box top-px h-[28.6rem] max-h-[calc(100vh-10rem)] w-56 overflow-y-auto border border-white/5 shadow-2xl outline-solid outline-1 outline-black/5 ${contentClasses}`}
       >
         <div className="grid grid-cols-1 gap-3 p-3">
           {themes.map((theme) => (
@@ -80,7 +80,7 @@ const ThemeSwitcher = (
                     >
                       <path d="M20.285 2l-11.285 11.567-5.286-5.011-3.714 3.716 9 8.728 15-15.285z" />
                     </svg>
-                    <span className="flex-grow text-sm">{theme}</span>
+                    <span className="grow text-sm">{theme}</span>
                     <span className="flex h-full shrink-0 flex-wrap gap-1">
                       <span className="bg-primary rounded-badge w-2" />
                       <span className="bg-secondary rounded-badge w-2" />
@@ -116,7 +116,7 @@ const ThemeSwitcher = (
                   <path d="M219,151.83a26,26,0,0,0-36.77,0l-30.43,30.43a26,26,0,0,0,0,36.77L208.76,276a4,4,0,0,0,5.66,0L276,214.42a4,4,0,0,0,0-5.66Z" />
                   <path d="M472.31,405.11,304.24,237a4,4,0,0,0-5.66,0L237,298.58a4,4,0,0,0,0,5.66L405.12,472.31a26,26,0,0,0,36.76,0l30.43-30.43h0A26,26,0,0,0,472.31,405.11Z" />
                 </svg>
-                <div className="flex-grow text-sm font-bold">
+                <div className="grow text-sm font-bold">
                   {t("Make your theme")}!
                 </div>
               </div>

@@ -50,7 +50,7 @@ const AppContent = () => {
         <Sidebar isOpen={isSidebarOpen} toggleSidebar={toggleSidebar} />
       </nav>
 
-      <main className="flex-grow -mt-16 pt-16 shadow-none h-full">
+      <main className="grow -mt-16 pt-16 shadow-none h-full">
         {api
           ? (
             <div className="bg-base-100">

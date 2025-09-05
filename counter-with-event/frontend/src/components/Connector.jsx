@@ -42,7 +42,7 @@ const Connector = () => {
       </label>
       <div
         tabIndex={0}
-        className="dropdown-content z-[1] menu p-2 shadow bg-base-100 rounded-box w-[16rem]"
+        className="dropdown-content z-1 menu p-2 shadow-sm bg-base-100 rounded-box w-[16rem]"
       >
         <div className="p-2">
           <h3 className="font-bold mb-2">RPC URL</h3>

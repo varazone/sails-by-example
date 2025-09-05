@@ -56,7 +56,7 @@ const SailsInteraction = ({ sails }) => {
               placeholder="Program ID"
             />
           </div>
-          <div className="stats shadow">
+          <div className="stats shadow-sm">
             <div className="stat">
               <div className="stat-title">Counter Value</div>
               <div className="stat-value">
