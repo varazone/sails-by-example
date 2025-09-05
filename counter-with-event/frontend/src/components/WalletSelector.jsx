@@ -43,17 +43,17 @@ const WalletSelector = () => {
 
   return (
     <div className="dropdown dropdown-end">
-      <label tabIndex={0} className="btn btn-ghost m-1">
+      <label tabIndex={0} className="btn btn-ghost m-1 flex items-center justify-center">
         {selectedAccount
           ? (
             <>
-              <span className="mr-2">
+              <span className="mx-2">
                 {formatBalanceDisplay(balances[selectedAccount.address])}
               </span>
             </>
           )
-          : <Wallet className="mr-2" size={18} />}
-        {/*<ChevronDown size={18} />*/}
+          : <Wallet size={18} />}
+        {/*<ChevronDown size={12} className="mt-px hidden opacity-60 sm:inline-block" />*/}
       </label>
       <div
         tabIndex={0}

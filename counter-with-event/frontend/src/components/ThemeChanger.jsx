@@ -40,7 +40,7 @@ const ThemeChanger = (
       <div
         tabIndex={0}
         role="button"
-        className={`btn btn-ghost m-1 ${btnClasses}`}
+        className={`btn btn-ghost m-1 flex items-center justify-center ${btnClasses}`}
         aria-label="Change Theme"
       >
         <div className="bg-base-100 group-hover:border-base-content/20 border-base-content/10 grid shrink-0 grid-cols-2 gap-0.5 rounded-md border p-1 transition-colors">

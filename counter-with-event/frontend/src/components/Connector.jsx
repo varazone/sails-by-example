@@ -30,14 +30,14 @@ const Connector = () => {
 
   return (
     <div className="dropdown dropdown-end">
-      <label tabIndex={0} className="btn btn-ghost m-1">
+      <label tabIndex={0} className="btn btn-ghost m-1 flex items-center justify-center">
         {api && blockNumber
           ? (
             <>
-              <span className="mr-2">{blockNumber.toLocaleString()}</span>
+              <span className="mx-2">{blockNumber.toLocaleString()}</span>
             </>
           )
-          : <WifiOff className="mr-2" size={18} />}
+          : <WifiOff size={18} />}
         {/*<ChevronDown size={18} />*/}
       </label>
       <div
