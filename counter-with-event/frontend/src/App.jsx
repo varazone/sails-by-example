@@ -31,6 +31,7 @@ const AppContent = () => {
       (async () => {
         const parser = await SailsIdlParser.new();
         const sails = new Sails(parser);
+        console.log(IDL);
         sails.parseIdl(IDL);
         sails.setProgramId(PROGRAM_ID);
         sails.setApi(api);
