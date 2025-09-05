@@ -25,7 +25,12 @@ const BlockNumber = ({ finalized = false }) => {
         .catch(console.error);
     }
 
-    return () => unsubscribe && unsubscribe();
+    return () => {
+      if (unsubscribe) {
+        unsubscribe();
+        console.log("Unsubscribing bestNumber...");
+      }
+    };
   }, [api, finalized]);
 
   useEffect(() => {
