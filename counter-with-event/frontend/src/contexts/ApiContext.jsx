@@ -29,7 +29,7 @@ export const ApiProvider = ({ children }) => {
   const rpcUrl = searchParams.get("rpc") || storedRpcUrl || DEFAULT_RPC_URL;
 
   const setRpcUrl = (newUrl) => {
-    if (rpcUrl === newUrl) return false;
+    if (apiRef.current && (rpcUrl === newUrl)) return false;
 
     const urlToSet = newUrl || DEFAULT_RPC_URL;
 
@@ -44,6 +44,15 @@ export const ApiProvider = ({ children }) => {
     setStoredRpcUrl(urlToSet);
 
     return true;
+  };
+
+  const disconnect = async () => {
+    if (apiRef.current) {
+      await apiRef.current.disconnect();
+      setApi(null);
+      apiRef.current = null;
+      console.log("API disconnected manually");
+    }
   };
 
   const initApi = async (url) => {
@@ -82,7 +91,7 @@ export const ApiProvider = ({ children }) => {
   }, [rpcUrl]);
 
   return (
-    <ApiContext.Provider value={{ api, initApi, rpcUrl, setRpcUrl }}>
+    <ApiContext.Provider value={{ api, initApi, rpcUrl, setRpcUrl, disconnect }}>
       {children}
     </ApiContext.Provider>
   );

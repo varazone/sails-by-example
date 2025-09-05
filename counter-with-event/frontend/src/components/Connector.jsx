@@ -3,7 +3,7 @@ import { useApi } from "../contexts/ApiContext";
 import { ChevronDown, Wifi, WifiOff } from "lucide-react";
 
 const Connector = () => {
-  const { api, rpcUrl, setRpcUrl } = useApi();
+  const { api, rpcUrl, setRpcUrl, disconnect } = useApi();
   const [blockNumber, setBlockNumber] = useState(null);
   const [inputUrl, setInputUrl] = useState(rpcUrl);
 
@@ -28,6 +28,11 @@ const Connector = () => {
     if (setRpcUrl(inputUrl)) {
       location.reload();
     }
+  };
+
+  const handleDisconnect = async () => {
+    await disconnect();
+    setBlockNumber(null);
   };
 
   return (
@@ -59,10 +64,17 @@ const Connector = () => {
             placeholder="Enter RPC URL"
           />
           <button
-            className="btn btn-primary btn-sm w-full"
+            className="btn btn-primary btn-sm w-full mb-2"
             onClick={handleUpdate}
           >
             Update
+          </button>
+          <button
+            className="btn btn-error btn-sm w-full"
+            onClick={handleDisconnect}
+            disabled={!api}
+          >
+            Disconnect
           </button>
         </div>
       </div>

@@ -24,7 +24,7 @@ const SailsReadWrite = ({ sails }) => {
               target="_blank"
               rel="noopener noreferrer"
               className="inline-block"
-              href={`https://idea.gear-tech.io/programs/${sails.programId}?node=${api.provider.endpoint}`}
+              href={`https://idea.gear-tech.io/programs/${sails.programId}?node=${api?.provider.endpoint}`}
             >
               <ExternalLink size={12} />
             </a>
