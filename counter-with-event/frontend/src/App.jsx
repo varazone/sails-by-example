@@ -1,6 +1,4 @@
-import React, { useEffect, useState } from "react";
-import { Sails } from "sails-js";
-import { SailsIdlParser } from "sails-js-parser";
+import React, { useState } from "react";
 import { useApi } from "./contexts/ApiContext";
 import { useWallet } from "./contexts/WalletContext";
 import NetworkStatus from "./components/NetworkStatus";
@@ -13,35 +11,19 @@ import { IDL, PROGRAM_ID } from "./lib/counter";
 // import { IDL, PROGRAM_ID } from "./lib/lucky-draw";
 // import { IDL, PROGRAM_ID } from "./lib/dns";
 import withProviders from "./withProviders";
+import { useSails } from "./hooks/useSails";
 
 import "./App.css";
 
 const AppContent = () => {
   const { api } = useApi();
   const { selectedAccount } = useWallet();
-  const [sails, setSails] = useState(null);
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
+  const { sails, loading, error } = useSails(IDL, PROGRAM_ID);
 
   const toggleSidebar = () => {
     setIsSidebarOpen(!isSidebarOpen);
   };
-
-  useEffect(() => {
-    if (api) {
-      (async () => {
-        const parser = await SailsIdlParser.new();
-        const sails = new Sails(parser);
-        console.log(IDL);
-        sails.parseIdl(IDL);
-        sails.setProgramId(PROGRAM_ID);
-        sails.setApi(api);
-        setSails(sails);
-
-        window.api = api;
-        window.sails = sails;
-      })();
-    }
-  }, [api]);
 
   return (
     <div className="min-h-screen flex flex-col">
@@ -51,8 +33,21 @@ const AppContent = () => {
       </nav>
 
       <main className="grow -mt-16 pt-16 shadow-none h-full">
-        {api
+        {!api
           ? (
+            <div className="flex items-center justify-center h-[50vh]">
+              <Loader size="lg" />
+            </div>
+          )
+          : error
+          ? (
+            <div className="flex items-center justify-center h-[50vh]">
+              <div className="alert alert-error">
+                Failed to initialize Sails: {error.message}
+              </div>
+            </div>
+          )
+          : (
             <div className="bg-base-100">
               <div className="card-body">
                 <NetworkStatus />
@@ -63,11 +58,11 @@ const AppContent = () => {
                     <SailsProgram sails={sails} />
                   </div>
                 )}
-            </div>
-          )
-          : (
-            <div className="flex items-center justify-center h-[50vh]">
-              <Loader size="lg" />
+              {loading && (
+                <div className="flex items-center justify-center py-8">
+                  <Loader size="md" />
+                </div>
+              )}
             </div>
           )}
       </main>
