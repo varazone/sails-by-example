@@ -24,7 +24,7 @@ const AppContent = () => {
         <Sidebar isOpen={isSidebarOpen} toggleSidebar={toggleSidebar} />
       </nav>
 
-      <main className="grow -mt-16 pt-16 shadow-none h-full">
+      <main className="grow -mt-16 pt-16 shadow-none h-full flex flex-col items-center justify-center">
         <Routes>
           <Route path="/" element={<Home />} />
           <Route path="/counter" element={<Counter />} />
