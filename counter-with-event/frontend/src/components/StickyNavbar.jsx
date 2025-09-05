@@ -28,7 +28,7 @@ import Connector from "./Connector";
 import ThemeChanger from "./ThemeChanger";
 import WalletSelector from "./WalletSelector";
 // import { Menu } from "lucide-react";
-import { Globe, Menu } from "lucide-react";
+import { Globe, Menu, Sailboat } from "lucide-react";
 
 const themes = [
   "light",
@@ -74,7 +74,18 @@ const StickyNavbar = ({ toggleSidebar }) => {
         </button>
       </div>
       <div className="flex-1 hidden sm:block">
-        <a className="btn btn-ghost normal-case text-xl">Scaffold</a>
+        <a
+          href="https://github.com/varazone/scaffold-sails"
+          target="_blank"
+          rel="noopener noreferrer"
+          className="btn btn-ghost"
+        >
+          <Sailboat size={32} />
+          <br />
+          <p className="normal-case text-xl">
+            Scaffold-Sails
+          </p>
+        </a>
       </div>
       <div className="hidden md:flex md:block">
         <Connector />
