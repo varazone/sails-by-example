@@ -23,7 +23,7 @@ const StickyNavbar = () => {
 export default StickyNavbar;
 */
 import React, { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import Connector from "./Connector";
 // import ThemeSwitcher from "./ThemeSwitcher";
 import ThemeChanger from "./ThemeChanger";
@@ -70,6 +70,11 @@ const themes = [
 ];
 
 const StickyNavbar = ({ toggleSidebar }) => {
+  const location = useLocation();
+  const currentPath = location.pathname;
+
+  const isActive = (path) => currentPath === path;
+
   return (
     <div className="navbar bg-base-500 sticky top-0 z-10">
       <div className="flex-none">
@@ -90,15 +95,15 @@ const StickyNavbar = ({ toggleSidebar }) => {
         </Link>
       </div>
       <div className="flex-1 hidden md:flex md:flex-row md:gap-2">
-        <Link to="/counter" className="btn btn-ghost">
+        <Link to="/counter" className={`btn btn-ghost ${isActive("/counter") ? "btn-active" : ""}`}>
           <Hash size={20} />
           <span className="hidden lg:inline">Counter</span>
         </Link>
-        <Link to="/dns" className="btn btn-ghost">
+        <Link to="/dns" className={`btn btn-ghost ${isActive("/dns") ? "btn-active" : ""}`}>
           <Globe2 size={20} />
           <span className="hidden lg:inline">DNS</span>
         </Link>
-        <Link to="/lucky-draw" className="btn btn-ghost">
+        <Link to="/lucky-draw" className={`btn btn-ghost ${isActive("/lucky-draw") ? "btn-active" : ""}`}>
           <Gift size={20} />
           <span className="hidden lg:inline">Lucky Draw</span>
         </Link>
