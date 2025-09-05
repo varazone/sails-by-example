@@ -2,6 +2,7 @@ import React, { useEffect } from "react";
 import { themeChange } from "theme-change";
 import { useTranslation } from "react-i18next"; // Assuming you're using react-i18next for translations
 import { SwatchBook } from "lucide-react";
+import useLocalStorageState from "use-local-storage-state";
 
 const ThemeChanger = (
   {
@@ -12,10 +13,24 @@ const ThemeChanger = (
   },
 ) => {
   const { t } = useTranslation();
+  const [currentTheme, setCurrentTheme] = useLocalStorageState("theme", {
+    defaultValue: () => {
+      const prefersDark =
+        window.matchMedia("(prefers-color-scheme: dark)").matches;
+      return prefersDark ? "dark" : "light";
+    },
+  });
 
   useEffect(() => {
     themeChange(false);
-  }, []);
+    // Set the initial theme from localStorage
+    document.querySelector("html").setAttribute("data-theme", currentTheme);
+  }, [currentTheme]);
+
+  const handleThemeChange = (theme) => {
+    setCurrentTheme(theme);
+    document.querySelector("html").setAttribute("data-theme", theme);
+  };
 
   return (
     <div
@@ -25,12 +40,10 @@ const ThemeChanger = (
       <div
         tabIndex={0}
         role="button"
-        className={`btn group btn-sm gap-1.5 px-1.5 ${btnClasses}`}
+        className={`btn btn-ghost m-1 ${btnClasses}`}
         aria-label="Change Theme"
       >
-        <div
-          className="bg-base-100 group-hover:border-base-content/20 border-base-content/10 grid shrink-0 grid-cols-2 gap-0.5 rounded-md border p-1 transition-colors"
-        >
+        <div className="bg-base-100 group-hover:border-base-content/20 border-base-content/10 grid shrink-0 grid-cols-2 gap-0.5 rounded-md border p-1 transition-colors">
           <div className="bg-base-content size-1 rounded-full"></div>
           <div className="bg-primary size-1 rounded-full"></div>
           <div className="bg-secondary size-1 rounded-full"></div>
@@ -51,10 +64,13 @@ const ThemeChanger = (
         className={`dropdown-content bg-base-200 text-base-content rounded-box top-px h-[30.5rem] max-h-[calc(100vh-8.6rem)] overflow-y-auto border-[length:var(--border)] border-white/5 shadow-2xl outline-[length:var(--border)] outline-black/5 ${contentClasses}`}
       >
         <ul className="menu w-56">
-          <li className="menu-title text-xs">Theme</li>
+          <li className="menu-title text-xs">{t("Theme")}</li>
           {themes.map((theme) => (
             <li key={theme}>
-              <button className="gap-3 px-2" data-set-theme={theme} data-act-class="[&_svg]:visible">
+              <button
+                className="gap-3 px-2"
+                onClick={() => handleThemeChange(theme)}
+              >
                 <div
                   data-theme={theme}
                   className="bg-base-100 grid shrink-0 grid-cols-2 gap-0.5 rounded-md p-1 shadow-sm"
@@ -99,7 +115,9 @@ const ThemeChanger = (
                 <path d="M219,151.83a26,26,0,0,0-36.77,0l-30.43,30.43a26,26,0,0,0,0,36.77L208.76,276a4,4,0,0,0,5.66,0L276,214.42a4,4,0,0,0,0-5.66Z" />
                 <path d="M472.31,405.11,304.24,237a4,4,0,0,0-5.66,0L237,298.58a4,4,0,0,0,0,5.66L405.12,472.31a26,26,0,0,0,36.76,0l30.43-30.43h0A26,26,0,0,0,472.31,405.11Z" />
               </svg>
-              <div className="grow text-sm font-bold">{t("Make your theme")}!</div>
+              <div className="grow text-sm font-bold">
+                {t("Make your theme")}!
+              </div>
             </a>
           </li>
         </ul>
