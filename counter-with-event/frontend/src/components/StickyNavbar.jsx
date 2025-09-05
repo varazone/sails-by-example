@@ -60,6 +60,12 @@ const themes = [
   "night",
   "coffee",
   "winter",
+  "dim",
+  "nord",
+  "sunset",
+  "caramellatte",
+  "abyss",
+  "silk",
 ];
 
 const StickyNavbar = ({ toggleSidebar }) => {
