@@ -23,12 +23,13 @@ const StickyNavbar = () => {
 export default StickyNavbar;
 */
 import React, { useState } from "react";
+import { Link } from "react-router-dom";
 import Connector from "./Connector";
 // import ThemeSwitcher from "./ThemeSwitcher";
 import ThemeChanger from "./ThemeChanger";
 import WalletSelector from "./WalletSelector";
 // import { Menu } from "lucide-react";
-import { Globe, Menu, Sailboat } from "lucide-react";
+import { Globe, Menu, Sailboat, Hash, Globe2, Gift } from "lucide-react";
 
 const themes = [
   "light",
@@ -80,18 +81,27 @@ const StickyNavbar = ({ toggleSidebar }) => {
         </button>
       </div>
       <div className="flex-1 hidden sm:block">
-        <a
-          href="https://github.com/varazone/scaffold-sails"
-          target="_blank"
-          rel="noopener noreferrer"
-          className="btn btn-ghost"
-        >
+        <Link to="/" className="btn btn-ghost">
           <Sailboat size={32} />
           <br />
           <p className="normal-case text-xl">
             Scaffold-Sails
           </p>
-        </a>
+        </Link>
+      </div>
+      <div className="flex-1 hidden md:flex md:flex-row md:gap-2">
+        <Link to="/counter" className="btn btn-ghost">
+          <Hash size={20} />
+          <span className="hidden lg:inline">Counter</span>
+        </Link>
+        <Link to="/dns" className="btn btn-ghost">
+          <Globe2 size={20} />
+          <span className="hidden lg:inline">DNS</span>
+        </Link>
+        <Link to="/lucky-draw" className="btn btn-ghost">
+          <Gift size={20} />
+          <span className="hidden lg:inline">Lucky Draw</span>
+        </Link>
       </div>
       <div className="hidden md:flex md:block">
         <Connector />
