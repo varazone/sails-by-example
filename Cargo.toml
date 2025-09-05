@@ -14,6 +14,7 @@ members = [
     "ss58",
     "mixin",
     "pausable-ownable-counter",
+    "vft",
 ]
 exclude = [
     "gear-erc20/app",

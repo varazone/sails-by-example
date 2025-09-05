@@ -1,0 +1,21 @@
+constructor {
+  New : (name: str, symbol: str, decimals: u8);
+};
+
+service Vft {
+  Approve : (spender: actor_id, value: u256) -> bool;
+
+  events {
+    Approval: struct {
+      owner: actor_id,
+      spender: actor_id,
+      value: u256,
+    };
+    Transfer: struct {
+      from: actor_id,
+      to: actor_id,
+      value: u256,
+    };
+  }
+};
+

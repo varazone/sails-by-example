@@ -11,6 +11,7 @@ log.workspace = true
 sails-rs.workspace = true
 parity-scale-codec.workspace = true
 scale-info.workspace = true
+vft-service.workspace = true
 
 [dev-dependencies]
 env_logger.workspace = true
