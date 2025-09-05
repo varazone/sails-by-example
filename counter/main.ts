@@ -29,7 +29,7 @@ async function main() {
 
   let alice = await GearKeyring.fromSuri("//Alice");
 
-  let x = counter.newCtorFromCode(wasm).withAccount(alice);
+  let x = counter.newCtorFromCode(wasm).withAccount(alice).withValue(0n);
 
   console.log(x);
 
@@ -41,9 +41,10 @@ async function main() {
 
   // let gas = (BigInt(api.blockGasLimit.toString()));
   console.log("calculate");
-  await x.calculateGas();
+  // await x.calculateGas();
   // await x.withGas(gas)
-  // console.log(gas);
+  x.withGas('max')
+  console.log(x.gasInfo);
 
   let resp = await x.signAndSend();
 

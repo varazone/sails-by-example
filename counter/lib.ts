@@ -1,33 +1,52 @@
-import { decodeAddress, GearApi } from "@gear-js/api";
+import {
+  BaseGearProgram,
+  decodeAddress,
+  GearApi,
+  HexString,
+} from "@gear-js/api";
 import { TypeRegistry } from "@polkadot/types";
-import { TransactionBuilder } from "sails-js";
+import { throwOnErrorReply, TransactionBuilder } from "sails-js";
 
 export class CounterProgram {
   public readonly registry: TypeRegistry;
   public readonly counter: Counter;
+  private _program: BaseGearProgram;
 
-  constructor(public api: GearApi, public programId?: `0x${string}`) {
+  constructor(public api: GearApi, programId?: `0x${string}`) {
     const types: Record<string, any> = {};
 
     this.registry = new TypeRegistry();
     this.registry.setKnownTypes({ types });
     this.registry.register(types);
+    if (programId) {
+      this._program = new BaseGearProgram(programId, api);
+    }
 
     this.counter = new Counter(this);
   }
 
-  newCtorFromCode(code: Uint8Array | Buffer): TransactionBuilder<null> {
+  public get programId(): `0x${string}` {
+    if (!this._program) throw new Error(`Program ID is not set`);
+    return this._program.id;
+  }
+
+  newCtorFromCode(
+    code: Uint8Array | Buffer | HexString,
+  ): TransactionBuilder<null> {
     const builder = new TransactionBuilder<null>(
       this.api,
       this.registry,
       "upload_program",
+      undefined,
       "New",
-      "String",
+      undefined,
+      undefined,
       "String",
       code,
+      async (programId) => {
+        this._program = await BaseGearProgram.new(programId, this.api);
+      },
     );
-
-    this.programId = builder.programId;
     return builder;
   }
 
@@ -36,13 +55,16 @@ export class CounterProgram {
       this.api,
       this.registry,
       "create_program",
+      undefined,
       "New",
-      "String",
+      undefined,
+      undefined,
       "String",
       codeId,
+      async (programId) => {
+        this._program = await BaseGearProgram.new(programId, this.api);
+      },
     );
-
-    this.programId = builder.programId;
     return builder;
   }
 }
@@ -56,8 +78,10 @@ export class Counter {
       this._program.api,
       this._program.registry,
       "send_message",
-      ["Counter", "Inc"],
-      "(String, String)",
+      "Counter",
+      "Inc",
+      undefined,
+      undefined,
       "Null",
       this._program.programId,
     );
@@ -78,13 +102,14 @@ export class Counter {
       payload,
       value: value || 0,
       gasLimit: this._program.api.blockGasLimit.toBigInt(),
-      at: atBlock || null,
+      at: atBlock,
     });
-    if (!reply.code.isSuccess) {
-      throw new Error(
-        this._program.registry.createType("String", reply.payload).toString(),
-      );
-    }
+    throwOnErrorReply(
+      reply.code,
+      reply.payload.toU8a(),
+      this._program.api.specVersion,
+      this._program.registry,
+    );
     const result = this._program.registry.createType(
       "(String, String, i32)",
       reply.payload,
