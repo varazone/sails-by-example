@@ -1,7 +1,7 @@
-@use '@/shared/assets/styles/_shared.scss' as *;
-@use '@/shared/assets/styles/_mixins.scss' as *;
-@use '@/shared/assets/styles/_variables.scss' as *;
-@use '@/shared/assets/styles/_animations.scss' as *;
+@use "@/shared/assets/styles/_shared.scss" as *;
+@use "@/shared/assets/styles/_mixins.scss" as *;
+@use "@/shared/assets/styles/_variables.scss" as *;
+@use "@/shared/assets/styles/_animations.scss" as *;
 
 .gasInfoCard {
   @include fadeAppear();
@@ -20,7 +20,7 @@
   display: flex;
   align-items: center;
   color: $textColor;
-  font-family: 'Kanit';
+  font-family: "Kanit";
   line-height: toRem(26);
 
   .text {

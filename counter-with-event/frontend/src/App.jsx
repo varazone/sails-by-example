@@ -18,21 +18,21 @@ const AppContent = () => {
   };
 
   return (
-      <div className="min-h-screen flex flex-col">
-        <nav className="p-4 h-16 sticky navbar top-0 z-50 glass">
-          <StickyNavbar toggleSidebar={toggleSidebar} />
-          <Sidebar isOpen={isSidebarOpen} toggleSidebar={toggleSidebar} />
-        </nav>
+    <div className="min-h-screen flex flex-col">
+      <nav className="p-4 h-16 sticky navbar top-0 z-50 glass">
+        <StickyNavbar toggleSidebar={toggleSidebar} />
+        <Sidebar isOpen={isSidebarOpen} toggleSidebar={toggleSidebar} />
+      </nav>
 
-        <main className="grow -mt-16 pt-16 shadow-none h-full">
-          <Routes>
-            <Route path="/" element={<Home />} />
-            <Route path="/counter" element={<Counter />} />
-            <Route path="/dns" element={<DNS />} />
-            <Route path="/lucky-draw" element={<LuckyDraw />} />
-          </Routes>
-        </main>
-      </div>
+      <main className="grow -mt-16 pt-16 shadow-none h-full">
+        <Routes>
+          <Route path="/" element={<Home />} />
+          <Route path="/counter" element={<Counter />} />
+          <Route path="/dns" element={<DNS />} />
+          <Route path="/lucky-draw" element={<LuckyDraw />} />
+        </Routes>
+      </main>
+    </div>
   );
 };
 

@@ -1,7 +1,7 @@
-@use '@/shared/assets/styles/_mixins.scss' as *;
-@use '@/shared/assets/styles/_shared.scss' as *;
-@use '@/shared/assets/styles/_variables.scss' as *;
-@use '@/shared/assets/styles/_animations.scss' as *;
+@use "@/shared/assets/styles/_mixins.scss" as *;
+@use "@/shared/assets/styles/_shared.scss" as *;
+@use "@/shared/assets/styles/_variables.scss" as *;
+@use "@/shared/assets/styles/_animations.scss" as *;
 
 .wrapper {
   align-items: center;
@@ -9,10 +9,10 @@
 
 %labelStyles {
   color: $gray700;
-  font-family: 'Kanit';
+  font-family: "Kanit";
 
   &::after {
-    content: ':';
+    content: ":";
   }
 }
 
@@ -56,7 +56,7 @@
 
 .preformatted {
   display: inline;
-  font-family: 'Kanit';
+  font-family: "Kanit";
   font-size: $fontSize;
   font-weight: 400;
   line-height: toRem(20);
@@ -76,6 +76,6 @@
   margin-bottom: 30px;
 
   &::after {
-    content: '';
+    content: "";
   }
 }

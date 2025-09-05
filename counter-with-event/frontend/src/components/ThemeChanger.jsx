@@ -1,7 +1,7 @@
 import React, { useEffect } from "react";
 import { themeChange } from "theme-change";
 import { useTranslation } from "react-i18next"; // Assuming you're using react-i18next for translations
-import { Wand, ChevronDown, Check } from "lucide-react";
+import { Check, ChevronDown, Wand } from "lucide-react";
 import useLocalStorageState from "use-local-storage-state";
 
 const ThemeChanger = (
@@ -73,7 +73,13 @@ const ThemeChanger = (
                   <div className="bg-accent size-1 rounded-full"></div>
                 </div>
                 <div className="w-32 truncate">{theme}</div>
-                <Check size={12} strokeWidth={3} className={`shrink-0 ${currentTheme === theme ? '' : 'invisible'}`} />
+                <Check
+                  size={12}
+                  strokeWidth={3}
+                  className={`shrink-0 ${
+                    currentTheme === theme ? "" : "invisible"
+                  }`}
+                />
               </button>
             </li>
           ))}

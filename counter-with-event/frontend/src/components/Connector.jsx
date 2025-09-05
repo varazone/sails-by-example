@@ -27,12 +27,15 @@ const Connector = () => {
   const handleUpdate = () => {
     if (setRpcUrl(inputUrl)) {
       location.reload();
-    };
+    }
   };
 
   return (
     <div className="dropdown dropdown-end">
-      <label tabIndex={0} className="btn btn-ghost m-1 flex items-center justify-center">
+      <label
+        tabIndex={0}
+        className="btn btn-ghost m-1 flex items-center justify-center"
+      >
         {api && blockNumber
           ? (
             <>

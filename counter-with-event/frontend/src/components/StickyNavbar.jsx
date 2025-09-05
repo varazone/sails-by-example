@@ -29,7 +29,7 @@ import Connector from "./Connector";
 import ThemeChanger from "./ThemeChanger";
 import WalletSelector from "./WalletSelector";
 // import { Menu } from "lucide-react";
-import { Globe, Menu, Sailboat, Hash, Globe2, Gift } from "lucide-react";
+import { Gift, Globe, Globe2, Hash, Menu, Sailboat } from "lucide-react";
 
 const themes = [
   "light",
