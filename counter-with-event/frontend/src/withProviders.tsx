@@ -1,5 +1,5 @@
 import React from "react";
-import { HashRouter } from "react-router-dom";
+import { BrowserRouter } from "react-router-dom";
 import { ApiProvider } from "./contexts/ApiContext";
 import { WalletProvider } from "./contexts/WalletContext";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
@@ -25,7 +25,7 @@ const QueryProvider = ({ children }: Props) => (
 );
 
 const withProviders = (Component: React.ComponentType) => (props: any) => (
-  <HashRouter>
+  <BrowserRouter>
     <QueryProvider>
       <ApiProvider>
         <WalletProvider>
@@ -33,7 +33,7 @@ const withProviders = (Component: React.ComponentType) => (props: any) => (
         </WalletProvider>
       </ApiProvider>
     </QueryProvider>
-  </HashRouter>
+  </BrowserRouter>
 );
 
 export default withProviders;
