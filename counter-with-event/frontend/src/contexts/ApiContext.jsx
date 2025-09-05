@@ -29,6 +29,8 @@ export const ApiProvider = ({ children }) => {
   const rpcUrl = searchParams.get("rpc") || storedRpcUrl || DEFAULT_RPC_URL;
 
   const setRpcUrl = (newUrl) => {
+    if (rpcUrl === newUrl) return false;
+
     const urlToSet = newUrl || DEFAULT_RPC_URL;
 
     const newSearchParams = new URLSearchParams(searchParams);
@@ -40,6 +42,8 @@ export const ApiProvider = ({ children }) => {
 
     setSearchParams(newSearchParams);
     setStoredRpcUrl(urlToSet);
+
+    return true;
   };
 
   const initApi = async (url) => {
@@ -49,6 +53,7 @@ export const ApiProvider = ({ children }) => {
         console.log("Disconnected previous API instance");
       }
 
+      console.log("⚙️ Connecting to", rpcUrl);
       const newApi = await GearApi.create({
         providerAddress: url,
       });
@@ -63,7 +68,6 @@ export const ApiProvider = ({ children }) => {
   };
 
   useEffect(() => {
-    console.log("⚙️ Connecting to", rpcUrl);
     initApi(rpcUrl);
 
     return () => {

@@ -25,7 +25,9 @@ const Connector = () => {
   }, [api]);
 
   const handleUpdate = () => {
-    setRpcUrl(inputUrl);
+    if (setRpcUrl(inputUrl)) {
+      location.reload();
+    };
   };
 
   return (
