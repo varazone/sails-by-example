@@ -1,4 +1,9 @@
-import { decodeAddress, GearApi, HexString, Program } from "@gear-js/api";
+import {
+  BaseGearProgram,
+  decodeAddress,
+  GearApi,
+  HexString,
+} from "@gear-js/api";
 import { TypeRegistry } from "@polkadot/types";
 import {
   getFnNamePrefix,
@@ -11,7 +16,7 @@ import {
 export class CounterProgram {
   public readonly registry: TypeRegistry;
   public readonly counter: Counter;
-  private _program: Program;
+  private _program: BaseGearProgram;
 
   constructor(public api: GearApi, programId?: `0x${string}`) {
     const types: Record<string, any> = {};
@@ -20,7 +25,7 @@ export class CounterProgram {
     this.registry.setKnownTypes({ types });
     this.registry.register(types);
     if (programId) {
-      this._program = new Program(programId, api);
+      this._program = new BaseGearProgram(programId, api);
     }
 
     this.counter = new Counter(this);
@@ -42,12 +47,14 @@ export class CounterProgram {
       this.api,
       this.registry,
       "upload_program",
-      ["New", initial_value],
-      "(String, i32)",
+      undefined,
+      "New",
+      initial_value,
+      "i32",
       "String",
       code,
       async (programId) => {
-        this._program = await Program.new(programId, this.api);
+        this._program = await BaseGearProgram.new(programId, this.api);
       },
     );
     return builder;
@@ -61,12 +68,14 @@ export class CounterProgram {
       this.api,
       this.registry,
       "create_program",
-      ["New", initial_value],
-      "(String, i32)",
+      undefined,
+      "New",
+      initial_value,
+      "i32",
       "String",
       codeId,
       async (programId) => {
-        this._program = await Program.new(programId, this.api);
+        this._program = await BaseGearProgram.new(programId, this.api);
       },
     );
     return builder;
@@ -85,8 +94,10 @@ export class Counter {
       this._program.api,
       this._program.registry,
       "send_message",
-      ["Counter", "Inc"],
-      "(String, String)",
+      "Counter",
+      "Inc",
+      undefined,
+      undefined,
       "i32",
       this._program.programId,
     );

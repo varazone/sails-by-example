@@ -48,11 +48,12 @@ sails.setApi(api);
 let tx = sails.ctors.New.fromCode(wasm, ...(deploy.args ?? [])).withAccount(
   alice,
   { nonce: -1 },
-);
+).withValue(0n);
 let programId = tx.programId;
 console.log("tx:", { programId });
 
-await tx.calculateGas();
+// await tx.calculateGas();
+tx.withGas('max');
 let resp = await tx.signAndSend();
 console.log("resp:", resp);
 

@@ -3,7 +3,7 @@ basedir: ../target/wasm32-gear
 basename: counter_with_event
 build:
   release:
-    code_id: "0x5890d1dfac9b46a3aa498474f57760cc419664569c1967e3e82b4507a8ce50a1"
+    code_id: "0x6403520e1b578c1f56924c10e900f3b73854e9af9c1b548a3c73d2f8a37b5bd7"
   debug:
     code_id: "0xbbfbf45097627685bed067c31667bd3757a47eaf034f539d88ed2186844dab51"
 deploy:
@@ -27,6 +27,6 @@ deploy:
 
   args:
     - 42
-  code_id: "0x5890d1dfac9b46a3aa498474f57760cc419664569c1967e3e82b4507a8ce50a1"
-  program_id: "0xfc9c62661d6af691f53872f9b485f457315844eeb93ff0f6a54bfcc3694edd46"
+  code_id: "0x6403520e1b578c1f56924c10e900f3b73854e9af9c1b548a3c73d2f8a37b5bd7"
+  program_id: "0x761ed1caaadbbca717bd5ad77c997ec15d3db41b9e059004373f2d4ce7917289"
   rpc: wss://testnet.vara.network
