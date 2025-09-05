@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useApi } from "../contexts/ApiContext";
 import { Settings } from "lucide-react";
+import LoadingAPI from "./LoadingAPI";
 
 const NodeInfo = () => {
   const { api } = useApi();
@@ -25,7 +26,7 @@ const NodeInfo = () => {
   }, [api]);
 
   if (!api) {
-    return <div className="text-center p-4">Loading API...</div>;
+    return <LoadingAPI />;
   }
 
   return (

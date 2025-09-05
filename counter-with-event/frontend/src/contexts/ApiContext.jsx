@@ -91,7 +91,9 @@ export const ApiProvider = ({ children }) => {
   }, [rpcUrl]);
 
   return (
-    <ApiContext.Provider value={{ api, initApi, rpcUrl, setRpcUrl, disconnect }}>
+    <ApiContext.Provider
+      value={{ api, initApi, rpcUrl, setRpcUrl, disconnect }}
+    >
       {children}
     </ApiContext.Provider>
   );

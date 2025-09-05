@@ -95,15 +95,28 @@ const StickyNavbar = ({ toggleSidebar }) => {
         </Link>
       </div>
       <div className="flex-1 hidden md:flex md:flex-row md:gap-2">
-        <Link to="/counter" className={`btn btn-ghost ${isActive("/counter") ? "btn-active" : ""}`}>
+        <Link
+          to="/counter"
+          className={`btn btn-ghost ${
+            isActive("/counter") ? "btn-active" : ""
+          }`}
+        >
           <Hash size={20} />
           <span className="hidden lg:inline">Counter</span>
         </Link>
-        <Link to="/dns" className={`btn btn-ghost ${isActive("/dns") ? "btn-active" : ""}`}>
+        <Link
+          to="/dns"
+          className={`btn btn-ghost ${isActive("/dns") ? "btn-active" : ""}`}
+        >
           <Globe2 size={20} />
           <span className="hidden lg:inline">DNS</span>
         </Link>
-        <Link to="/lucky-draw" className={`btn btn-ghost ${isActive("/lucky-draw") ? "btn-active" : ""}`}>
+        <Link
+          to="/lucky-draw"
+          className={`btn btn-ghost ${
+            isActive("/lucky-draw") ? "btn-active" : ""
+          }`}
+        >
           <Gift size={20} />
           <span className="hidden lg:inline">Lucky Draw</span>
         </Link>

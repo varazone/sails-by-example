@@ -1,16 +1,20 @@
 import React from "react";
 import { useSails } from "../hooks/useSails";
+import { useApi } from "../contexts/ApiContext";
 import { IDL, PROGRAM_ID } from "../lib/lucky-draw";
 import SailsProgram from "../components/SailsProgram";
-import Loader from "../components/Loader";
+import LoadingAPI from "../components/LoadingAPI";
 
 const LuckyDraw = () => {
+  const { api } = useApi();
   const { sails, loading, error } = useSails(IDL, PROGRAM_ID);
 
   return (
     <div className="min-h-screen flex flex-col">
       <main className="grow">
-        {error
+        {!api
+          ? <LoadingAPI />
+          : error
           ? (
             <div className="flex items-center justify-center h-[50vh]">
               <div className="alert alert-error">
@@ -23,11 +27,6 @@ const LuckyDraw = () => {
               {sails && (
                 <div className="card-body">
                   <SailsProgram sails={sails} />
-                </div>
-              )}
-              {loading && (
-                <div className="flex items-center justify-center py-8">
-                  <Loader size="md" />
                 </div>
               )}
             </div>
