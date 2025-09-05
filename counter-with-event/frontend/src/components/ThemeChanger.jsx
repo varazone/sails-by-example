@@ -73,7 +73,7 @@ const ThemeChanger = (
                   <div className="bg-accent size-1 rounded-full"></div>
                 </div>
                 <div className="w-32 truncate">{theme}</div>
-                <Check size={12} className="invisible shrink-0" />
+                <Check size={12} strokeWidth={3} className={`shrink-0 ${currentTheme === theme ? '' : 'invisible'}`} />
               </button>
             </li>
           ))}
