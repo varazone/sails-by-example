@@ -43,7 +43,7 @@ const BlockNumber = ({ finalized = false }) => {
   }
 
   return (
-    <div className="card w-80 bg-base-100 shadow-md">
+    <div className="card bg-base-200">
       <div className="card-body">
         <h2 className="card-title text-lg">
           {finalized ? "Finalized" : "Current"} Block

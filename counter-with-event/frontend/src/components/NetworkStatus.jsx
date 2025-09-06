@@ -4,7 +4,7 @@ import BlockNumber from "./BlockNumber";
 
 const NetworkStatus = () => {
   return (
-    <div className="flex flex-wrap gap-4 justify-start">
+    <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
       <NodeInfo />
       <BlockNumber />
       <BlockNumber finalized />
