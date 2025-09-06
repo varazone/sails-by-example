@@ -34,40 +34,37 @@ const Home = () => {
 
         <div className="grow w-full mt-16 px-8 py-12">
           <div className="flex justify-center items-center gap-8 flex-col md:flex-row">
-            <div className="flex flex-col bg-base-100 px-8 py-8 text-center items-center w-64 h-48 rounded-3xl shadow-md">
-              <Bug size={24} className="h-8 w-8 text-primary mb-4" />
+            <div className="flex flex-col bg-base-100 px-8 py-8 text-center items-center w-full md:w-64 lg:w-80 h-48 rounded-3xl shadow-md">
+              <Bug size={32} className="h-16 w-16 text-primary mb-4" />
               <p>
-                Debug and monitor network status in the{" "}
                 <Link to="/debug" className="link link-primary">
                   Debug
                 </Link>{" "}
-                tab.
+                and monitor network status.
               </p>
             </div>
 
-            <div className="flex flex-col bg-base-100 px-8 py-8 text-center items-center w-64 h-48 rounded-3xl shadow-md">
-              <MessageSquare size={24} className="h-8 w-8 text-primary mb-4" />
+            <div className="flex flex-col bg-base-100 px-8 py-8 text-center items-center w-full md:w-64 lg:w-80 h-48 rounded-3xl shadow-md">
+              <MessageSquare size={32} className="h-16 w-16 text-primary mb-4" />
               <p>
-                Chat with built-in assistant in the{" "}
                 <Link to="/chat" className="link link-primary">
                   Chat
                 </Link>{" "}
-                tab.
+                with built-in AI assistant.
               </p>
             </div>
 
-            <div className="flex flex-col bg-base-100 px-8 py-8 text-center items-center w-64 h-48 rounded-3xl shadow-md">
-              <Code size={24} className="h-8 w-8 text-primary mb-4" />
+            <div className="flex flex-col bg-base-100 px-8 py-8 text-center items-center w-full md:w-64 lg:w-80 h-48 rounded-3xl shadow-md">
+              <Code size={32} className="h-16 w-16 text-primary mb-4" />
               <p>
-                Interact with programs using automatically generated UI in the{" "}
+                Interact with example programs:{" "}
                 <Link to="/counter" className="link link-primary">
                   Counter
-                </Link>{" "}
-                and{" "}
+                </Link>{", "}
+                {" "}
                 <Link to="/dns" className="link link-primary">
                   DNS
-                </Link>{" "}
-                tabs.
+                </Link>{"."}
               </p>
             </div>
           </div>
