@@ -87,7 +87,9 @@ const StickyNavbar = ({ toggleSidebar }) => {
       </div>
       <div className="flex-1 hidden sm:block">
         <Link to="/" className="btn btn-ghost">
-          <Sailboat size={32} />
+          <div className="bg-black/75 rounded-lg p-1">
+            <Sailboat size={32} className="text-white" />
+          </div>
           <br />
           <p className="normal-case text-xl">
             Scaffold-Sails
