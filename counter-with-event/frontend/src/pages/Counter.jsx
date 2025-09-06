@@ -23,7 +23,7 @@ const Counter = () => {
             </div>
           )
           : (
-            <div className="bg-base-100">
+            <div className="bg-base-100 p-6">
               {sails && (
                 <div className="card-body">
                   <SailsProgram sails={sails} />
