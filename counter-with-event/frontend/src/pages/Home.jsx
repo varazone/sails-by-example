@@ -13,7 +13,7 @@ const Home = () => {
         <div className="px-5">
           <h1 className="text-center">
             <span className="block text-2xl mb-2">Welcome to</span>
-            <span className="block text-4xl font-bold">Scaffold Sails</span>
+            <span className="block text-4xl font-bold">Scaffold-Sails</span>
           </h1>
           
           {selectedAccount && (
