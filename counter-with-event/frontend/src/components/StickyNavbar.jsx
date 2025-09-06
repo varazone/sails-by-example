@@ -29,7 +29,7 @@ import Connector from "./Connector";
 import ThemeChanger from "./ThemeChanger";
 import WalletSelector from "./WalletSelector";
 // import { Menu } from "lucide-react";
-import { Gift, Globe, Globe2, Hash, Menu, Sailboat } from "lucide-react";
+import { Bug, Gift, Globe, Globe2, Hash, Menu, MessageSquare, Sailboat } from "lucide-react";
 
 const themes = [
   "light",
@@ -76,7 +76,7 @@ const StickyNavbar = ({ toggleSidebar }) => {
   const isActive = (path) => currentPath === path;
 
   return (
-    <div className="navbar bg-base-500 sticky top-0 z-10">
+    <div className="navbar bg-base-500 sticky top-0 z-10 md:flex md:flex-row w-full">
       <div className="flex-none">
         <button
           className="btn btn-square btn-ghost md:hidden"
@@ -96,7 +96,27 @@ const StickyNavbar = ({ toggleSidebar }) => {
           </p>
         </Link>
       </div>
+      <div className="flex-1 hidden md:flex md:flex-row justify-center">
+        <Link
+          to="/debug"
+          className={`btn btn-ghost ${
+            isActive("/debug") ? "btn-active" : ""
+          }`}
+        >
+          <Bug size={20} />
+          <span className="hidden lg:inline">Debug</span>
+        </Link>
+      </div>
       <div className="flex-1 hidden md:flex md:flex-row md:gap-2">
+        <Link
+          to="/chat"
+          className={`btn btn-ghost ${
+            isActive("/chat") ? "btn-active" : ""
+          }`}
+        >
+          <MessageSquare size={20} />
+          <span className="hidden lg:inline">Chat</span>
+        </Link>
         <Link
           to="/counter"
           className={`btn btn-ghost ${
@@ -112,15 +132,6 @@ const StickyNavbar = ({ toggleSidebar }) => {
         >
           <Globe2 size={20} />
           <span className="hidden lg:inline">DNS</span>
-        </Link>
-        <Link
-          to="/lucky-draw"
-          className={`btn btn-ghost ${
-            isActive("/lucky-draw") ? "btn-active" : ""
-          }`}
-        >
-          <Gift size={20} />
-          <span className="hidden lg:inline">Lucky Draw</span>
         </Link>
       </div>
       <div className="hidden md:flex md:block">

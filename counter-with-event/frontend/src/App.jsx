@@ -4,8 +4,11 @@ import Home from "./pages/Home";
 import Counter from "./pages/Counter";
 import DNS from "./pages/DNS";
 import LuckyDraw from "./pages/LuckyDraw";
+import Chat from "./pages/Chat";
+import Debug from "./pages/Debug";
 import StickyNavbar from "./components/StickyNavbar";
 import Sidebar from "./components/Sidebar";
+import Footer from "./components/Footer";
 import { useState } from "react";
 import withProviders from "./withProviders";
 import "./App.css";
@@ -24,14 +27,18 @@ const AppContent = () => {
         <Sidebar isOpen={isSidebarOpen} toggleSidebar={toggleSidebar} />
       </nav>
 
-      <main className="grow -mt-16 pt-16 shadow-none h-full flex flex-col items-center justify-center">
+      <main className="grow -mt-16 pt-16 shadow-none flex flex-col items-center justify-center">
         <Routes>
           <Route path="/" element={<Home />} />
+          <Route path="/chat" element={<Chat />} />
           <Route path="/counter" element={<Counter />} />
           <Route path="/dns" element={<DNS />} />
           <Route path="/lucky-draw" element={<LuckyDraw />} />
+          <Route path="/debug" element={<Debug />} />
         </Routes>
       </main>
+
+      <Footer />
     </div>
   );
 };
