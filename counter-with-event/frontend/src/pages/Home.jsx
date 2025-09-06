@@ -35,7 +35,7 @@ const Home = () => {
         <div className="grow w-full mt-16 px-8 py-12">
           <div className="flex justify-center items-center gap-8 flex-col md:flex-row">
             <div className="flex flex-col bg-base-100 px-8 py-8 text-center items-center w-64 h-48 rounded-3xl shadow-md">
-              <Bug className="h-8 w-8 text-primary mb-4" />
+              <Bug size={24} className="h-8 w-8 text-primary mb-4" />
               <p>
                 Debug and monitor network status in the{" "}
                 <Link to="/debug" className="link link-primary">
@@ -46,7 +46,7 @@ const Home = () => {
             </div>
 
             <div className="flex flex-col bg-base-100 px-8 py-8 text-center items-center w-64 h-48 rounded-3xl shadow-md">
-              <MessageSquare className="h-8 w-8 text-primary mb-4" />
+              <MessageSquare size={24} className="h-8 w-8 text-primary mb-4" />
               <p>
                 Chat with built-in assistant in the{" "}
                 <Link to="/chat" className="link link-primary">
@@ -57,7 +57,7 @@ const Home = () => {
             </div>
 
             <div className="flex flex-col bg-base-100 px-8 py-8 text-center items-center w-64 h-48 rounded-3xl shadow-md">
-              <Code className="h-8 w-8 text-primary mb-4" />
+              <Code size={24} className="h-8 w-8 text-primary mb-4" />
               <p>
                 Interact with programs using automatically generated UI in the{" "}
                 <Link to="/counter" className="link link-primary">
