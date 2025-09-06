@@ -15,9 +15,7 @@ const ThemeChanger = (
   const { t } = useTranslation();
   const [currentTheme, setCurrentTheme] = useLocalStorageState("theme", {
     defaultValue: () => {
-      const prefersDark =
-        window.matchMedia("(prefers-color-scheme: dark)").matches;
-      return prefersDark ? "dark" : "light";
+      return "light";
     },
   });
 
