@@ -35,9 +35,9 @@ const Home = () => {
         <div className="grow w-full mt-16 px-8 py-12">
           <div className="flex justify-center items-center gap-8 flex-col md:flex-row">
             <div className="flex flex-col bg-base-100 px-8 py-8 text-center items-center w-full md:w-64 lg:w-80 h-48 rounded-3xl shadow-md">
-              <Bug size={32} className="h-16 w-16 text-primary mb-4" />
+              <Bug size={32} className="h-16 w-16 text-base-content mb-4" />
               <p>
-                <Link to="/debug" className="link link-primary">
+                <Link to="/debug" className="link text-base-content">
                   Debug
                 </Link>{" "}
                 and monitor network status.
@@ -45,9 +45,9 @@ const Home = () => {
             </div>
 
             <div className="flex flex-col bg-base-100 px-8 py-8 text-center items-center w-full md:w-64 lg:w-80 h-48 rounded-3xl shadow-md">
-              <MessageSquare size={32} className="h-16 w-16 text-primary mb-4" />
+              <MessageSquare size={32} className="h-16 w-16 text-base-content mb-4" />
               <p>
-                <Link to="/chat" className="link link-primary">
+                <Link to="/chat" className="link text-base-content">
                   Chat
                 </Link>{" "}
                 with built-in AI assistant.
@@ -55,14 +55,14 @@ const Home = () => {
             </div>
 
             <div className="flex flex-col bg-base-100 px-8 py-8 text-center items-center w-full md:w-64 lg:w-80 h-48 rounded-3xl shadow-md">
-              <Code size={32} className="h-16 w-16 text-primary mb-4" />
+              <Code size={32} className="h-16 w-16 text-base-content mb-4" />
               <p>
                 Interact with example programs:{" "}
-                <Link to="/counter" className="link link-primary">
+                <Link to="/counter" className="link text-base-content">
                   Counter
                 </Link>{", "}
                 {" "}
-                <Link to="/dns" className="link link-primary">
+                <Link to="/dns" className="link text-base-content">
                   DNS
                 </Link>{"."}
               </p>
