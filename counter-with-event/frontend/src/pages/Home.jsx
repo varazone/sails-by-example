@@ -12,6 +12,7 @@ import {
   Network,
 } from "lucide-react";
 import { useWallet } from "../contexts/WalletContext";
+import Footer from "../components/Footer";
 
 const CodeBlock = ({ command, description }) => {
   const [copied, setCopied] = useState(false);
@@ -69,7 +70,7 @@ const Home = () => {
   };
 
   return (
-    <div className="w-full bg-gradient-to-br from-base-100 via-base-200 to-base-300 mx-auto px-4 pt-12 pb-20">
+    <div className="w-full bg-gradient-to-br from-base-100 via-base-200 to-base-300 mx-auto px-4 pt-12">
       {/* Hero Section */}
       <div className="text-center mb-16">
         <div className="flex justify-center gap-3 mb-6">
@@ -98,7 +99,8 @@ const Home = () => {
             <Network size={18} className="text-success" />
             <span className="text-sm font-medium">Connected to:</span>
             <code className="text-xs font-mono bg-base-300 px-2 py-1 rounded">
-              {selectedAccount.address.slice(0, 12)}...{selectedAccount.address
+              {selectedAccount.address.slice(0, 12)}...{selectedAccount
+                .address
                 .slice(-8)}
             </code>
           </div>
@@ -247,7 +249,9 @@ const Home = () => {
 
         <div className="space-y-6">
           <div>
-            <h3 className="text-xl font-semibold mb-4">📋 Clone Repository</h3>
+            <h3 className="text-xl font-semibold mb-4">
+              📋 Clone Repository
+            </h3>
             <div className="space-y-3">
               <CodeBlock command="git clone https://github.com/varazone/scaffold-sails && cd scaffold-sails" />
             </div>
@@ -263,7 +267,9 @@ const Home = () => {
           </div>
 
           <div>
-            <h3 className="text-xl font-semibold mb-4">🚀 Start Development</h3>
+            <h3 className="text-xl font-semibold mb-4">
+              🚀 Start Development
+            </h3>
             <div className="space-y-3">
               <CodeBlock
                 command="bun run dev"
@@ -289,13 +295,9 @@ const Home = () => {
           </p>
         </div>
       </div>
-
-      {/* Bottom Section */}
-      <div className="text-center mt-16 text-base-content/60">
-        <p className="text-sm">
-          Built for developers who want to experiment with decentralized
-          technologies in a sandbox environment.
-        </p>
+      {/* Footer */}
+      <div className="mt-auto">
+        <Footer />
       </div>
     </div>
   );

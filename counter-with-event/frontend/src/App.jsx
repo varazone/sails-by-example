@@ -8,7 +8,6 @@ import Chat from "./pages/Chat";
 import Debug from "./pages/Debug";
 import StickyNavbar from "./components/StickyNavbar";
 import Sidebar from "./components/Sidebar";
-import Footer from "./components/Footer";
 import { useState } from "react";
 import withProviders from "./withProviders";
 import "./App.css";
@@ -37,8 +36,6 @@ const AppContent = () => {
           <Route path="/debug" element={<Debug />} />
         </Routes>
       </main>
-
-      <Footer />
     </div>
   );
 };
