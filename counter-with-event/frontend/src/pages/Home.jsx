@@ -108,7 +108,7 @@ const Home = () => {
       </div>
 
       {/* Features Grid - Asymmetrical Layout */}
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 max-w-6xl mx-auto">
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-6 max-w-3xl mx-auto">
         {/* Chat Card - Medium emphasis */}
         <div className="bg-base-100 rounded-2xl p-6 border border-base-300 shadow-md hover:shadow-lg transition-all duration-300 hover:-translate-y-1 flex flex-col justify-center">
           <div className="flex items-center gap-4">
@@ -202,7 +202,7 @@ const Home = () => {
         </div>
 
         {/* Quick Start - Call to action */}
-        <div className="md:col-span-2 lg:col-span-2 bg-gradient-to-r from-primary/10 to-secondary/10 rounded-2xl p-6 border border-primary/20 flex flex-col justify-center">
+        <div className="md:col-span-2 bg-gradient-to-r from-primary/10 to-secondary/10 rounded-2xl p-6 border border-primary/20 flex flex-col justify-center">
           <div className="flex items-center gap-4">
             <div className="flex-shrink-0 bg-primary/20 p-3 rounded-xl">
               <Code className="h-8 w-8 text-primary" />
