@@ -53,22 +53,6 @@ const CodeBlock = ({ command, description }) => {
 const Home = () => {
   const { selectedAccount } = useWallet();
 
-  const scrollToGettingStarted = (e) => {
-    e.preventDefault();
-    const element = document.getElementById("getting-started");
-    if (element) {
-      const navbarHeight = 64; // Adjust this based on your navbar height
-      const elementPosition = element.getBoundingClientRect().top +
-        window.pageYOffset;
-      const offsetPosition = elementPosition - navbarHeight;
-
-      window.scrollTo({
-        top: offsetPosition,
-        behavior: "smooth",
-      });
-    }
-  };
-
   return (
     <div className="w-full bg-gradient-to-br from-base-100 via-base-200 to-base-300 mx-auto px-4 pt-12">
       {/* Hero Section */}
@@ -105,6 +89,21 @@ const Home = () => {
             </code>
           </div>
         )}
+      </div>
+
+      {/* Explore Examples Section */}
+      <div
+        id="explore-examples"
+        className="max-w-3xl mx-auto mt-20"
+      >
+        <h2 className="text-3xl font-bold mb-8 text-center">
+          <a
+            href="#explore-examples"
+            className="hover:text-primary transition-colors"
+          >
+            Explore Examples
+          </a>
+        </h2>
       </div>
 
       {/* Features Grid - Asymmetrical Layout */}
@@ -214,12 +213,9 @@ const Home = () => {
                 begin building your own decentralized applications.
               </p>
               <div className="flex gap-3">
-                <button
-                  onClick={scrollToGettingStarted}
-                  className="btn btn-primary btn-sm"
-                >
+                <a href="#getting-started" className="btn btn-primary btn-sm">
                   Get Started
-                </button>
+                </a>
                 <a
                   href="https://github.com/varazone/scaffold-sails/wiki"
                   target="_blank"
@@ -238,13 +234,15 @@ const Home = () => {
       {/* Getting Started Section */}
       <div
         id="getting-started"
-        className="max-w-3xl mx-auto mt-20 pt-16 -mt-16"
+        className="max-w-3xl mx-auto mt-20"
       >
-        <h2
-          className="text-3xl font-bold mb-8 text-center cursor-pointer hover:text-primary transition-colors"
-          onClick={scrollToGettingStarted}
-        >
-          Getting Started
+        <h2 className="text-3xl font-bold mb-8 text-center">
+          <a
+            href="#getting-started"
+            className="hover:text-primary transition-colors"
+          >
+            Getting Started
+          </a>
         </h2>
 
         <div className="space-y-6">
