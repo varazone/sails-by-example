@@ -3,9 +3,10 @@
   themes: all;
 }
 
-/* Smooth scrolling for anchor links */
+/* Smooth scrolling for anchor links with navbar offset */
 html {
   scroll-behavior: smooth;
+  scroll-padding-top: 5rem; /* 80px to account for 64px navbar + some spacing */
 }
 
 /*
