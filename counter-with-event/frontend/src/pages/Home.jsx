@@ -57,17 +57,12 @@ const Home = () => {
     <div className="w-full bg-gradient-to-br from-base-100 via-base-200 to-base-300 mx-auto px-4 pt-12">
       {/* Hero Section */}
       <div className="text-center mb-16">
-        <div className="flex justify-center gap-3 mb-6">
-          <div className="inline-block bg-primary/10 px-4 py-2 rounded-full">
-            <span className="text-primary font-semibold text-sm">
-              Developer Toolkit
-            </span>
-          </div>
-          <div className="inline-block bg-secondary/10 px-4 py-2 rounded-full">
-            <span className="text-secondary font-semibold text-sm">
-              Frontend Template
-            </span>
-          </div>
+        <div className="flex justify-center mb-6">
+          <span className="inline-flex items-center rounded-full border border-base-300 bg-base-200 px-3 py-1.5 text-sm">
+            <span className="text-base-content/80">Not backed by</span>
+            <span className="mx-1 inline-block rounded bg-orange-600 px-1.5 py-0.5 text-[0.95em] leading-none font-medium text-white dark:bg-orange-500">Y</span>
+            <span className="font-medium text-orange-600 dark:text-orange-400">Combinator</span>
+          </span>
         </div>
 
         <h1 className="text-5xl md:text-6xl font-bold mb-4 bg-clip-text">
