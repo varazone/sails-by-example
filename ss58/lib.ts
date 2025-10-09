@@ -1,11 +1,15 @@
-import { decodeAddress, GearApi, HexString, Program } from "@gear-js/api";
+/* eslint-disable */
+
+import { BaseGearProgram, GearApi, HexString } from "@gear-js/api";
 import { TypeRegistry } from "@polkadot/types";
-import { ActorId, throwOnErrorReply, TransactionBuilder } from "sails-js";
+import { ActorId, QueryBuilder, TransactionBuilder } from "sails-js";
 
 export class Ss58Program {
   public readonly registry: TypeRegistry;
+  public readonly solvara: Solvara;
   public readonly ss58: Ss58;
-  private _program: Program;
+  public readonly bs58: Bs58;
+  private _program?: BaseGearProgram;
 
   constructor(public api: GearApi, programId?: `0x${string}`) {
     const types: Record<string, any> = {
@@ -24,10 +28,12 @@ export class Ss58Program {
     this.registry.setKnownTypes({ types });
     this.registry.register(types);
     if (programId) {
-      this._program = new Program(programId, api);
+      this._program = new BaseGearProgram(programId, api);
     }
 
+    this.solvara = new Solvara(this);
     this.ss58 = new Ss58(this);
+    this.bs58 = new Bs58(this);
   }
 
   public get programId(): `0x${string}` {
@@ -42,12 +48,14 @@ export class Ss58Program {
       this.api,
       this.registry,
       "upload_program",
+      null,
       "New",
-      "String",
+      null,
+      null,
       "String",
       code,
       async (programId) => {
-        this._program = await Program.new(programId, this.api);
+        this._program = await BaseGearProgram.new(programId, this.api);
       },
     );
     return builder;
@@ -58,15 +66,53 @@ export class Ss58Program {
       this.api,
       this.registry,
       "create_program",
+      null,
       "New",
-      "String",
+      null,
+      null,
       "String",
       codeId,
       async (programId) => {
-        this._program = await Program.new(programId, this.api);
+        this._program = await BaseGearProgram.new(programId, this.api);
       },
     );
     return builder;
+  }
+}
+
+export class Solvara {
+  constructor(private _program: Ss58Program) {}
+
+  /**
+   * convert Solana base58 address to Vara SS58 address
+   */
+  public solanaToVara(solana_address: string): QueryBuilder<string> {
+    return new QueryBuilder<string>(
+      this._program.api,
+      this._program.registry,
+      this._program.programId,
+      "Solvara",
+      "SolanaToVara",
+      solana_address,
+      "String",
+      "String",
+    );
+  }
+
+  /**
+   * convert Vara SS58 address to Solana base58 address
+   */
+  public varaToSolana(vara_address: string): QueryBuilder<string> {
+    return new QueryBuilder<string>(
+      this._program.api,
+      this._program.registry,
+      this._program.programId,
+      "Solvara",
+      "VaraToSolana",
+      vara_address,
+      "String",
+      "String",
+    );
   }
 }
 
@@ -76,102 +122,87 @@ export class Ss58 {
   /**
    * convert ActorId to ss58 address
    */
-  public async actorIdToSs58(
+  public actorIdToSs58(
     actor_id: ActorId,
     format: Ss58AddressFormat,
-    originAddress?: string,
-    value?: number | string | bigint,
-    atBlock?: `0x${string}`,
-  ): Promise<string> {
-    const payload = this._program.registry.createType(
-      "(String, String, [u8;32], Ss58AddressFormat)",
-      ["Ss58", "ActorIdToSs58", actor_id, format],
-    ).toHex();
-    const reply = await this._program.api.message.calculateReply({
-      destination: this._program.programId,
-      origin: originAddress ? decodeAddress(originAddress) : ZERO_ADDRESS,
-      payload,
-      value: value || 0,
-      gasLimit: this._program.api.blockGasLimit.toBigInt(),
-      at: atBlock,
-    });
-    throwOnErrorReply(
-      reply.code,
-      reply.payload.toU8a(),
-      this._program.api.specVersion,
+  ): QueryBuilder<string> {
+    return new QueryBuilder<string>(
+      this._program.api,
       this._program.registry,
+      this._program.programId,
+      "Ss58",
+      "ActorIdToSs58",
+      [actor_id, format],
+      "([u8;32], Ss58AddressFormat)",
+      "String",
     );
-    const result = this._program.registry.createType(
-      "(String, String, String)",
-      reply.payload,
-    );
-    return result[2].toString() as unknown as string;
   }
 
   /**
    * get own ss58 address
    */
-  public async mySs58Address(
-    originAddress?: string,
-    value?: number | string | bigint,
-    atBlock?: `0x${string}`,
-  ): Promise<string> {
-    const payload = this._program.registry.createType("(String, String)", [
+  public mySs58Address(): QueryBuilder<string> {
+    return new QueryBuilder<string>(
+      this._program.api,
+      this._program.registry,
+      this._program.programId,
       "Ss58",
       "MySs58Address",
-    ]).toHex();
-    const reply = await this._program.api.message.calculateReply({
-      destination: this._program.programId,
-      origin: originAddress ? decodeAddress(originAddress) : ZERO_ADDRESS,
-      payload,
-      value: value || 0,
-      gasLimit: this._program.api.blockGasLimit.toBigInt(),
-      at: atBlock,
-    });
-    throwOnErrorReply(
-      reply.code,
-      reply.payload.toU8a(),
-      this._program.api.specVersion,
-      this._program.registry,
+      null,
+      null,
+      "String",
     );
-    const result = this._program.registry.createType(
-      "(String, String, String)",
-      reply.payload,
-    );
-    return result[2].toString() as unknown as string;
   }
 
   /**
    * convert ss58 address to ActorId
    */
-  public async ss58ToActorId(
-    ss58_address: string,
-    originAddress?: string,
-    value?: number | string | bigint,
-    atBlock?: `0x${string}`,
-  ): Promise<ActorId> {
-    const payload = this._program.registry.createType(
-      "(String, String, String)",
-      ["Ss58", "Ss58ToActorId", ss58_address],
-    ).toHex();
-    const reply = await this._program.api.message.calculateReply({
-      destination: this._program.programId,
-      origin: originAddress ? decodeAddress(originAddress) : ZERO_ADDRESS,
-      payload,
-      value: value || 0,
-      gasLimit: this._program.api.blockGasLimit.toBigInt(),
-      at: atBlock,
-    });
-    throwOnErrorReply(
-      reply.code,
-      reply.payload.toU8a(),
-      this._program.api.specVersion,
+  public ss58ToActorId(ss58_address: string): QueryBuilder<ActorId> {
+    return new QueryBuilder<ActorId>(
+      this._program.api,
       this._program.registry,
+      this._program.programId,
+      "Ss58",
+      "Ss58ToActorId",
+      ss58_address,
+      "String",
+      "[u8;32]",
     );
-    const result = this._program.registry.createType(
-      "(String, String, [u8;32])",
-      reply.payload,
+  }
+}
+
+export class Bs58 {
+  constructor(private _program: Ss58Program) {}
+
+  /**
+   * convert base58 string to bytes
+   */
+  public decode(ss58_address: string): QueryBuilder<`0x${string}`> {
+    return new QueryBuilder<`0x${string}`>(
+      this._program.api,
+      this._program.registry,
+      this._program.programId,
+      "Bs58",
+      "Decode",
+      ss58_address,
+      "String",
+      "Vec<u8>",
     );
-    return result[2].toJSON() as unknown as ActorId;
+  }
+
+  /**
+   * convert bytes to base58 string
+   */
+  public encode(bytes: `0x${string}`): QueryBuilder<string> {
+    return new QueryBuilder<string>(
+      this._program.api,
+      this._program.registry,
+      this._program.programId,
+      "Bs58",
+      "Encode",
+      bytes,
+      "Vec<u8>",
+      "String",
+    );
   }
 }

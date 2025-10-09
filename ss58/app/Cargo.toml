@@ -6,3 +6,4 @@ edition = "2024"
 [dependencies]
 sails-rs = "0.9.0"
 ss58 = "0.0"
+bs58 = { version = "0.5", default-features = false, features = ["alloc"] }

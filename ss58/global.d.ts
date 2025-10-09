@@ -1,26 +1,26 @@
 declare global {
   /**
    * Enum for address versions — you can expand this as needed
-   */
-  export type Ss58AddressFormat =
+  */
+  export type Ss58AddressFormat = 
     /**
      * 0
-     */
-    | { polkadot: null }
+    */
+    | { Polkadot: null }
     /**
      * 2
-     */
-    | { kusama: null }
+    */
+    | { Kusama: null }
     /**
      * 42
-     */
-    | { substrate: null }
+    */
+    | { Substrate: null }
     /**
      * 137
-     */
-    | { vara: null }
+    */
+    | { Vara: null }
     /**
      * custom
-     */
-    | { custom: number };
-}
+    */
+    | { Custom: number };
+};
