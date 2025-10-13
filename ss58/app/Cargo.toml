@@ -7,3 +7,4 @@ edition = "2024"
 sails-rs = "0.9.0"
 ss58 = "0.0"
 bs58 = { version = "0.5", default-features = false, features = ["alloc"] }
+base64 = { version = "0.22", default-features = false, features = ["alloc"] }
