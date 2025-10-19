@@ -9,7 +9,7 @@ pub struct Program(());
 #[program]
 impl Program {
     pub fn new(name: String, symbol: String, decimals: u8) -> Self {
-        <VftService>::seed(name, symbol, decimals);
+        <VftService>::init(name, symbol, decimals);
         Self(())
     }
 
