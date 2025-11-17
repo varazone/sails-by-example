@@ -6,22 +6,35 @@ import WalletManager from "./WalletManager";
 
 const Sidebar = ({ isOpen, toggleSidebar }) => {
   return (
-    <div
-      className={`fixed inset-y-0 left-0 transform ${
-        isOpen ? "translate-x-0" : "-translate-x-full"
-      } transition duration-200 ease-in-out z-30 w-200 bg-base-200 overflow-y-auto`}
-    >
-      <div className="p-5">
-        <button
-          className="btn btn-square btn-ghost lg:hidden float-right"
+    <>
+      {/* Backdrop overlay - excludes navbar area */}
+      {isOpen && (
+        <div
+          className="fixed top-16 bottom-0 left-0 right-0 z-60"
           onClick={toggleSidebar}
-        >
-          <X size={24} />
-        </button>
-        <h2 className="text-2xl font-semibold mb-5 mt-16 lg:mt-0">Settings</h2>
-        <WalletManager />
+        />
+      )}
+
+      {/* Sidebar */}
+      <div
+        className={`fixed top-16 bottom-0 left-0 transform ${
+          isOpen ? "translate-x-0" : "-translate-x-full"
+        } transition duration-200 ease-in-out z-70 w-96 bg-base-200 overflow-y-auto shadow-xl`}
+      >
+        <div className="p-5">
+          <div className="flex justify-between items-center mb-5">
+            <h2 className="text-2xl font-semibold">Settings</h2>
+            <button
+              className="btn btn-square btn-ghost"
+              onClick={toggleSidebar}
+            >
+              <X size={20} />
+            </button>
+          </div>
+          <WalletManager />
+        </div>
       </div>
-    </div>
+    </>
   );
 };
 

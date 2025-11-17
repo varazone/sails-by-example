@@ -10,7 +10,7 @@
     "preview": "vite preview"
   },
   "dependencies": {
-    "@gear-js/api": "^0.44.0",
+    "@gear-js/api": "^0.44.2",
     "@gear-js/react-hooks": "^0.18.2",
     "@gear-js/ui": "^0.5.28",
     "@hookform/resolvers": "^3.9.0",

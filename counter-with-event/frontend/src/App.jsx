@@ -21,10 +21,12 @@ const AppContent = () => {
 
   return (
     <div className="min-h-screen flex flex-col">
-      <nav className="p-4 h-16 sticky navbar top-0 z-50 glass">
+      <nav className="p-4 h-16 sticky navbar top-0 z-80 glass">
         <StickyNavbar toggleSidebar={toggleSidebar} />
-        <Sidebar isOpen={isSidebarOpen} toggleSidebar={toggleSidebar} />
       </nav>
+
+      {/* Sidebar should be outside the navbar to cover entire viewport */}
+      <Sidebar isOpen={isSidebarOpen} toggleSidebar={toggleSidebar} />
 
       <main className="grow -mt-16 pt-16 shadow-none flex flex-col items-center justify-center">
         <Routes>

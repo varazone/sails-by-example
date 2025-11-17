@@ -79,7 +79,7 @@ const StickyNavbar = ({ toggleSidebar }) => {
     <div className="navbar bg-base-500 sticky top-0 z-10 md:flex md:flex-row w-full">
       <div className="flex-none">
         <button
-          className="btn btn-square btn-ghost md:hidden"
+          className="btn btn-square btn-ghost md:hidden z-80"
           onClick={toggleSidebar}
         >
           <Menu size={24} />

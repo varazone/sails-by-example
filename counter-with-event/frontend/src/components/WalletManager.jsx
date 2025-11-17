@@ -31,7 +31,7 @@ const WalletManager = () => {
   };
 
   return (
-    <div className="card w-96 bg-base-100 shadow-md">
+    <div className="card bg-base-100 shadow-md">
       <div className="card-body">
         <h2 className="card-title">Wallet Manager</h2>
         {!selectedAccount
@@ -43,17 +43,14 @@ const WalletManager = () => {
                     key={account.address + index}
                     onClick={() => handleAccountSelect(account)}
                     disabled={loading}
-                    className="btn btn-primary btn-block"
+                    className="btn btn-primary btn-block text-left py-3"
                   >
-                    <div className="flex flex-col items-start">
-                      <span>
-                        {account.meta.name}{" "}
-                        ({account.meta.isTesting ? "dev" : account.meta.source})
+                    <div className="flex flex-col items-start w-full space-y-1">
+                      <span className="text-sm font-medium truncate w-full">
+                        {account.meta.name} ({account.meta.isTesting ? "dev" : account.meta.source})
                       </span>
-                      <span className="text-sm opacity-70">
-                        Balance: {loading
-                          ? "Loading..."
-                          : formatBalanceDisplay(balances[account.address])}
+                      <span className="text-xs opacity-70 truncate w-full">
+                        Balance: {loading ? "Loading..." : formatBalanceDisplay(balances[account.address])}
                       </span>
                     </div>
                   </button>
@@ -80,39 +77,32 @@ const WalletManager = () => {
             </>
           )
           : (
-            <div className="space-y-2">
-              <div className="stats shadow-sm">
-                <div className="stat">
-                  <div className="stat-title">Connected Account</div>
-                  <div className="stat-value text-primary">
-                    {selectedAccount.meta.name}
-                  </div>
-                  <div className="stat-desc">{selectedAccount.address}</div>
-                </div>
+            <div className="space-y-3">
+              <div className="bg-base-200 rounded-lg p-3 text-left">
+                <div className="text-sm font-semibold text-base-content/70">Connected Account</div>
+                <div className="text-lg font-bold text-primary">{selectedAccount.meta.name}</div>
+                <div className="text-xs text-base-content/50 truncate">{selectedAccount.address}</div>
               </div>
-              <div className="stats shadow-sm">
-                <div className="stat">
-                  <div className="stat-title">Source</div>
-                  <div className="stat-value">
-                    {selectedAccount.meta.isTesting
-                      ? "dev"
-                      : selectedAccount.meta.source}
+
+              <div className="flex gap-2">
+                <div className="bg-base-200 rounded-lg p-3 flex-1 text-left">
+                  <div className="text-sm font-semibold text-base-content/70">Source</div>
+                  <div className="text-md font-medium">
+                    {selectedAccount.meta.isTesting ? "dev" : selectedAccount.meta.source}
                   </div>
                 </div>
-              </div>
-              <div className="stats shadow-sm">
-                <div className="stat">
-                  <div className="stat-title">Balance</div>
-                  <div className="stat-value">
-                    {loading
-                      ? "Loading..."
-                      : formatBalanceDisplay(balances[selectedAccount.address])}
+
+                <div className="bg-base-200 rounded-lg p-3 flex-1 text-left">
+                  <div className="text-sm font-semibold text-base-content/70">Balance</div>
+                  <div className="text-md font-medium">
+                    {loading ? "Loading..." : formatBalanceDisplay(balances[selectedAccount.address])}
                   </div>
                 </div>
               </div>
+
               <button
                 onClick={handleDisconnect}
-                className="btn btn-secondary btn-block"
+                className="btn btn-secondary btn-block py-2"
               >
                 Disconnect
               </button>
